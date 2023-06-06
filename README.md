@@ -1,33 +1,27 @@
-# Sendrato Cashless Frontend
+# Sendrato React template
+
+It is a template for the fast development of the Front end.
+
+## Installation
+
+```bash
+yarn install
+```
 
 ## Development
 
-Install project dependencies with Yarn: `$ yarn`
-
-### Run app
-
-```sh
-$ yarn app:start:dev
+```bash
+yarn app:start:dev
 ```
 
-### Linting
+## Build
 
-Project uses ESLint, stylelint and commitlint:
-
-```sh
-$ yarn lint
+```bash
+yarn app:build
 ```
 
-Format code with Prettier:
+## Lint
 
-```sh
-$ yarn prettier
-```
-
-### Docker
-
-Create and run a Docker image
-
-```sh
-$ yarn docker
+```bash
+yarn lint
 ```
