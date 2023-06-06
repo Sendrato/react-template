@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@assets/*": ["../public/assets/*"],
+      "@components/*": ["./components/*"],
+      "@config": ["./config"],
+      "@modules/*": ["./modules/*"],
+      "@services/*": ["./services/*"]
+    },
+    "types": [],
+    "incremental": true
+  },
+  "exclude": ["node_modules"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/pages/seller-details/[sid]"
+  ]
+}

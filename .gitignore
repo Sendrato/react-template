@@ -1,0 +1,19 @@
+# Generic local files
+.DS_Store
+*.log
+node_modules
+
+# Application bundles
+dist
+
+# TS temp files
+tsconfig.tsbuildinfo
+
+# Next.js temp files
+.next
+
+# Jest coverage report
+packages/app/coverage/
+
+packages/app/.env.local
+

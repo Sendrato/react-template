@@ -1,0 +1,61 @@
+{
+  "name": "react-components",
+  "version": "0.1.0",
+  "main": "index.js",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "engines": {
+    "node": "18.13"
+  },
+  "scripts": {
+    "postinstall": "husky install",
+    "build": "run-p -l app:build",
+    "app:start": "cd packages/app && yarn start",
+    "app:start:dev": "cd packages/app && yarn start:dev",
+    "app:build": "cd packages/app && yarn build",
+    "lint": "run-p lint:*",
+    "lint:js": "eslint --ext .ts --ext .tsx packages",
+    "lint:css": "stylelint packages/**/*.tsx",
+    "lint:types": "run-p lint:types:design-system lint:types:app",
+    "lint:types:design-system": "tsc --incremental -p packages/design-system",
+    "lint:types:app": "tsc --incremental -p packages/app",
+    "prettier": "prettier --write 'packages/**/*.{ts,tsx}'",
+    "docker": "run-p -l app:build && docker-compose up --build --force-recreate"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
+    "@next/eslint-plugin-next": "^12.2.5",
+    "@typescript-eslint/eslint-plugin": "^5.33.1",
+    "@typescript-eslint/parser": "^5.33.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.22.0",
+    "eslint-config-next": "^12.2.5",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "npm-run-all": "^4.1.5",
+    "postcss-jsx": "^0.36.4",
+    "postcss-syntax": "^0.36.2",
+    "prettier": "^2.7.1",
+    "stylelint": "^14.11.0",
+    "stylelint-config-recommended": "^9.0.0",
+    "stylelint-config-styled-components": "^0.1.1",
+    "typescript": "^4.7.4"
+  },
+  "resolutions": {
+    "slug": "^5.0.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  }
+}
