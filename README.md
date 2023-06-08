@@ -25,3 +25,9 @@ yarn app:build
 ```bash
 yarn lint
 ```
+
+## Storybook
+
+```bash
+yarn storybook
+```
