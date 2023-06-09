@@ -1,5 +1,6 @@
 import { Button } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/react';
+import { createThemeProvider } from 'stories/utils';
 
 import GenericTable from '@modules/common/Table/GenericTable';
 import { ITableDataKeys } from '@modules/common/Table/types';
@@ -17,6 +18,7 @@ const config: ITableDataKeys[] = [
 ];
 
 const meta: Meta<typeof GenericTable> = {
+  decorators: [createThemeProvider()],
   title: 'Tables/GenericTable',
   component: GenericTable,
   tags: ['autodocs'],
@@ -112,15 +114,7 @@ export const Basic: Story = {
     data,
     config,
     title: 'Table',
-    tooltipComponent: (
-      <Button
-        variant="outlined"
-        color="primary"
-        sx={{ borderRadius: '6px', textTransform: 'capitalize' }}
-      >
-        Add Row
-      </Button>
-    ),
+    tooltipComponent: <Button variant="outlined">Add Row</Button>,
   },
 };
 

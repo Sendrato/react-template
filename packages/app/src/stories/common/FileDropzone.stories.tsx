@@ -1,9 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { base64 } from 'stories/table/assets/data';
+import { createThemeProvider } from 'stories/utils';
 
 import FileDropzone from '@modules/common/FileDropzone';
 
 const meta: Meta<typeof FileDropzone> = {
+  decorators: [createThemeProvider()],
   title: 'Common/FileDropzone',
   component: FileDropzone,
   tags: ['autodocs'],

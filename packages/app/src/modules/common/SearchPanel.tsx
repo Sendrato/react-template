@@ -1,9 +1,10 @@
-import { Button, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
 
 import { StyledPaper } from './styled-mui/Paper';
 import SearchBar from './SearchBar';
+import { GreyButton } from './styled-mui';
 
 interface IProps {
   title: string;
@@ -32,9 +33,9 @@ const SearchPanel = ({ title, placeholder, value, onChange }: IProps) => {
           />
         </Grid>
         <Grid item xs={12} md={1}>
-          <Button color="secondary" variant="contained" fullWidth>
+          <GreyButton color="inherit" variant="contained" fullWidth>
             Search
-          </Button>
+          </GreyButton>
         </Grid>
       </Grid>
     </SearchContainer>

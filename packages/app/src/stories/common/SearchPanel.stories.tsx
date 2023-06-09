@@ -1,8 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { createThemeProvider } from 'stories/utils';
 
 import SearchPanel from '@modules/common/SearchPanel';
 
 const meta: Meta<typeof SearchPanel> = {
+  decorators: [createThemeProvider()],
   title: 'Common/SearchPanel',
   component: SearchPanel,
   tags: ['autodocs'],
@@ -25,6 +27,7 @@ const meta: Meta<typeof SearchPanel> = {
 type Story = StoryObj<typeof SearchPanel>;
 
 export const Default: Story = {
+  decorators: [createThemeProvider()],
   args: {
     title: 'Search',
     placeholder: 'Search by id, name, email...',

@@ -1,74 +1,59 @@
+import { Button } from '@mui/material';
+import { combineReducers, configureStore, createSlice } from '@reduxjs/toolkit';
 import { Meta, StoryObj } from '@storybook/react';
-import { Provider } from 'react-redux';
+import { createReduxProvider, createThemeProvider } from 'stories/utils';
 
 import PageHeader from '@modules/common/PageHeader';
+import { PageTitle } from '@modules/common/styled-mui';
 
-const MockedState = {
-  addedRecord: {
-    message: null,
-    open: false,
-    type: 'success',
-  },
-};
+const createModalsStore = (mockState: any): any =>
+  configureStore({
+    reducer: {
+      design: combineReducers({
+        modals: createSlice({
+          name: 'modal',
+          initialState: mockState,
+          reducers: {},
+        }).reducer,
+      }),
+    },
+  });
 
-const MockedStateSuccess = {
+const MockedStateSuccessRecord = createModalsStore({
   addedRecord: {
-    message: 'Successfuly created',
+    message: 'Successfuly created.',
     open: true,
     type: 'success',
   },
-};
+});
 
-const Mockstore = ({
-  children,
-  recordState,
-}: {
-  children: ReactNode;
-  recordState: any;
-}) => (
-  <Provider
-    store={configureStore({
-      reducer: {
-        design: combineReducers({
-          modals: createSlice({
-            name: 'taskbox',
-            initialState: recordState,
-            reducers: {},
-          }).reducer,
-        }),
-      },
-    })}
-  >
-    {children}
-  </Provider>
-);
+const MockedStateErrorRecord = createModalsStore({
+  addedRecord: {
+    message: 'Something went wrong.',
+    open: true,
+    type: 'error',
+  },
+});
 
-import { Button } from '@mui/material';
-import { combineReducers, configureStore, createSlice } from '@reduxjs/toolkit';
-import { ReactNode } from 'react';
-
-import { PageTitle } from '@modules/common/styled-mui';
-
-const withProvider = (story: any) => (
-  <Mockstore recordState={MockedState}>{story()}</Mockstore>
-);
-
-const withProvideRecord = (story: any) => (
-  <Mockstore recordState={MockedStateSuccess}>{story()}</Mockstore>
-);
+const MockedStateInfoRecord = createModalsStore({
+  addedRecord: {
+    message: 'User already exist.',
+    open: true,
+    type: 'info',
+  },
+});
 
 const meta: Meta<typeof PageHeader> = {
   title: 'Common/PageHeader',
   component: PageHeader,
   tags: ['autodocs'],
-  decorators: [withProvider],
+  decorators: [createReduxProvider(), createThemeProvider()],
   argTypes: {},
 };
 
 type Story = StoryObj<typeof PageHeader>;
 
 export const OnlyTitle: Story = {
-  decorators: [withProvider],
   args: {
     children: (
       <>
@@ -79,7 +64,6 @@ export const OnlyTitle: Story = {
 };
 
 export const WithButton: Story = {
-  decorators: [withProvider],
   args: {
     children: (
       <>
@@ -90,8 +74,34 @@ export const WithButton: Story = {
   },
 };
 
-export const withRecord: Story = {
-  decorators: [withProvideRecord],
+export const withSuccessRecord: Story = {
+  decorators: [createReduxProvider(MockedStateSuccessRecord)],
+  args: {
+    withRecord: true,
+    children: (
+      <>
+        <PageTitle>PageTitle</PageTitle>
+        <Button variant="contained">Add new</Button>
+      </>
+    ),
+  },
+};
+
+export const withErrorRecord: Story = {
+  decorators: [createReduxProvider(MockedStateErrorRecord)],
+  args: {
+    withRecord: true,
+    children: (
+      <>
+        <PageTitle>PageTitle</PageTitle>
+        <Button variant="contained">Add new</Button>
+      </>
+    ),
+  },
+};
+
+export const withInfoRecord: Story = {
+  decorators: [createReduxProvider(MockedStateInfoRecord)],
   args: {
     withRecord: true,
     children: (
