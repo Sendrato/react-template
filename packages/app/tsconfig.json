@@ -18,5 +18,5 @@
     "**/*.ts",
     "**/*.tsx",
     "src/pages/seller-details/[sid]"
-, "src/stories/common/Table.stories.js", "src/stories/table/GenericTable.stories.js", "src/stories/table/TableOverview.stories.js", "src/stories/table/table.stories.js"  ]
+, "src/stories/common/Table.stories.js", "src/stories/table/GenericTable.stories.js", "src/stories/table/TableOverview.stories.tsx", "src/stories/table/table.stories.js"  ]
 }

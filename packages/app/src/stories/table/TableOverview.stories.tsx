@@ -1,8 +1,12 @@
-import OverviewTable from '@modules/common/Table/OverviewTable';
+import { Meta, StoryObj } from '@storybook/react';
+
+import OverviewTable, {
+  IObjectTableRow,
+} from '@modules/common/Table/OverviewTable';
 
 import { data } from './assets/data';
 
-const rows = [
+const rows: IObjectTableRow[] = [
   { key: 'Id', type: 'text', label: 'Seller Id' },
   { key: 'Name', type: 'text', label: 'Name' },
   { key: 'Surname', type: 'text', label: 'Surname' },
@@ -12,15 +16,28 @@ const rows = [
   { key: 'CreatedOn', label: 'Date & Time', type: 'timestamp' },
 ];
 
-export default {
+const meta: Meta<typeof OverviewTable> = {
   title: 'Tables/Overview',
   component: OverviewTable,
+  tags: ['autodocs'],
+  argTypes: {
+    name: {
+      description: 'The title of the Table.',
+    },
+    data: {
+      description: 'The data to display in the table.',
+    },
+  },
 };
 
-export const Table = {
+type Story = StoryObj<typeof OverviewTable>;
+
+export const Table: Story = {
   args: {
     name: 'User',
     data: data[1],
     rows,
   },
 };
+
+export default meta;
