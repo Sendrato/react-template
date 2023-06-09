@@ -3,14 +3,16 @@ import {
   StyledEngineProvider,
   ThemeProvider as MuiThemeProvider,
 } from '@mui/material/styles';
+import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore';
 import { Provider } from 'react-redux';
 import { store } from 'store';
 import { ThemeProvider } from 'styled-components';
 
 import muiTheme from '@sendrato/design-system/theme/muiTheme';
 import { GlobalStyle, theme } from '@sendrato/design-system/theme/styledTheme';
+
 export const createReduxProvider =
-  (reduxStore = store) =>
+  (reduxStore: ToolkitStore = store) =>
   (story: any) =>
     <Provider store={reduxStore}>{story()}</Provider>;
 
@@ -25,8 +27,4 @@ export const createThemeProvider = () => {
       </MuiThemeProvider>
     </StyledEngineProvider>
   );
-};
-
-export const withDecorators = (store?: any): any => {
-  return [createReduxProvider(store), createThemeProvider()];
 };

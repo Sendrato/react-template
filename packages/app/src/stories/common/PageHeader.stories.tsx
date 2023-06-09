@@ -1,12 +1,13 @@
 import { Button } from '@mui/material';
 import { combineReducers, configureStore, createSlice } from '@reduxjs/toolkit';
+import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore';
 import { Meta, StoryObj } from '@storybook/react';
 import { createReduxProvider } from 'stories/utils';
 
 import PageHeader from '@modules/common/PageHeader';
 import { PageTitle } from '@modules/common/styled-mui';
 
-const createModalsStore = (mockState: any): any =>
+const createModalsStore = (mockState: Record<string, any>): ToolkitStore =>
   configureStore({
     reducer: {
       design: combineReducers({
