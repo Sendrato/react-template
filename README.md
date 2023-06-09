@@ -28,6 +28,16 @@ yarn lint
 
 ## Storybook
 
+Move into the app directory
+
+``bash
+cd packages/app
+```
+
+And run storybook local
+
 ```bash
 yarn storybook
 ```
+
+Open the storybook locally at http://localhost:6006
