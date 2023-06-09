@@ -47,7 +47,14 @@ const meta: Meta<typeof PageHeader> = {
   title: 'Common/PageHeader',
   component: PageHeader,
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    children: {
+      description: 'The ReactNode',
+    },
+    withRecord: {
+      description: 'Boolean value indicating whether to display the record.',
+    },
+  },
 };
 
 type Story = StoryObj<typeof PageHeader>;
