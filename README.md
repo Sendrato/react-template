@@ -34,13 +34,13 @@ Move into the app directory
 cd packages/app
 ```
 
-And run storybook local
+Run Storybook
 
 ```bash
 yarn storybook
 ```
 
-Open the storybook locally
+Open Storybook locally
 
 ```bash
 http://localhost:6006
