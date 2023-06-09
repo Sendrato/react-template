@@ -1,5 +1,3 @@
-import { createThemeProvider } from 'stories/utils';
-
 import OverviewTable from '@modules/common/Table/OverviewTable';
 
 import { data } from './assets/data';
@@ -15,7 +13,6 @@ const rows = [
 ];
 
 export default {
-  decorators: [createThemeProvider()],
   title: 'Tables/Overview',
   component: OverviewTable,
 };

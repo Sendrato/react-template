@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import { combineReducers, configureStore, createSlice } from '@reduxjs/toolkit';
 import { Meta, StoryObj } from '@storybook/react';
-import { createReduxProvider, createThemeProvider } from 'stories/utils';
+import { createReduxProvider } from 'stories/utils';
 
 import PageHeader from '@modules/common/PageHeader';
 import { PageTitle } from '@modules/common/styled-mui';
@@ -47,7 +47,6 @@ const meta: Meta<typeof PageHeader> = {
   title: 'Common/PageHeader',
   component: PageHeader,
   tags: ['autodocs'],
-  decorators: [createReduxProvider(), createThemeProvider()],
   argTypes: {},
 };
 

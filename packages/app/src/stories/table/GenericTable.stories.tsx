@@ -1,6 +1,5 @@
 import { Button } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/react';
-import { createThemeProvider } from 'stories/utils';
 
 import GenericTable from '@modules/common/Table/GenericTable';
 import { ITableDataKeys } from '@modules/common/Table/types';
@@ -18,7 +17,6 @@ const config: ITableDataKeys[] = [
 ];
 
 const meta: Meta<typeof GenericTable> = {
-  decorators: [createThemeProvider()],
   title: 'Tables/GenericTable',
   component: GenericTable,
   tags: ['autodocs'],

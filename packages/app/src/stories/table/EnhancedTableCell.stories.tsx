@@ -1,6 +1,5 @@
 import { Paper, Typography } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/react';
-import { createThemeProvider } from 'stories/utils';
 
 import Base64 from '@modules/common/Base64';
 import { EnhancedTableCell } from '@modules/common/Table/EnhancedTableCell';
@@ -8,7 +7,6 @@ import { EnhancedTableCell } from '@modules/common/Table/EnhancedTableCell';
 import { base64 } from './assets/data';
 
 const meta: Meta<typeof EnhancedTableCell> = {
-  decorators: [createThemeProvider()],
   title: 'Tables/EnhancedTableCell',
   component: EnhancedTableCell,
   tags: ['autodocs'],
