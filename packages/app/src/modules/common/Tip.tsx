@@ -3,21 +3,18 @@ import { Button, Grid, Typography } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
 
-export enum TipType {
-  ERROR,
-  INFO,
-}
+import { AlertContainer, AlertType } from './styled-mui';
 
 interface IProps {
   onClick: () => void;
   message: string;
   actionMessage: string;
-  type?: TipType;
+  type?: AlertType;
 }
 
-const Tip = ({ onClick, message, actionMessage }: IProps) => {
+const Tip = ({ onClick, message, actionMessage, type = 'info' }: IProps) => {
   return (
-    <Message container>
+    <Message $type={type} container>
       <Grid
         item
         container
@@ -31,7 +28,7 @@ const Tip = ({ onClick, message, actionMessage }: IProps) => {
         }}
       >
         <ReportProblemOutlinedIcon
-          color="error"
+          color={type}
           sx={{ margin: { xs: '0 auto', md: '0' } }}
         />
         <Typography
@@ -49,18 +46,11 @@ const Tip = ({ onClick, message, actionMessage }: IProps) => {
   );
 };
 
-const Message = styled(Grid)`
-  align-items: center;
+const Message = styled(AlertContainer)`
   justify-content: space-between;
   margin-top: 0.75rem;
   padding: 0.375rem 1rem;
-  background: linear-gradient(
-      0deg,
-      rgba(255, 255, 255, 0.9),
-      rgba(255, 255, 255, 0.9)
-    ),
-    #ed6c02;
-  border-radius: 4px;
+  position: relative;
 
   @media (max-width: 900px) {
     justify-content: center;

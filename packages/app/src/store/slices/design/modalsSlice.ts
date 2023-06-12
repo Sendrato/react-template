@@ -5,6 +5,8 @@ import {
 } from '@reduxjs/toolkit';
 import { RootState } from 'store';
 
+import { AlertType } from '@modules/common/styled-mui';
+
 type recordType = 'success' | 'error' | 'info';
 
 export const openAutoCloseRecord = createAsyncThunk<
@@ -28,7 +30,7 @@ type InitialStateType = {
   addedRecord: {
     message: string | null;
     open: boolean;
-    type: 'success' | 'info' | 'error';
+    type: AlertType;
   };
   sellerDetailsInfo: {
     message: string | null;
