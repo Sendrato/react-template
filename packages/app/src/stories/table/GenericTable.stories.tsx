@@ -103,6 +103,14 @@ const meta: Meta<typeof GenericTable> = {
       description: 'Disable the padding in the TableContainer.',
     },
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The GenericTable component is a powerful and versatile component that enables you to quickly create tables with customizable configurations, offering essential features such as pagination, data sorting, row selection. It leverages the EnhancedTableCell component to display the content within each table cell according to type from config. The GenericTable component simplifies the process of generating tables by providing a high-level configuration approach. It supports the use of hooks, such as usePagination, useSort, and useSelectedRow, which facilitate the fast creation of configurations for pagination, sorting, and row selection features.',
+      },
+    },
+  },
 };
 
 type Story = StoryObj<typeof GenericTable>;
