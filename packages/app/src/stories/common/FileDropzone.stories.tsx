@@ -37,6 +37,14 @@ const meta: Meta<typeof FileDropzone> = {
       description: 'SetState action for store file size in React state.',
     },
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The FileDropzone component is a convenient wrapper around the react-dropzone library, providing an intuitive and efficient way to create an input field for file uploads. It simplifies the process of accepting and handling files from users. Additionally, the FileDropzone component includes built-in functionality to convert uploaded files to base64 format. This feature enables convenient handling and manipulation of file data within your application, opening up possibilities for various use cases.',
+      },
+    },
+  },
 };
 
 type Story = StoryObj<typeof FileDropzone>;
