@@ -31,6 +31,14 @@ const meta: Meta<typeof EnhancedTableCell> = {
         'The function will call by clicking on the EnhancedTableCell.',
     },
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The EnhancedTableCell component is a powerful and flexible component that allows you to create and customize the content within a table cell in a convenient and consistent manner. It provides enhanced functionality and rendering options for displaying data within TableCell components. The EnhancedTableCell component offers a range of features to enrich the content of table cells. You can leverage these features to format data, apply styling, incorporate interactive elements, or handle specific data types with ease.',
+      },
+    },
+  },
 };
 
 type Story = StoryObj<typeof EnhancedTableCell>;
