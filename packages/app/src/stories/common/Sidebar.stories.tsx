@@ -45,6 +45,14 @@ const meta: Meta<typeof Sidebar> = {
       description: 'Function for the closing Sidebar.',
     },
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The Sidebar component is part of DashboardLayout that allows you to display a navigation menu for conveniently accessing different pages within your application. It also provides the ability to adjust access to specific pages based on user roles, ensuring appropriate visibility and control.',
+      },
+    },
+  },
 };
 
 type Story = StoryObj<typeof Sidebar>;
@@ -56,7 +64,7 @@ export const Default: Story = {
     PaperProps: {
       style: { width: 256 },
     },
-    variant: 'permanent',
+    variant: 'persistent',
     open: false,
   },
 };
