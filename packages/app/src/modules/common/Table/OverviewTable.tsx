@@ -1,6 +1,5 @@
 import {
   Box,
-  BoxProps,
   Table,
   TableBody,
   TableContainer,
@@ -15,20 +14,21 @@ export interface IObjectTableRow extends IBodyCell {
   label: string;
 }
 
-interface IProps<TData> extends BoxProps {
+interface IProps<TData> {
   name?: string;
   data: TData;
   rows: IObjectTableRow[];
+  margin?: string;
 }
 
 const OverviewTable = <TData extends Record<string, any>>({
   name,
   rows,
   data,
-  ...rest
+  margin = '0',
 }: IProps<TData>) => {
   return (
-    <Box {...rest}>
+    <Box margin={margin}>
       {name && (
         <Typography variant="body1" fontWeight={700}>
           {name}

@@ -27,6 +27,10 @@ const meta: Meta<typeof OverviewTable> = {
     data: {
       description: 'The data to display in the table.',
     },
+    margin: {
+      description:
+        'The margin CSS shorthand property sets the margin area on all four sides of an element.',
+    },
   },
 };
 
