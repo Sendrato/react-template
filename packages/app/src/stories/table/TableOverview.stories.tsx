@@ -32,6 +32,14 @@ const meta: Meta<typeof OverviewTable> = {
         'The margin CSS shorthand property sets the margin area on all four sides of an element.',
     },
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The TableOverview component is a versatile and customizable component that provides a clear and organized representation of tabular data within your application. It offers an efficient way to present and summarize sets of data in a structured and user-friendly format.',
+      },
+    },
+  },
 };
 
 type Story = StoryObj<typeof OverviewTable>;
