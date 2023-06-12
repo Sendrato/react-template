@@ -16,7 +16,7 @@ interface IProps {
 
 const AccordionGroup = ({ children, title }: IProps) => {
   return (
-    <StyledPaper $padding="0.5rem 0">
+    <StyledPaper>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon sx={{ height: '2rem', width: '2rem' }} />}
