@@ -15,6 +15,14 @@ const meta: Meta<typeof AccordionGroup> = {
       description: 'The content of Accordion.',
     },
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The AccordionGroup component is the efficient component that simplifies the creation of accordion elements within your application. The AccordionGroup component is particularly useful when you need to display collapsible sections of content, such as FAQs, collapsible panels, or nested information. It manages the state and behavior of the accordion items, providing a seamless user experience.',
+      },
+    },
+  },
 };
 
 type Story = StoryObj<typeof AccordionGroup>;
