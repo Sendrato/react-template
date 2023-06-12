@@ -33,8 +33,8 @@ const AuthGuard = ({ children }: IProps) => {
     dispatch(logout());
     dispatch(
       setError(
-        error || 'The token has expired or been lost. Please log in again.'
-      )
+        error || 'The token has expired or been lost. Please log in again.',
+      ),
     );
     setLoading(false);
   };
@@ -58,11 +58,11 @@ const AuthGuard = ({ children }: IProps) => {
   useEffect(() => {
     try {
       const token = JSON.parse(
-        localStorage.getItem('token') || JSON.stringify('')
+        localStorage.getItem('token') || JSON.stringify(''),
       );
 
       const userEmail = JSON.parse(
-        localStorage.getItem('userEmail') || JSON.stringify('')
+        localStorage.getItem('userEmail') || JSON.stringify(''),
       );
 
       dispatch(setToken(token));
