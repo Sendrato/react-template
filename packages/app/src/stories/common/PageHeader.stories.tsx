@@ -56,6 +56,14 @@ const meta: Meta<typeof PageHeader> = {
       description: 'Boolean value indicating whether to display the record.',
     },
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The PageHeader component is a versatile container designed to neatly organize content at the top of the DashboardLayout. It acts as a container for its child components, providing a consistent layout for a typical page header. And passed the withRecord props as true, the PageHeader component becomes a central hub for displaying records related to requests. This ensures that important information is readily visible to users.',
+      },
+    },
+  },
 };
 
 type Story = StoryObj<typeof PageHeader>;
