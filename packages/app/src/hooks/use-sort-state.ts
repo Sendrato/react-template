@@ -24,7 +24,6 @@ const useSortState = <T extends Record<string, any>>(
 
   const handleSort = useCallback(
     (currentSort: string, direction: SetStateAction<'ASC' | 'DESC'>) => {
-      if (sortBy === currentSort && sortDirection === direction) return;
       if (sortBy !== currentSort) {
         setSortItems((data) =>
           [...data].sort((a, b) => sortHelper(a[currentSort], b[currentSort])),
@@ -43,7 +42,7 @@ const useSortState = <T extends Record<string, any>>(
         );
       }
     },
-    [sortBy, setSortItems, sortDirection],
+    [sortBy, setSortItems],
   );
 
   return {

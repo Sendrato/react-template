@@ -1,5 +1,7 @@
 import { Button } from '@mui/material';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
+import { useSelectedRow, useSortState } from 'hooks';
+import { useEffect } from 'react';
 
 import GenericTable from '@modules/common/Table/GenericTable';
 import { ITableDataKeys } from '@modules/common/Table/types';
@@ -102,6 +104,10 @@ const meta: Meta<typeof GenericTable> = {
     disableGap: {
       description: 'Disable the padding in the TableContainer.',
     },
+    noDataMessage: {
+      description:
+        'The message which will be displayed if the component gets an empty data array.',
+    },
   },
   parameters: {
     docs: {
@@ -113,15 +119,34 @@ const meta: Meta<typeof GenericTable> = {
   },
 };
 
-type Story = StoryObj<typeof GenericTable>;
+type Story = StoryFn<typeof GenericTable>;
 
-export const Basic: Story = {
-  args: {
-    data,
-    config,
-    title: 'Table',
-    tooltipComponent: <Button variant="outlined">Add Row</Button>,
-  },
+const Template: Story = () => {
+  const sortConfig = useSortState(data);
+  const { sortItems, sortBy, sortDirection, handleSort } = sortConfig;
+  const seletedConfig = useSelectedRow(sortItems, 'Id');
+
+  useEffect(() => {
+    handleSort(sortBy, sortDirection);
+  }, [sortBy, sortDirection, handleSort]);
+
+  return (
+    <GenericTable
+      {...sortConfig}
+      {...seletedConfig}
+      title="Users"
+      data={sortItems}
+      config={config}
+      tooltipComponent={<Button variant="outlined">Add new</Button>}
+      selectedComponent={
+        <Button variant="contained" color="error" sx={{ mb: '0.5rem' }}>
+          Delete
+        </Button>
+      }
+    />
+  );
 };
+
+export const Default = Template.bind({});
 
 export default meta;

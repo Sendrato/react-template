@@ -14,6 +14,7 @@ import React, {
   useMemo,
 } from 'react';
 
+import { NoDataMessage } from '../NoData';
 import { StyledPaper } from '../styled-mui';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableTooltip from './EnhancedTableTooltip';
@@ -49,6 +50,7 @@ interface BasicTableProps<TData> {
   ) => void;
   readonly?: boolean;
   disableGap?: boolean;
+  noDataMessage?: string;
 }
 
 interface TableWithConfig<TData> extends BasicTableProps<TData> {
@@ -90,6 +92,7 @@ const GenericTable = <TData extends Record<string, any>>({
   handleChangeRows,
   readonly = false,
   disableGap = false,
+  noDataMessage = 'Data isn`t available yet.',
 }: TableProps<TData>) => {
   const hasPagination = handleChangePage && handleChangeRows && totalPage;
 
@@ -130,6 +133,14 @@ const GenericTable = <TData extends Record<string, any>>({
         })
       : content;
   }, [content, hasSelect, selectedKey, onSelect, selected]);
+
+  if (children.length < 1) {
+    return (
+      <StyledPaper $padding={disableGap ? '0' : '1.5rem'}>
+        <NoDataMessage message={noDataMessage} />
+      </StyledPaper>
+    );
+  }
 
   if (readonly) {
     return (
