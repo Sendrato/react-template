@@ -18,6 +18,7 @@ export const DialogTitle = styled(MuiDialogTitle)`
 
 export const DialogContent = styled(MuiDialogContent)<{ $width?: string }>`
   width: ${({ $width }) => $width || '580px'};
+  box-sizing: border-box;
 
   @media (max-width: 900px) {
     width: 100%;
