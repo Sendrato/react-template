@@ -141,7 +141,6 @@ const Template: Story = () => {
       {...paginationConfig}
       {...sortConfig}
       {...seletedConfig}
-      loading
       title="Users"
       data={showData}
       totalPage={data.length}

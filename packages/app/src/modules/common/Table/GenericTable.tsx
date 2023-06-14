@@ -135,10 +135,6 @@ const GenericTable = <TData extends Record<string, any>>({
       : content;
   }, [content, hasSelect, selectedKey, onSelect, selected]);
 
-  if (children.length < 1) {
-    return <StyledPaper $padding={disableGap ? '0' : '1.5rem'}></StyledPaper>;
-  }
-
   if (readonly) {
     return (
       <ReadonlyTable
@@ -160,7 +156,7 @@ const GenericTable = <TData extends Record<string, any>>({
         hasSelect={!!hasSelect}
         selected={selected}
       />
-      {children.length > 1 ? (
+      {children.length > 1 || loading ? (
         <TableContainer
           sx={{ position: 'relative', overflow: loading ? 'hidden' : 'auto' }}
         >
@@ -168,29 +164,31 @@ const GenericTable = <TData extends Record<string, any>>({
           <MuiTable
             sx={{
               opacity: loading ? 0.5 : 1,
-              minHeight: `${rows || 0 * 80}px`,
+              minHeight: '10rem',
             }}
           >
-            {hasSort ? (
-              <EnhancedTableHead
-                labels={headerCells || labels}
-                sortHandler={setSortBy}
-                sortBy={sortBy || ''}
-                sortDirection={sortDirection}
-                setSortDirection={setSortDirection}
-                hasSelect={!!hasSelect}
-                selectAll={selectAll}
-                checked={children?.length === selected?.length}
-                noWrapCell
-              />
-            ) : (
-              <PureTableHead
-                headerCells={headerCells || labels}
-                hasSelect={!!hasSelect}
-                selectAll={selectAll}
-                checked={children?.length === selected?.length}
-              />
-            )}
+            {!loading ? (
+              hasSort ? (
+                <EnhancedTableHead
+                  labels={headerCells || labels}
+                  sortHandler={setSortBy}
+                  sortBy={sortBy || ''}
+                  sortDirection={sortDirection}
+                  setSortDirection={setSortDirection}
+                  hasSelect={!!hasSelect}
+                  selectAll={selectAll}
+                  checked={children?.length === selected?.length}
+                  noWrapCell
+                />
+              ) : (
+                <PureTableHead
+                  headerCells={headerCells || labels}
+                  hasSelect={!!hasSelect}
+                  selectAll={selectAll}
+                  checked={children?.length === selected?.length}
+                />
+              )
+            ) : null}
             <TableBody>{children}</TableBody>
           </MuiTable>
         </TableContainer>
