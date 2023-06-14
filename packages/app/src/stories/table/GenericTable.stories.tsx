@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { Meta, StoryFn } from '@storybook/react';
-import { useSelectedRow, useSortState } from 'hooks';
+import { usePaginationState, useSelectedRow, useSortState } from 'hooks';
 import { useEffect } from 'react';
 
 import GenericTable from '@modules/common/Table/GenericTable';
@@ -124,18 +124,27 @@ type Story = StoryFn<typeof GenericTable>;
 const Template: Story = () => {
   const sortConfig = useSortState(data);
   const { sortItems, sortBy, sortDirection, handleSort } = sortConfig;
+  const paginationConfig = usePaginationState(sortItems);
+  const { page, rows, handlePaginate, showData } = paginationConfig;
   const seletedConfig = useSelectedRow(sortItems, 'Id');
 
   useEffect(() => {
     handleSort(sortBy, sortDirection);
   }, [sortBy, sortDirection, handleSort]);
 
+  useEffect(() => {
+    handlePaginate(page, rows);
+  }, [page, rows, handlePaginate]);
+
   return (
     <GenericTable
+      {...paginationConfig}
       {...sortConfig}
       {...seletedConfig}
+      loading
       title="Users"
-      data={sortItems}
+      data={showData}
+      totalPage={data.length}
       config={config}
       tooltipComponent={<Button variant="outlined">Add new</Button>}
       selectedComponent={
@@ -148,5 +157,9 @@ const Template: Story = () => {
 };
 
 export const Default = Template.bind({});
+
+Default.args = {
+  loading: true,
+};
 
 export default meta;

@@ -5,22 +5,21 @@ interface IProps {
   left?: string;
 }
 
-const LoadingLayout = ({ left }: IProps) => {
+const LoadingLayout = ({}: IProps) => {
   return (
-    <LoaderWrapper $left={left}>
+    <LoaderWrapper>
       <CircularProgress />
     </LoaderWrapper>
   );
 };
 
-const LoaderWrapper = styled.div<{ $left?: string }>`
-  width: 100%;
-  height: 50vh;
+const LoaderWrapper = styled.div`
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  left: ${({ $left }) => ($left ? $left : 0)};
   z-index: 30;
 `;
 

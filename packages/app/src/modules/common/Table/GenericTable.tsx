@@ -6,6 +6,7 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
+import LoadingLayout from 'layouts/LoadingLayout';
 import React, {
   cloneElement,
   Dispatch,
@@ -135,11 +136,7 @@ const GenericTable = <TData extends Record<string, any>>({
   }, [content, hasSelect, selectedKey, onSelect, selected]);
 
   if (children.length < 1) {
-    return (
-      <StyledPaper $padding={disableGap ? '0' : '1.5rem'}>
-        <NoDataMessage message={noDataMessage} />
-      </StyledPaper>
-    );
+    return <StyledPaper $padding={disableGap ? '0' : '1.5rem'}></StyledPaper>;
   }
 
   if (readonly) {
@@ -163,31 +160,43 @@ const GenericTable = <TData extends Record<string, any>>({
         hasSelect={!!hasSelect}
         selected={selected}
       />
-      <TableContainer>
-        <MuiTable sx={{ opacity: loading ? 0.5 : 1, position: 'relative' }}>
-          {hasSort ? (
-            <EnhancedTableHead
-              labels={headerCells || labels}
-              sortHandler={setSortBy}
-              sortBy={sortBy || ''}
-              sortDirection={sortDirection}
-              setSortDirection={setSortDirection}
-              hasSelect={!!hasSelect}
-              selectAll={selectAll}
-              checked={children?.length === selected?.length}
-              noWrapCell
-            />
-          ) : (
-            <PureTableHead
-              headerCells={headerCells || labels}
-              hasSelect={!!hasSelect}
-              selectAll={selectAll}
-              checked={children?.length === selected?.length}
-            />
-          )}
-          <TableBody>{children}</TableBody>
-        </MuiTable>
-      </TableContainer>
+      {children.length > 1 ? (
+        <TableContainer
+          sx={{ position: 'relative', overflow: loading ? 'hidden' : 'auto' }}
+        >
+          {loading && <LoadingLayout />}
+          <MuiTable
+            sx={{
+              opacity: loading ? 0.5 : 1,
+              minHeight: `${rows || 0 * 80}px`,
+            }}
+          >
+            {hasSort ? (
+              <EnhancedTableHead
+                labels={headerCells || labels}
+                sortHandler={setSortBy}
+                sortBy={sortBy || ''}
+                sortDirection={sortDirection}
+                setSortDirection={setSortDirection}
+                hasSelect={!!hasSelect}
+                selectAll={selectAll}
+                checked={children?.length === selected?.length}
+                noWrapCell
+              />
+            ) : (
+              <PureTableHead
+                headerCells={headerCells || labels}
+                hasSelect={!!hasSelect}
+                selectAll={selectAll}
+                checked={children?.length === selected?.length}
+              />
+            )}
+            <TableBody>{children}</TableBody>
+          </MuiTable>
+        </TableContainer>
+      ) : (
+        <NoDataMessage message={noDataMessage} />
+      )}
       {loading || !hasPagination ? null : (
         <TablePagination
           rowsPerPageOptions={[10, 25, 50, 100]}
