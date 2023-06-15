@@ -1,3 +1,4 @@
+export { default as useCopyToClipboard } from './use-copy-to-clipboard';
 export { default as useHistory } from './use-history';
 export { default as useKey } from './use-key';
 export { default as useMedia } from './use-media';

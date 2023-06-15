@@ -1,3 +1,5 @@
+import { Button } from '@mui/material';
+import { useCopyToClipboard } from 'hooks';
 import DashboardLayout from 'layouts/DashboardLayout';
 import { ReactElement, useState } from 'react';
 
@@ -28,6 +30,7 @@ const data = [
 
 const DashboardPage = () => {
   const [search, setSearch] = useState('');
+  const [copied, copy] = useCopyToClipboard('Sellers');
 
   const handleSearchQuery = (v: string) => setSearch(v);
 
@@ -35,6 +38,13 @@ const DashboardPage = () => {
     <>
       <PageHeader>
         <PageTitle variant="h4">Sellers</PageTitle>
+        <Button
+          variant="contained"
+          color={copied ? 'success' : 'primary'}
+          onClick={copy}
+        >
+          {copied ? 'Copied' : 'Copy'}
+        </Button>
       </PageHeader>
 
       <SearchPanel
