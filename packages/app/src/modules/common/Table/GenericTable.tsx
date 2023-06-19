@@ -6,6 +6,7 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
+import { useMedia } from 'hooks';
 import LoadingLayout from 'layouts/LoadingLayout';
 import React, {
   cloneElement,
@@ -16,15 +17,14 @@ import React, {
 } from 'react';
 
 import { NoDataMessage } from '../NoData';
-import { StyledPaper } from '../styled-mui';
+import { ITableBlockProps, TableBlock } from './EnhancedTableBlock';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableTooltip from './EnhancedTableTooltip';
 import { bootstrap } from './helpers';
 import PureTableHead from './PureTableHead';
-import ReadonlyTable from './ReadonlyTable';
 import { IHeaderCell, ITableDataKeys } from './types';
 
-interface BasicTableProps<TData> {
+interface BasicTableProps<TData> extends Omit<ITableBlockProps, 'children'> {
   title?: string;
   loading?: boolean;
   tooltipComponent?: ReactElement;
@@ -91,10 +91,12 @@ const GenericTable = <TData extends Record<string, any>>({
   setSortDirection,
   handleChangePage,
   handleChangeRows,
-  readonly = false,
-  disableGap = false,
+  withContainer = true,
+  gap,
+  sx,
   noDataMessage = 'Data isn`t available yet.',
 }: TableProps<TData>) => {
+  const { isMobile } = useMedia();
   const hasPagination = handleChangePage && handleChangeRows && totalPage;
 
   const hasSort = setSortBy && setSortDirection;
@@ -135,20 +137,12 @@ const GenericTable = <TData extends Record<string, any>>({
       : content;
   }, [content, hasSelect, selectedKey, onSelect, selected]);
 
-  if (readonly) {
-    return (
-      <ReadonlyTable
-        data={data}
-        config={config}
-        bodyRows={bodyRows}
-        headerCells={headerCells}
-        loading={loading}
-      />
-    );
-  }
-
   return (
-    <StyledPaper $padding={disableGap ? '0' : '1.5rem'}>
+    <TableBlock
+      withContainer={withContainer}
+      gap={gap ? gap : isMobile ? '1rem' : '1.5rem'}
+      sx={sx}
+    >
       <EnhancedTableTooltip
         title={title}
         tooltipComponent={tooltipComponent}
@@ -206,7 +200,7 @@ const GenericTable = <TData extends Record<string, any>>({
           onRowsPerPageChange={handleChangeRows}
         />
       )}
-    </StyledPaper>
+    </TableBlock>
   );
 };
 

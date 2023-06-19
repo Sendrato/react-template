@@ -1,12 +1,7 @@
-import {
-  Box,
-  Table,
-  TableBody,
-  TableContainer,
-  Typography,
-} from '@mui/material';
+import { Table, TableBody, TableContainer, Typography } from '@mui/material';
 
 import { LabelCell, MediumCell, TableBorderRow } from '../styled-mui';
+import { ITableBlockProps, TableBlock } from './EnhancedTableBlock';
 import { EnhancedTableCell } from './EnhancedTableCell';
 import { IBodyCell } from './types';
 
@@ -14,21 +9,22 @@ export interface IObjectTableRow extends IBodyCell {
   label: string;
 }
 
-interface IProps<TData> {
+interface IProps<TData> extends Omit<ITableBlockProps, 'children'> {
   name?: string;
   data: TData;
   rows: IObjectTableRow[];
-  margin?: string;
 }
 
 const OverviewTable = <TData extends Record<string, any>>({
   name,
   rows,
   data,
-  margin = '0',
+  withContainer = false,
+  gap = '0',
+  sx,
 }: IProps<TData>) => {
   return (
-    <Box margin={margin}>
+    <TableBlock withContainer={withContainer} sx={sx} gap={gap}>
       {name && (
         <Typography variant="body1" fontWeight={700}>
           {name}
@@ -56,7 +52,7 @@ const OverviewTable = <TData extends Record<string, any>>({
           </TableBody>
         </Table>
       </TableContainer>
-    </Box>
+    </TableBlock>
   );
 };
 
