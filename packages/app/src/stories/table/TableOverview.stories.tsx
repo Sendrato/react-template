@@ -32,7 +32,8 @@ const meta: Meta<typeof OverviewTable> = {
         'The padding CSS shorthand property sets the padding area on all four sides of an element.',
     },
     withContainer: {
-      description: 'Use it if needed wrap table in TablePaper',
+      description:
+        'The indicator of using TablePaper as a container for table;',
     },
     sx: {
       description: 'The CSS styles',
