@@ -42,6 +42,9 @@ const meta: Meta<typeof GenericTable> = {
     },
     loading: {
       description: 'Data loading indicator.',
+      control: {
+        type: 'boolean',
+      },
     },
     tooltipComponent: {
       description:
@@ -97,16 +100,19 @@ const meta: Meta<typeof GenericTable> = {
     setSortDirection: {
       description: 'Function for setting the sort direction.',
     },
-    readonly: {
-      description:
-        'It means that table doesn`t suport sort, pagination and selected row features.',
-    },
-    disableGap: {
-      description: 'Disable the padding in the TableContainer.',
-    },
     noDataMessage: {
       description:
         'The message which will be displayed if the component gets an empty data array.',
+    },
+    gap: {
+      description:
+        'The padding CSS shorthand property sets the padding area on all four sides of an element.',
+    },
+    withContainer: {
+      description: 'Use it if needed wrap table in TablePaper',
+    },
+    sx: {
+      description: 'The CSS styles',
     },
   },
   parameters: {
@@ -121,7 +127,7 @@ const meta: Meta<typeof GenericTable> = {
 
 type Story = StoryFn<typeof GenericTable>;
 
-const Template: Story = () => {
+const Template: Story = (args) => {
   const sortConfig = useSortState(data);
   const { sortItems, sortBy, sortDirection, handleSort } = sortConfig;
   const paginationConfig = usePaginationState(sortItems);
@@ -138,6 +144,7 @@ const Template: Story = () => {
 
   return (
     <GenericTable
+      {...args}
       {...paginationConfig}
       {...sortConfig}
       {...seletedConfig}
@@ -158,7 +165,8 @@ const Template: Story = () => {
 export const Default = Template.bind({});
 
 Default.args = {
-  loading: true,
+  loading: false,
+  withContainer: true,
 };
 
 export default meta;
