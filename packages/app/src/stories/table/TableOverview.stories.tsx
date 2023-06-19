@@ -27,9 +27,15 @@ const meta: Meta<typeof OverviewTable> = {
     data: {
       description: 'The data to display in the table.',
     },
-    margin: {
+    gap: {
       description:
-        'The margin CSS shorthand property sets the margin area on all four sides of an element.',
+        'The padding CSS shorthand property sets the padding area on all four sides of an element.',
+    },
+    withContainer: {
+      description: 'Use it if needed wrap table in TablePaper',
+    },
+    sx: {
+      description: 'The CSS styles',
     },
   },
   parameters: {
@@ -44,10 +50,12 @@ const meta: Meta<typeof OverviewTable> = {
 
 type Story = StoryObj<typeof OverviewTable>;
 
-export const Table: Story = {
+export const WithContainer: Story = {
   args: {
     name: 'User',
     data: data[1],
+    withContainer: true,
+    gap: '1rem 1.5rem',
     rows,
   },
 };
