@@ -23,7 +23,7 @@ const bootstrap = <T extends Record<string, any>>(
 ): ITableComponent => {
   const headerCells = getHeaderCells(config);
 
-  const bodyRows: ReactElement[] = data.map((row, index) => (
+  const bodyRows: ReactElement[] = data?.map((row, index) => (
     <TableBodyRow key={index} value={options?.hasSelectedRow ? row : undefined}>
       {config.map((cell, index) => (
         <TableCell key={index} align={cell.align}>

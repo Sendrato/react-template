@@ -1,7 +1,8 @@
-import { Button } from '@mui/material';
-import { useCopyToClipboard } from 'hooks';
+import { usePagination } from 'hooks';
+import useEntity from 'hooks/use-entity';
 import DashboardLayout from 'layouts/DashboardLayout';
 import { ReactElement, useState } from 'react';
+import { SellerBasic } from 'store/slices/entities/onboarding/types';
 
 import PageHeader from '@modules/common/PageHeader';
 import SearchPanel from '@modules/common/SearchPanel';
@@ -14,23 +15,22 @@ const sellersTableConfig: ITableDataKeys[] = [
   { key: 'Name', type: 'text', label: 'Name' },
   { key: 'Email', type: 'text', label: 'Email' },
   { key: 'Phone', type: 'text', label: 'Phone' },
-];
-
-const data = [
-  { SellerId: 'test.1', Name: 'test.1', Email: 'test.1', Phone: 'test.1' },
-  { SellerId: 'test.2', Name: 'test.2', Email: 'test.2', Phone: 'test.2' },
-  { SellerId: 'test.3', Name: 'test.3', Email: 'test.3', Phone: 'test.3' },
-  { SellerId: 'test.4', Name: 'test.4', Email: 'test.4', Phone: 'test.4' },
-  { SellerId: 'test.5', Name: 'test.5', Email: 'test.5', Phone: 'test.5' },
-  { SellerId: 'test.6', Name: 'test.6', Email: 'test.6', Phone: 'test.6' },
-  { SellerId: 'test.7', Name: 'test.7', Email: 'test.7', Phone: 'test.7' },
-  { SellerId: 'test.8', Name: 'test.8', Email: 'test.8', Phone: 'test.8' },
-  { SellerId: 'test.9', Name: 'test.9', Email: 'test.9', Phone: 'test.9' },
+  { key: 'Phone', type: 'text', label: 'Phone' },
 ];
 
 const DashboardPage = () => {
   const [search, setSearch] = useState('');
-  const [copied, copy] = useCopyToClipboard('Sellers');
+  const paginationConfig = usePagination({ initialPage: 0, initialRows: 10 });
+  const { page, rows } = paginationConfig;
+  const [sellers] = useEntity<SellerBasic>(
+    'common/backoffice/onboarding/ListSellers',
+    {
+      page,
+      rows,
+    },
+  );
+
+  console.log({ sellers });
 
   const handleSearchQuery = (v: string) => setSearch(v);
 
@@ -38,13 +38,6 @@ const DashboardPage = () => {
     <>
       <PageHeader>
         <PageTitle variant="h4">Sellers</PageTitle>
-        <Button
-          variant="contained"
-          color={copied ? 'success' : 'primary'}
-          onClick={copy}
-        >
-          {copied ? 'Copied' : 'Copy'}
-        </Button>
       </PageHeader>
 
       <SearchPanel
@@ -54,7 +47,12 @@ const DashboardPage = () => {
         placeholder="Find sellers by name, location or contact information"
       />
 
-      <GenericTable title="Sellers" data={data} config={sellersTableConfig} />
+      <GenericTable
+        title="Sellers"
+        data={sellers?.Seller || []}
+        config={sellersTableConfig}
+        totalPage={sellers?.Total}
+      />
     </>
   );
 };

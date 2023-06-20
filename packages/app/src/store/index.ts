@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import authReducer from './slices/auth/authSlice';
 import designReducer from './slices/design';
-// import entitiesReducer from './slices/entities';
+import entitiesReducer from './slices/entities';
 import entityCallReducer from './slices/entityCall';
 import historyReducer from './slices/historySlice';
 
@@ -10,7 +10,7 @@ export const TEMP_ADMIN_TOKEN = '47dsfj49kgk70flacn10rjcsdo';
 
 export const appReducer = combineReducers({
   auth: authReducer,
-  // entities: entitiesReducer,
+  entities: entitiesReducer,
   design: designReducer,
   entityCall: entityCallReducer,
   history: historyReducer,
