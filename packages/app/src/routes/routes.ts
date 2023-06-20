@@ -11,6 +11,12 @@ export const HOME_ROUTE = {
   title: 'Overview',
 };
 
+export const ONBOARDING_ROUTE = {
+  pathname: '/onboarding',
+  access: ['organiser', 'administrator', 'seller'],
+  title: 'Sellers',
+};
+
 export const AUTH_ROUTES = ['/login', '/reset-password'];
 
 export const routes: IRoute[] = [HOME_ROUTE];
