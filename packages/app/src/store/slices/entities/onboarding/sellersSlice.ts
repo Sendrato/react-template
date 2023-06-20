@@ -11,39 +11,21 @@ import { EntityViolation } from '@services/types/error/EntityViolation';
 
 import { ListSellers, SellerSearch } from './types';
 
-interface IGetSeller {
-  sortBy?: string;
-  rows?: number;
-  sortDirection?: 'ASC' | 'DESC';
-  page: number | string;
-  filter?: string;
-}
-
 const baseEntity = 'onboarding';
 
-export const getSellers = createAsyncThunk<
-  any,
-  IGetSeller,
-  { state: RootState }
->('onboarding/getSellers', async (data, thunkAPI) => {
-  const { sortBy, page, rows, sortDirection, filter } = data;
-
-  return thunkAPI.dispatch(
-    entityCall({
-      method: METHOD.GET,
-      baseEntity,
-      entity: 'ListSellers',
-      params:
-        page !== 'all'
-          ? `Start=${page}&PageSize=${rows ? rows : 5}${
-              sortBy?.length
-                ? `&SortField=${sortBy}:${sortDirection || 'ASC'}`
-                : ''
-            }${filter ? `&FilterFields=${filter}` : ''}`
-          : '',
-    }),
-  );
-});
+export const getSellers = createAsyncThunk<any, string, { state: RootState }>(
+  'onboarding/getSellers',
+  async (params, thunkAPI) => {
+    return thunkAPI.dispatch(
+      entityCall({
+        method: METHOD.GET,
+        baseEntity,
+        entity: 'LisSellers',
+        params,
+      }),
+    );
+  },
+);
 
 interface ISellerInitial {
   data: ListSellers | SellerSearch | null;
@@ -101,6 +83,9 @@ export const sellerSlice = createSlice({
     );
     builder.addCase(entityCall.pending, (state) => {
       state.loading = true;
+    });
+    builder.addCase(entityCall.rejected, (state, action: any) => {
+      state.error = action.payload?.Message || null;
     });
   },
 });

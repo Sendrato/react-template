@@ -1,33 +1,42 @@
+import { AsyncThunkAction } from '@reduxjs/toolkit';
 import { useEffect } from 'react';
+import { Selector } from 'react-redux';
+import { RootState } from 'store';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import {
-  getSellerList,
   getSellers,
+  getSellersStore,
 } from 'store/slices/entities/onboarding/sellersSlice';
 
 interface IEntityConfig {
-  [key: string]: { selector: any; fetcher: any };
+  [key: string]: {
+    selector: Selector<RootState, Record<string, any>>;
+    fetcher: (params: string) => AsyncThunkAction<unknown, unknown, any>;
+  };
 }
 
 const entityConfig: IEntityConfig = {
   ['common/backoffice/onboarding/ListSellers']: {
-    selector: getSellerList,
-    fetcher: (params: any) => getSellers(params),
+    selector: getSellersStore,
+
+    fetcher: (params: string) => getSellers(params),
   },
 };
 
-const useEntity = <T>(entity: string, params: any): any => {
+const useEntity = <EntityResponce>(
+  entity: string,
+  params: string,
+): [EntityResponce, boolean, string | null] => {
   const entityFunctions = entityConfig[entity as keyof IEntityConfig];
   const dispatch = useAppDispatch();
-  const data: T[] = useAppSelector(entityFunctions.selector);
-
-  console.log(entityFunctions);
+  const store = useAppSelector(entityFunctions.selector);
+  console.log(params);
 
   useEffect(() => {
     dispatch(entityFunctions.fetcher(params));
-  }, [entityFunctions, dispatch]);
+  }, [entityFunctions, dispatch, params]);
 
-  return [data];
+  return [store.data, store.loading, store.error];
 };
 
 export default useEntity;
