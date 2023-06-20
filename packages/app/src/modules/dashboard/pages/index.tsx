@@ -43,11 +43,10 @@ const DashboardPage = () => {
       />
 
       <GenericTable
-        {...paginationConfig}
+        paginationConfig={{ ...paginationConfig, totalPage: data?.Total || 0 }}
         title="Sellers"
         data={data?.Seller || []}
         config={sellersTableConfig}
-        totalPage={data?.Total || 0}
         noDataMessage={error || undefined}
         loading={loading}
       />

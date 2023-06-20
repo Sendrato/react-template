@@ -26,7 +26,7 @@ const entityConfig: IEntityConfig = {
 const useEntity = <EntityResponce>(
   entity: string,
   params: string,
-): [EntityResponce, boolean, string | null] => {
+): [EntityResponce | null, boolean, string | null] => {
   const entityFunctions = entityConfig[entity as keyof IEntityConfig];
   const dispatch = useAppDispatch();
   const store = useAppSelector(entityFunctions.selector);

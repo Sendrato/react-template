@@ -24,32 +24,44 @@ import { bootstrap } from './helpers';
 import PureTableHead from './PureTableHead';
 import { IHeaderCell, ITableDataKeys } from './types';
 
+interface IPaginationConfig {
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
+  rows: number;
+  setRows: Dispatch<SetStateAction<number>>;
+  handleChangePage: (
+    _event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
+    newPage: number,
+  ) => void;
+  handleChangeRows: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
+  totalPage: number;
+}
+
+interface ISortConfig {
+  sortBy: string;
+  setSortBy: Dispatch<SetStateAction<string>>;
+  sortDirection: 'ASC' | 'DESC';
+  setSortDirection: Dispatch<SetStateAction<'ASC' | 'DESC'>>;
+}
+
+interface ISelectedConfig<TData> {
+  selectedKey: string;
+  onSelect: (value: TData) => void;
+  selectAll: () => void;
+  selected: TData[];
+}
+
 interface BasicTableProps<TData> extends Omit<ITableBlockProps, 'children'> {
   title?: string;
   loading?: boolean;
   tooltipComponent?: ReactElement;
-  selectedKey?: string;
-  onSelect?: (value: TData) => void;
-  selectAll?: () => void;
-  selected?: TData[];
-  selectedComponent?: ReactElement;
-  page?: number;
-  setPage?: Dispatch<SetStateAction<number>>;
-  rows?: number;
-  setRows?: Dispatch<SetStateAction<number>>;
-  totalPage?: number;
-  sortBy?: string;
-  setSortBy?: Dispatch<SetStateAction<string>>;
-  sortDirection?: 'ASC' | 'DESC';
-  setSortDirection?: Dispatch<SetStateAction<'ASC' | 'DESC'>>;
-  handleChangePage?: (
-    _event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
-    newPage: number,
-  ) => void;
-  handleChangeRows?: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => void;
+  paginationConfig?: IPaginationConfig;
+  sortConfig?: ISortConfig;
+  selectedConfig?: ISelectedConfig<TData>;
   noDataMessage?: string;
+  selectedComponent?: ReactElement;
 }
 
 interface TableWithConfig<TData> extends BasicTableProps<TData> {
@@ -76,66 +88,52 @@ const GenericTable = <TData extends Record<string, any>>({
   tooltipComponent,
   headerCells,
   bodyRows,
-  selectedKey,
-  onSelect,
-  selectAll,
-  selectedComponent,
-  selected,
+  selectedConfig,
   loading = false,
-  page,
-  rows,
-  totalPage,
-  sortBy,
-  sortDirection,
-  setSortBy,
-  setSortDirection,
-  handleChangePage,
-  handleChangeRows,
+  paginationConfig,
+  sortConfig,
   withContainer = true,
+  selectedComponent,
   gap,
   sx,
   noDataMessage = 'Data isn`t available yet.',
 }: TableProps<TData>) => {
   const { isMobile } = useMedia();
-  const hasPagination = handleChangePage && handleChangeRows && totalPage;
-
-  const hasSort = setSortBy && setSortDirection;
-
-  const hasSelect = onSelect && selectedKey && selected;
 
   const { bodyRows: tableRows, headerCells: labels } = useMemo(() => {
     return bootstrap(data || [], config || [], {
-      hasSelectedRow: !!hasSelect,
+      hasSelectedRow: !!selectedConfig,
     });
-  }, [config, data, hasSelect]);
+  }, [config, data, selectedConfig]);
 
   const content = bodyRows ? bodyRows : tableRows;
 
   const children = useMemo(() => {
-    return selectedKey && hasSelect
-      ? content.map((row) => {
-          const rowWithCheckbox = cloneElement(row, {
-            ...row.props,
-            children: [
-              <TableCell key={row.props.children.length + 1} align="left">
-                <Checkbox
-                  checked={
-                    !!selected.filter(
-                      (sel) =>
-                        sel[selectedKey] === row.props.value[selectedKey],
-                    ).length
-                  }
-                  onChange={() => onSelect(row.props.value)}
-                />
-              </TableCell>,
-              ...row.props.children,
-            ],
-          });
+    if (selectedConfig) {
+      const { selected, selectedKey, onSelect } = selectedConfig;
+      return content.map((row) => {
+        const rowWithCheckbox = cloneElement(row, {
+          ...row.props,
+          children: [
+            <TableCell key={row.props.children.length + 1} align="left">
+              <Checkbox
+                checked={
+                  !!selected.filter(
+                    (sel) => sel[selectedKey] === row.props.value[selectedKey],
+                  ).length
+                }
+                onChange={() => onSelect(row.props.value)}
+              />
+            </TableCell>,
+            ...row.props.children,
+          ],
+        });
 
-          return rowWithCheckbox;
-        })
-      : content;
-  }, [content, hasSelect, selectedKey, onSelect, selected]);
+        return rowWithCheckbox;
+      });
+    }
+    return content;
+  }, [content, selectedConfig]);
 
   return (
     <TableBlock
@@ -147,8 +145,8 @@ const GenericTable = <TData extends Record<string, any>>({
         title={title}
         tooltipComponent={tooltipComponent}
         selectedComponent={selectedComponent}
-        hasSelect={!!hasSelect}
-        selected={selected}
+        hasSelect={!!selectedConfig}
+        selected={selectedConfig?.selected}
       />
       {children.length > 1 || loading ? (
         <TableContainer
@@ -161,24 +159,24 @@ const GenericTable = <TData extends Record<string, any>>({
               minHeight: '10rem',
             }}
           >
-            {hasSort ? (
+            {sortConfig ? (
               <EnhancedTableHead
                 labels={headerCells || labels}
-                sortHandler={setSortBy}
-                sortBy={sortBy || ''}
-                sortDirection={sortDirection}
-                setSortDirection={setSortDirection}
-                hasSelect={!!hasSelect}
-                selectAll={selectAll}
-                checked={children?.length === selected?.length}
+                sortHandler={sortConfig.setSortBy}
+                sortBy={sortConfig.sortBy || ''}
+                sortDirection={sortConfig.sortDirection}
+                setSortDirection={sortConfig.setSortDirection}
+                hasSelect={!!selectedConfig}
+                selectAll={selectedConfig?.selectAll}
+                checked={children?.length === selectedConfig?.selected?.length}
                 noWrapCell
               />
             ) : (
               <PureTableHead
                 headerCells={headerCells || labels}
-                hasSelect={!!hasSelect}
-                selectAll={selectAll}
-                checked={children?.length === selected?.length}
+                hasSelect={!!selectedConfig}
+                selectAll={selectedConfig?.selectAll}
+                checked={children?.length === selectedConfig?.selected?.length}
               />
             )}
             <TableBody>{children}</TableBody>
@@ -187,15 +185,15 @@ const GenericTable = <TData extends Record<string, any>>({
       ) : (
         <NoDataMessage message={noDataMessage} />
       )}
-      {loading || !hasPagination ? null : (
+      {loading || !paginationConfig ? null : (
         <TablePagination
           rowsPerPageOptions={[10, 25, 50, 100]}
           component="div"
-          count={totalPage}
-          rowsPerPage={rows || 10}
-          page={page || 0}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRows}
+          count={paginationConfig.totalPage}
+          rowsPerPage={paginationConfig.rows || 10}
+          page={paginationConfig.page || 0}
+          onPageChange={paginationConfig.handleChangePage}
+          onRowsPerPageChange={paginationConfig.handleChangeRows}
         />
       )}
     </TableBlock>

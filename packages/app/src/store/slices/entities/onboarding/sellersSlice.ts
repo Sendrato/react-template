@@ -20,7 +20,7 @@ export const getSellers = createAsyncThunk<any, string, { state: RootState }>(
       entityCall({
         method: METHOD.GET,
         baseEntity,
-        entity: 'LisSellers',
+        entity: 'ListSellers',
         params,
       }),
     );
