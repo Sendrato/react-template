@@ -56,137 +56,131 @@ interface IEntityRequest {
   notificationSuccessType?: NotificationType;
 }
 
-export const entityCall = createAsyncThunk<
-  any,
-  IEntityRequest,
-  { state: RootState }
->('entity/entityCall', async (data, thunkAPI) => {
-  const {
-    auth: { token, tenant, isActiveToken, loading },
-  } = thunkAPI.getState();
+export const entityCall = createAsyncThunk<any, IEntityRequest, { state: RootState }>(
+  'entity/entityCall',
+  async (data, thunkAPI) => {
+    const {
+      auth: { token, tenant, isActiveToken, loading },
+    } = thunkAPI.getState();
 
-  if (!isActiveToken) {
-    return thunkAPI.rejectWithValue(null);
-  }
+    if (!isActiveToken) {
+      return thunkAPI.rejectWithValue(null);
+    }
 
-  const {
-    baseEntity,
-    entity,
-    params,
-    method,
-    data: dto,
-    successMessage,
-    errorMessage,
-    notificationErrorType,
-    notificationSuccessType,
-  } = data;
+    const {
+      baseEntity,
+      entity,
+      params,
+      method,
+      data: dto,
+      successMessage,
+      errorMessage,
+      notificationErrorType,
+      notificationSuccessType,
+    } = data;
 
-  const handleFetch = async ({
-    message,
-    status,
-    type: notificationType,
-  }: {
-    message: string;
-    status: number;
-    type: NotificationType;
-  }): Promise<void> => {
-    const handler = async (message: string, type?: RecordType) => {
-      if (notificationType === 'snackbar') {
-        thunkAPI.dispatch(
-          openAutoCloseSnackBar({
-            message,
-          }),
-        );
+    const handleFetch = async ({
+      message,
+      status,
+      type: notificationType,
+    }: {
+      message: string;
+      status: number;
+      type: NotificationType;
+    }): Promise<void> => {
+      const handler = async (message: string, type?: RecordType) => {
+        if (notificationType === 'snackbar') {
+          thunkAPI.dispatch(
+            openAutoCloseSnackBar({
+              message,
+            }),
+          );
+        }
+
+        if (notificationType === 'record') {
+          thunkAPI.dispatch(
+            openAutoCloseRecord({
+              message,
+              type,
+            }),
+          );
+        }
+      };
+
+      if (status === 401) {
+        if (!loading) {
+          await thunkAPI.dispatch(refreshToken());
+
+          thunkAPI.dispatch(componentDidUpdate(true));
+
+          setTimeout(() => {
+            thunkAPI.dispatch(componentDidUpdate(false));
+          }, 500);
+        }
       }
 
-      if (notificationType === 'record') {
-        thunkAPI.dispatch(
-          openAutoCloseRecord({
-            message,
-            type,
-          }),
-        );
+      if (ERROR.includes(status)) {
+        handler(message, 'error');
       }
+
+      if (SUCCESS.includes(status)) {
+        handler(message, 'success');
+      }
+      document.body.style.cursor = 'auto';
     };
 
-    if (status === 401) {
-      if (!loading) {
-        await thunkAPI.dispatch(refreshToken());
+    try {
+      document.body.style.cursor = 'wait';
 
-        thunkAPI.dispatch(componentDidUpdate(true));
+      const response = await api(
+        `entity/common/backoffice/${baseEntity}/${entity}${params ? `?${params}` : ''}`,
+        {
+          method,
+          data: dto,
+          headers: {
+            ...addAuthHeader(data.token || token?.access_token || '', tenant),
+          },
+        },
+      );
 
-        setTimeout(() => {
-          thunkAPI.dispatch(componentDidUpdate(false));
-        }, 500);
+      if (method !== METHOD.GET) {
+        const message = successMessage || MESSAGE[method];
+
+        const status = response.status;
+
+        const type = notificationSuccessType || 'record';
+
+        handleFetch({ message, status, type });
+      }
+
+      if (method === METHOD.GET) {
+        document.body.style.cursor = 'auto';
+      }
+
+      return response.data;
+    } catch (err: any) {
+      if (err instanceof AxiosError && err.response) {
+        const status = err.response.status;
+        const message =
+          errorMessage || (status === 420 && err.response.data?.Violations)
+            ? err.response.data.Violations[Object.keys(err.response.data.Violations)[0]]
+            : err.response.data.Message || `Error ${status}: ${ERROR_MESSAGE[status]}`;
+
+        const type = notificationErrorType || 'snackbar';
+
+        handleFetch({
+          message,
+          status,
+          type,
+        });
+
+        return thunkAPI.rejectWithValue(err.response.data);
+      } else {
+        return thunkAPI.rejectWithValue(err.response.data);
       }
     }
-
-    if (ERROR.includes(status)) {
-      handler(message, 'error');
-    }
-
-    if (SUCCESS.includes(status)) {
-      handler(message, 'success');
-    }
-    document.body.style.cursor = 'auto';
-  };
-
-  try {
-    document.body.style.cursor = 'wait';
-
-    const response = await api(
-      `entity/common/backoffice/${baseEntity}/${entity}${
-        params ? `?${params}` : ''
-      }`,
-      {
-        method,
-        data: dto,
-        headers: {
-          ...addAuthHeader(data.token || token?.access_token || '', tenant),
-        },
-      },
-    );
-
-    if (method !== METHOD.GET) {
-      const message = successMessage || MESSAGE[method];
-
-      const status = response.status;
-
-      const type = notificationSuccessType || 'record';
-
-      handleFetch({ message, status, type });
-    }
-
-    if (method === METHOD.GET) {
-      document.body.style.cursor = 'auto';
-    }
-
-    return response.data;
-  } catch (err: any) {
-    if (err instanceof AxiosError && err.response) {
-      const status = err.response.status;
-      const message =
-        errorMessage || (status === 420 && err.response.data?.Violations)
-          ? err.response.data.Violations[
-              Object.keys(err.response.data.Violations)[0]
-            ]
-          : err.response.data.Message ||
-            `Error ${status}: ${ERROR_MESSAGE[status]}`;
-
-      const type = notificationErrorType || 'snackbar';
-
-      handleFetch({
-        message,
-        status,
-        type,
-      });
-
-      return thunkAPI.rejectWithValue(err.response.data);
-    } else {
-      return thunkAPI.rejectWithValue(err.response.data);
-    }
-  }
-});
+  },
+);
 
 interface IEntity {
   violation: EntityViolation | null;

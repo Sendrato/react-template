@@ -63,7 +63,7 @@ const OnboardingPage = () => {
 
   return (
     <>
-      <PageHeader>
+      <PageHeader withRecord>
         <PageTitle variant="h4">Onboarding</PageTitle>
         <Button onClick={refetch} variant="contained">
           Refresh

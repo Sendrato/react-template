@@ -3,6 +3,8 @@ export { default as useEntity } from './use-entity';
 export { default as useEntityCall } from './use-entity-call';
 export { default as useEntityMutation } from './use-entity-mutation';
 export { default as useEventListener } from './use-event-listener';
+export { default as useHandleRequestStatus } from './use-handle-request-status';
+export * from './use-handle-request-status';
 export { default as useHistory } from './use-history';
 export { default as useInterval } from './use-interval';
 export { default as useKey } from './use-key';
