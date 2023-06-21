@@ -3,11 +3,7 @@ const path = require('path');
 
 module.exports = {
   parser: '@typescript-eslint/parser',
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
-    'next',
-  ],
+  extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended', 'next'],
   plugins: ['simple-import-sort'],
   parserOptions: {
     ecmaVersion: 2020,
@@ -16,10 +12,7 @@ module.exports = {
     },
   },
   rules: {
-    '@next/next/no-html-link-for-pages': [
-      2,
-      path.join(__dirname, 'packages', 'app'),
-    ],
+    '@next/next/no-html-link-for-pages': [2, path.join(__dirname, 'packages', 'app')],
     '@next/next/no-page-custom-font': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -37,13 +30,7 @@ module.exports = {
             '^(@assets|@commands|@config|@components|@database|@hocs|@jobs|@modules|@services)(/.*|$)',
           ],
           // Parent imports. Put `..` last.
-          [
-            '^\\.\\.(?!/?$)',
-            '^\\.\\./?$',
-            '^\\./(?=.*/)(?!/?$)',
-            '^\\.(?!/?$)',
-            '^\\./?$',
-          ],
+          ['^\\.\\.(?!/?$)', '^\\.\\./?$', '^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
           // Other relative imports. Put same-folder imports and `.` last.
           [],
         ],
@@ -55,6 +42,7 @@ module.exports = {
       {
         singleQuote: true,
         endOfLine: 'auto',
+        printWidth: 100,
       },
     ],
   },
