@@ -1,7 +1,5 @@
 import { Button } from '@mui/material';
-import { useSelectedRow } from 'hooks';
-import useEntityCall from 'hooks/use-entity-call';
-import useEntityMutation from 'hooks/use-entity-mutation';
+import { useEntityCall, useEntityMutation, useSelectedRow } from 'hooks';
 import DashboardLayout from 'layouts/DashboardLayout';
 import { ReactElement, useState } from 'react';
 import { METHOD } from 'store/slices/entityCall';
@@ -14,8 +12,8 @@ import GenericTable from '@modules/common/Table/GenericTable';
 import { ITableDataKeys } from '@modules/common/Table/types';
 
 const mockProduct = {
-  Id: `test.product.5`,
-  Name: `test.name.product.5`,
+  Id: `test.product.6`,
+  Name: `test.name.product.6`,
   SellerId: 'b7f8f1f76ab7',
   Coupons: 10,
 };
@@ -68,7 +66,7 @@ const OnboardingPage = () => {
       <PageHeader>
         <PageTitle variant="h4">Onboarding</PageTitle>
         <Button onClick={refetch} variant="contained">
-          refetch
+          Refresh
         </Button>
       </PageHeader>
 
