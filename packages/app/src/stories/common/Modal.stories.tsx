@@ -2,7 +2,7 @@ import { Button, Grid, TextField } from '@mui/material';
 import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
 
-import Modal from '@modules/common/Modal';
+import Modal from '@components/common/Modal';
 
 const meta: Meta<typeof Modal> = {
   title: 'Common/Modal',

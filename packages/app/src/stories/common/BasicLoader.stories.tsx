@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import BasicLoader from '@modules/common/BasicLoader';
+import BasicLoader from '@components/common/BasicLoader';
 
 const meta: Meta<typeof BasicLoader> = {
   title: 'Common/BasicLoader',

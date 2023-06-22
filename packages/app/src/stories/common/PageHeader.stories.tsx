@@ -4,8 +4,8 @@ import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore';
 import { Meta, StoryObj } from '@storybook/react';
 import { createReduxProvider } from 'stories/utils';
 
-import PageHeader from '@modules/common/PageHeader';
-import { PageTitle } from '@modules/common/styled-mui';
+import PageHeader from '@components/common/PageHeader';
+import { PageTitle } from '@components/styled-mui';
 
 const createModalsStore = (mockState: Record<string, any>): ToolkitStore =>
   configureStore({

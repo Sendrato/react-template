@@ -39,20 +39,13 @@ const DesktopImageView = () => {
       <Image src={loginLogo.src} alt="EventOS" />
 
       <Grid container item lg={9} md={9} justifyContent={'center'}>
-        <Grid
-          item
-          container
-          lg={9}
-          md={11}
-          flexDirection={'column'}
-          height={'fit-content'}
-        >
+        <Grid item container lg={9} md={11} flexDirection={'column'} height={'fit-content'}>
           <Typography variant="h5" color="white" fontWeight={600} mb={'1rem'}>
             Next Generation EventOS
           </Typography>
           <Typography variant="h6" color="white" fontWeight={400}>
-            Digital experiences, expertly crafted for any event that unify
-            commerce, analytics and visitor experience.
+            Digital experiences, expertly crafted for any event that unify commerce, analytics and
+            visitor experience.
           </Typography>
         </Grid>
       </Grid>

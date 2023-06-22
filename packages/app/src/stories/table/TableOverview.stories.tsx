@@ -1,8 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import OverviewTable, {
-  IObjectTableRow,
-} from '@modules/common/Table/OverviewTable';
+import OverviewTable, { IObjectTableRow } from '@components/Table/OverviewTable';
 
 import { data } from './assets/data';
 
@@ -32,8 +30,7 @@ const meta: Meta<typeof OverviewTable> = {
         'The padding CSS shorthand property sets the padding area on all four sides of an element.',
     },
     withContainer: {
-      description:
-        'The indicator of using TablePaper as a container for table;',
+      description: 'The indicator of using TablePaper as a container for table;',
     },
     sx: {
       description: 'The CSS styles',

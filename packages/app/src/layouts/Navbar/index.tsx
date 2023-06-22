@@ -78,11 +78,7 @@ export const Navbar = ({ onDrawerToggle, logout }: INavbarProps) => {
               </Link>
               <Grid container width="auto" alignItems="center" columnGap="1rem">
                 <NavbarUserDropdown logout={logout} />
-                <IconButton
-                  color="inherit"
-                  aria-label="Open drawer"
-                  onClick={onDrawerToggle}
-                >
+                <IconButton color="inherit" aria-label="Open drawer" onClick={onDrawerToggle}>
                   <MenuIcon />
                 </IconButton>
               </Grid>

@@ -44,11 +44,7 @@ const SidebarNav = ({ items }: SidebarNavProps) => {
         <Items>
           {items &&
             items.map((item) => (
-              <SidebarNavSection
-                component="div"
-                key={item.title}
-                pages={item.pages}
-              />
+              <SidebarNavSection component="div" key={item.title} pages={item.pages} />
             ))}
         </Items>
       </List>

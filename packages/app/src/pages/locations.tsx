@@ -1,3 +1,3 @@
-import LocationPage from '@modules/locations';
+import LocationPage from '@modules/common/locations';
 
 export default LocationPage;

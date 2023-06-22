@@ -1,7 +1,7 @@
 import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
 
-import DatePicker from '@modules/common/DatePicker';
+import DatePicker from '@components/common/DatePicker';
 
 const meta: Meta<typeof DatePicker> = {
   title: 'Common/DatePicker',
@@ -9,12 +9,10 @@ const meta: Meta<typeof DatePicker> = {
   tags: ['autodocs'],
   argTypes: {
     minDate: {
-      description:
-        'The object with value, label, and error for input with min date.',
+      description: 'The object with value, label, and error for input with min date.',
     },
     maxDate: {
-      description:
-        'The object with value, label, and error for input with max date.',
+      description: 'The object with value, label, and error for input with max date.',
     },
     handleChangeMaxDate: {
       description: 'Function for change max date',

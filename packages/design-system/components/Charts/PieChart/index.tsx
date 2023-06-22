@@ -5,11 +5,7 @@ import { ThemeProps } from '../../../theme/muiTheme';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false }) as any;
 
-const PieChart = ({
-  theme,
-  labels,
-  data,
-}: { labels?: string[]; data: number[] } & ThemeProps) => {
+const PieChart = ({ theme, labels, data }: { labels?: string[]; data: number[] } & ThemeProps) => {
   const options = {
     labels,
     colors: [

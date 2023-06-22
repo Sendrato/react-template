@@ -1,8 +1,5 @@
 /* eslint-disable react/display-name */
-import {
-  StyledEngineProvider,
-  ThemeProvider as MuiThemeProvider,
-} from '@mui/material/styles';
+import { StyledEngineProvider, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore';
 import { Provider } from 'react-redux';
 import { store } from 'store';

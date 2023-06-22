@@ -5,11 +5,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { getAuthStore, logout, setError } from 'store/slices/auth/authSlice';
 import { getUserRole } from 'store/slices/auth/authSlice';
-import {
-  refreshToken,
-  setToken,
-  setUserEmail,
-} from 'store/slices/auth/authSlice';
+import { refreshToken, setToken, setUserEmail } from 'store/slices/auth/authSlice';
 
 import { PageLoader } from '@sendrato/design-system/components/PageLoader';
 
@@ -31,11 +27,7 @@ const AuthGuard = ({ children }: IProps) => {
   const handleError = () => {
     router.push('/login');
     dispatch(logout());
-    dispatch(
-      setError(
-        error || 'The token has expired or been lost. Please log in again.',
-      ),
-    );
+    dispatch(setError(error || 'The token has expired or been lost. Please log in again.'));
     setLoading(false);
   };
 
@@ -57,13 +49,9 @@ const AuthGuard = ({ children }: IProps) => {
 
   useEffect(() => {
     try {
-      const token = JSON.parse(
-        localStorage.getItem('token') || JSON.stringify(''),
-      );
+      const token = JSON.parse(localStorage.getItem('token') || JSON.stringify(''));
 
-      const userEmail = JSON.parse(
-        localStorage.getItem('userEmail') || JSON.stringify(''),
-      );
+      const userEmail = JSON.parse(localStorage.getItem('userEmail') || JSON.stringify(''));
 
       dispatch(setToken(token));
       dispatch(setUserEmail(userEmail));

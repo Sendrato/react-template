@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import {
-  getAuthStore,
-  refreshToken,
-  setUpdateSession,
-} from 'store/slices/auth/authSlice';
+import { getAuthStore, refreshToken, setUpdateSession } from 'store/slices/auth/authSlice';
 
 const useUpdateSession = () => {
   const { updateSession, token } = useAppSelector(getAuthStore);

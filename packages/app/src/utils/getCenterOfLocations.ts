@@ -1,6 +1,4 @@
-export const getCenterOfLocations = (
-  locations: number[][],
-): [number, number] => {
+export const getCenterOfLocations = (locations: number[][]): [number, number] => {
   let latXTotal = 0;
   let latYTotal = 0;
   let lonDegreesTotal = 0;

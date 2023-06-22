@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import Tip from '@modules/common/Tip';
+import Tip from '@components/common/Tip';
 
 const meta: Meta<typeof Tip> = {
   title: 'Common/Tip',

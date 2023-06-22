@@ -6,19 +6,14 @@ import useSort from './use-sort';
 interface IResponce<T> {
   sortItems: T[];
   setSortItems: Dispatch<SetStateAction<T[]>>;
-  handleSort: (
-    sortBy: string,
-    direction: SetStateAction<'ASC' | 'DESC'>,
-  ) => void;
+  handleSort: (sortBy: string, direction: SetStateAction<'ASC' | 'DESC'>) => void;
   sortDirection: 'ASC' | 'DESC';
   setSortDirection: Dispatch<SetStateAction<'ASC' | 'DESC'>>;
   sortBy: string;
   setSortBy: Dispatch<SetStateAction<string>>;
 }
 
-const useSortState = <T extends Record<string, any>>(
-  initialState: T[],
-): IResponce<T> => {
+const useSortState = <T extends Record<string, any>>(initialState: T[]): IResponce<T> => {
   const [sortItems, setSortItems] = useState<T[]>(initialState);
   const { sortBy, sortDirection, setSortBy, setSortDirection } = useSort();
 

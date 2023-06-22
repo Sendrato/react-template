@@ -1,14 +1,7 @@
-import {
-  createAsyncThunk,
-  createSelector,
-  createSlice,
-} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState } from 'store';
 
-export const openAutoCloseSnackBar = createAsyncThunk<
-  void,
-  { message: string; timeout?: number }
->(
+export const openAutoCloseSnackBar = createAsyncThunk<void, { message: string; timeout?: number }>(
   'snacbar/openAutoCloseSnackBar',
   async ({ message, timeout = 1500 }, thunkAPI) => {
     thunkAPI.dispatch(openSnackbar(message));

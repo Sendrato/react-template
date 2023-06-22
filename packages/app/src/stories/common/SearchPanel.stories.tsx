@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import SearchPanel from '@modules/common/SearchPanel';
+import SearchPanel from '@components/common/SearchPanel';
 
 const meta: Meta<typeof SearchPanel> = {
   title: 'Common/SearchPanel',

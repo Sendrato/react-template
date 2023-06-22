@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { base64 } from 'stories/table/assets/data';
 
-import FileDropzone from '@modules/common/FileDropzone';
+import FileDropzone from '@components/common/FileDropzone';
 
 const meta: Meta<typeof FileDropzone> = {
   title: 'Common/FileDropzone',
@@ -15,8 +15,7 @@ const meta: Meta<typeof FileDropzone> = {
       description: 'The uploaded file.',
     },
     setBase64: {
-      description:
-        'SetState action for store file in React state as base64 string.',
+      description: 'SetState action for store file in React state as base64 string.',
     },
     base64: {
       description: 'The uploaded file in the base64 format.',

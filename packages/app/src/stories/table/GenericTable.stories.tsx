@@ -3,8 +3,8 @@ import { Meta, StoryFn } from '@storybook/react';
 import { usePaginationState, useSelectedRow, useSortState } from 'hooks';
 import { useEffect } from 'react';
 
-import GenericTable from '@modules/common/Table/GenericTable';
-import { ITableDataKeys } from '@modules/common/Table/types';
+import GenericTable from '@components/Table/GenericTable';
+import { ITableDataKeys } from '@components/Table/types';
 
 import { data } from './assets/data';
 
@@ -47,70 +47,21 @@ const meta: Meta<typeof GenericTable> = {
       },
     },
     tooltipComponent: {
-      description:
-        'The tooltipComponent is a React component in top right corner.',
-    },
-    selectedKey: {
-      description:
-        'The selectedKey is property for create table with selectedRow.',
-    },
-    onSelect: {
-      description: 'Function for select one row by selectedKey.',
-    },
-    selectAll: {
-      description: 'Function for select all rows.',
-    },
-    selected: {
-      description: 'The selected property is array of selected rows.',
+      description: 'The tooltipComponent is a React component in top right corner.',
     },
     selectedComponent: {
       description:
         'The selectedComponent is a React component that will be display when user select some rows.',
     },
-    page: {
-      description: 'The current page number.',
-    },
-    rows: {
-      description: 'The number of rows per page.',
-    },
-    handleChangePage: {
-      description: 'Function for change page.',
-    },
-    handleChangeRows: {
-      description: 'Function for change rows per page.',
-    },
-    setPage: {
-      description: 'Function for set page.',
-    },
-    setRows: {
-      description: 'Function for change page.',
-    },
-    totalPage: {
-      description: 'The total number of pages.',
-    },
-    sortBy: {
-      description: 'The column to sort by.',
-    },
-    setSortBy: {
-      description: 'Function for setting the sort column.',
-    },
-    sortDirection: {
-      description: 'The sort direction ("asc" or "desc").',
-    },
-    setSortDirection: {
-      description: 'Function for setting the sort direction.',
-    },
     noDataMessage: {
-      description:
-        'The message which will be displayed if the component gets an empty data array.',
+      description: 'The message which will be displayed if the component gets an empty data array.',
     },
     gap: {
       description:
         'The padding CSS shorthand property sets the padding area on all four sides of an element.',
     },
     withContainer: {
-      description:
-        'The indicator of using TablePaper as a container for table;',
+      description: 'The indicator of using TablePaper as a container for table;',
     },
     sx: {
       description: 'The CSS styles',
@@ -146,12 +97,11 @@ const Template: Story = (args) => {
   return (
     <GenericTable
       {...args}
-      {...paginationConfig}
-      {...sortConfig}
-      {...seletedConfig}
+      paginationConfig={{ ...paginationConfig, totalPage: data.length }}
+      sortConfig={sortConfig}
+      selectedConfig={seletedConfig}
       title="Users"
       data={showData}
-      totalPage={data.length}
       config={config}
       tooltipComponent={<Button variant="outlined">Add new</Button>}
       selectedComponent={

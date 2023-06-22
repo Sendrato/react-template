@@ -1,9 +1,4 @@
-import {
-  createAsyncThunk,
-  createSelector,
-  createSlice,
-  PayloadAction,
-} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'store';
 import { entityCall, METHOD } from 'store/slices/entityCall';
 
@@ -73,10 +68,7 @@ export const sellerSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(
       getSellers.fulfilled,
-      (
-        state,
-        action: PayloadAction<PayloadAction<ListSellers | SellerSearch | null>>,
-      ) => {
+      (state, action: PayloadAction<PayloadAction<ListSellers | SellerSearch | null>>) => {
         state.data = action.payload.payload;
         state.loading = false;
       },

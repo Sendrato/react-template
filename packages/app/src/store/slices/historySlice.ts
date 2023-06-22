@@ -20,8 +20,7 @@ export const historySlice = createSlice({
   reducers: {
     updateHistory(state, action) {
       if (
-        (state.history[0] &&
-          action.payload.pathname !== state.history[0].pathname) ||
+        (state.history[0] && action.payload.pathname !== state.history[0].pathname) ||
         !state.history[0]
       ) {
         const data = [action.payload, ...state.history].slice(0, 3);

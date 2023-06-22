@@ -2,10 +2,7 @@ import { useEffect, useState } from 'react';
 
 type UseLockedBodyOutput = [boolean, (locked: boolean) => void];
 
-const useLockedBody = (
-  initialLocked = false,
-  rootId: string,
-): UseLockedBodyOutput => {
+const useLockedBody = (initialLocked = false, rootId: string): UseLockedBodyOutput => {
   const [locked, setLocked] = useState(initialLocked);
 
   useEffect(() => {

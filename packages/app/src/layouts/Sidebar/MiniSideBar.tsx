@@ -58,8 +58,7 @@ const MiniSideBar = ({ handleDrawerToggle, items }: IProps) => {
             )}
             {section.pages.map(({ icon: Icon, access }, index) => {
               if (
-                (userRole?.AccountType &&
-                  access.includes(userRole.AccountType)) ||
+                (userRole?.AccountType && access.includes(userRole.AccountType)) ||
                 userRole?.IsSuperuser
               ) {
                 return Icon ? <Icon key={index} /> : null;

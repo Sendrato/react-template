@@ -25,17 +25,14 @@ const RoleGuard = ({ children }: IProps) => {
   const { userRole } = useAppSelector(getAuthStore);
   const router = useRouter();
 
-  const currentRoute = routes.find(
-    (route) => route.pathname === router.pathname,
-  );
+  const currentRoute = routes.find((route) => route.pathname === router.pathname);
 
   const isAuthPath: boolean = AUTH_ROUTES.includes(router.asPath);
 
   useEffect(() => {
     if (userRole) {
       const hasAccess =
-        userRole?.IsSuperuser ||
-        currentRoute?.access.includes(userRole?.AccountType || '');
+        userRole?.IsSuperuser || currentRoute?.access.includes(userRole?.AccountType || '');
 
       setAccess(hasAccess ? Access.ALLOW : Access.FORBIDDEN);
     }

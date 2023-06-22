@@ -1,10 +1,4 @@
-const Logo = ({
-  width = '800',
-  height = '300',
-}: {
-  width?: string;
-  height?: string;
-}) => (
+const Logo = ({ width = '800', height = '300' }: { width?: string; height?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     version="1.1"

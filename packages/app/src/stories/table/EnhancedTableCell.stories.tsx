@@ -1,8 +1,8 @@
 import { Paper, Typography } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/react';
 
-import Base64 from '@modules/common/Base64';
-import { EnhancedTableCell } from '@modules/common/Table/EnhancedTableCell';
+import Base64 from '@components/common/Base64';
+import { EnhancedTableCell } from '@components/Table/EnhancedTableCell';
 
 import { base64 } from './assets/data';
 
@@ -19,16 +19,14 @@ const meta: Meta<typeof EnhancedTableCell> = {
       description: 'The value passed in EnhancedTableCell.',
     },
     baseHref: {
-      description:
-        'The base href of link, full href will be created as baseHref + value.',
+      description: 'The base href of link, full href will be created as baseHref + value.',
     },
     component: {
       description:
         'The custom component needed display in this cell. Important: custom component must include value property, and value from EnhancedTableCell will pass into a component.',
     },
     onClick: {
-      description:
-        'The function will call by clicking on the EnhancedTableCell.',
+      description: 'The function will call by clicking on the EnhancedTableCell.',
     },
   },
   parameters: {

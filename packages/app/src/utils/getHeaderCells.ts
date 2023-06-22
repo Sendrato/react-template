@@ -1,4 +1,4 @@
-import { IHeaderCell, ITableDataKeys } from '@modules/common/Table/types';
+import { IHeaderCell, ITableDataKeys } from '@components/Table/types';
 
 export const getHeaderCells = (data: ITableDataKeys[]): IHeaderCell[] => {
   return data.map(({ label, key: id, align }) => ({

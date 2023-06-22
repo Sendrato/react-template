@@ -11,9 +11,7 @@ const useHistory = ({ exclude }: { exclude: string[] }) => {
   const route = routes.find((item) => item.pathname === router.pathname);
 
   useEffect(() => {
-    const history = JSON.parse(
-      localStorage.getItem('historyRoutes') || JSON.stringify(''),
-    );
+    const history = JSON.parse(localStorage.getItem('historyRoutes') || JSON.stringify(''));
 
     if (Array.isArray(history)) {
       dispatch(setHistory(history));

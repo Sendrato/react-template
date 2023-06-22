@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/react';
 
-import AccordionGroup from '@modules/common/AccordionGroup';
+import AccordionGroup from '@components/common/AccordionGroup';
 
 const meta: Meta<typeof AccordionGroup> = {
   title: 'Common/AccordionGroup',
@@ -32,10 +32,9 @@ export const Default: Story = {
     title: 'Details',
     children: (
       <Typography>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt earum
-        ipsum iste neque fuga voluptatibus officia voluptas! Debitis neque
-        voluptate quidem eum, libero dolore est velit dolorem doloremque placeat
-        officia.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt earum ipsum iste neque
+        fuga voluptatibus officia voluptas! Debitis neque voluptate quidem eum, libero dolore est
+        velit dolorem doloremque placeat officia.
       </Typography>
     ),
   },

@@ -77,12 +77,7 @@ const Message = styled(Box)`
   align-items: center;
   padding: 14px 16px;
   margin-bottom: 1rem;
-  background: linear-gradient(
-      0deg,
-      rgba(255, 255, 255, 0.9),
-      rgba(255, 255, 255, 0.9)
-    ),
-    #2e7d32;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #2e7d32;
   border-radius: 6px;
   h5 {
     font-weight: 500;
@@ -105,21 +100,13 @@ const ResetPasswordPage = () => {
             {resetFinished ? (
               <>
                 <Message>
-                  <CheckCircleOutlineIcon
-                    sx={{ marginRight: '14px', fill: '#059669' }}
-                  />
+                  <CheckCircleOutlineIcon sx={{ marginRight: '14px', fill: '#059669' }} />
                   <Typography variant="h5">
                     You will receive an email with reset instructions
                   </Typography>
                 </Message>
                 <Link href="/login">
-                  <Button
-                    type="button"
-                    variant="text"
-                    fullWidth
-                    color="primary"
-                    mt={2}
-                  >
+                  <Button type="button" variant="text" fullWidth color="primary" mt={2}>
                     Back to Login
                   </Button>
                 </Link>

@@ -1,29 +1,20 @@
-import {
-  createAsyncThunk,
-  createSelector,
-  createSlice,
-} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState } from 'store';
 
-import { AlertType } from '@modules/common/styled-mui';
+import { AlertType } from '@components/styled-mui';
 
 type recordType = 'success' | 'error' | 'info';
 
 export const openAutoCloseRecord = createAsyncThunk<
   void,
   { message: string; timeout?: number; type?: recordType }
->(
-  'modal/openAutoCloseRecord',
-  async ({ message, timeout = 3000, type = 'success' }, thunkAPI) => {
-    thunkAPI.dispatch(setAddedRecord({ message, open: true, type: type }));
+>('modal/openAutoCloseRecord', async ({ message, timeout = 3000, type = 'success' }, thunkAPI) => {
+  thunkAPI.dispatch(setAddedRecord({ message, open: true, type: type }));
 
-    setTimeout(() => {
-      thunkAPI.dispatch(
-        setAddedRecord({ message: null, open: false, type: 'success' }),
-      );
-    }, timeout);
-  },
-);
+  setTimeout(() => {
+    thunkAPI.dispatch(setAddedRecord({ message: null, open: false, type: 'success' }));
+  }, timeout);
+});
 
 type InitialStateType = {
   openCreateSeller: boolean;
@@ -86,7 +77,6 @@ export const modalsSlice = createSlice({
   },
 });
 
-export const { setOpenCreateSeller, setAddedRecord, setSellerDetailsInfo } =
-  modalsSlice.actions;
+export const { setOpenCreateSeller, setAddedRecord, setSellerDetailsInfo } = modalsSlice.actions;
 
 export default modalsSlice.reducer;

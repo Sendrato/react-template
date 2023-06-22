@@ -1,10 +1,4 @@
-const MobileLogo = ({
-  width = '116',
-  height = '24',
-}: {
-  width?: string;
-  height?: string;
-}) => (
+const MobileLogo = ({ width = '116', height = '24' }: { width?: string; height?: string }) => (
   <svg
     width={width}
     height={height}

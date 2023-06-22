@@ -1,12 +1,7 @@
 import styled from '@emotion/styled';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import {
-  Collapse,
-  ListItemButton,
-  ListItemProps,
-  ListItemText,
-} from '@mui/material';
+import { Collapse, ListItemButton, ListItemProps, ListItemText } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -20,14 +15,12 @@ interface ItemProps {
 }
 
 const Item = styled(ListItemButton)<ItemProps>`
-  padding-top: ${(props) =>
-    (props as any).theme.spacing(props.depth && props.depth > 0 ? 1 : 2)};
+  padding-top: ${(props) => (props as any).theme.spacing(props.depth && props.depth > 0 ? 1 : 2)};
   padding-bottom: ${(props) =>
     (props as any).theme.spacing(props.depth && props.depth > 0 ? 1 : 2)};
   padding-left: ${(props) =>
     (props as any).theme.spacing(props.depth && props.depth > 0 ? 5.5 : 3)};
-  padding-right: ${(props) =>
-    (props as any).theme.spacing(props.depth && props.depth > 0 ? 1 : 2)};
+  padding-right: ${(props) => (props as any).theme.spacing(props.depth && props.depth > 0 ? 1 : 2)};
   color: #fff;
   svg {
     color: #fff;
@@ -95,11 +88,7 @@ const SidebarNavListItem = ({
         <Item depth={depth} onClick={handleToggle}>
           {Icon && <Icon />}
           <Title depth={depth}>{title}</Title>
-          {open ? (
-            <KeyboardArrowUpOutlinedIcon />
-          ) : (
-            <KeyboardArrowDownOutlinedIcon />
-          )}
+          {open ? <KeyboardArrowUpOutlinedIcon /> : <KeyboardArrowDownOutlinedIcon />}
         </Item>
         <Collapse in={open}>{children}</Collapse>
       </>
@@ -109,11 +98,7 @@ const SidebarNavListItem = ({
   if (href) {
     return (
       <Link href={href} passHref>
-        <Item
-          depth={depth}
-          className={pathname == href ? 'active' : ''}
-          activeclassname="active"
-        >
+        <Item depth={depth} className={pathname == href ? 'active' : ''} activeclassname="active">
           {Icon && <Icon />}
           <Title depth={depth}>{title}</Title>
         </Item>

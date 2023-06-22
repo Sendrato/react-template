@@ -74,8 +74,7 @@ const WeatherWidget = () => {
       );
   }, [API_KEY]);
 
-  const roundNumber = (num: number | undefined) =>
-    num !== undefined ? Math.round(num) : null;
+  const roundNumber = (num: number | undefined) => (num !== undefined ? Math.round(num) : null);
 
   useEffect(() => {
     fetchWeather();
@@ -102,12 +101,7 @@ const WeatherWidget = () => {
         />
         {roundNumber(weather?.main?.temp)}°C
       </Typography>
-      <Typography
-        variant="body1"
-        display={'flex'}
-        alignItems={'center'}
-        color={'black'}
-      >
+      <Typography variant="body1" display={'flex'} alignItems={'center'} color={'black'}>
         <AirIcon sx={{ color: 'grey', marginRight: '0.5rem' }} />
         {roundNumber(windToKmPerHour(weather?.wind?.speed))}km/hour
       </Typography>

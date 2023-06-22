@@ -10,19 +10,13 @@ interface IResponce<T> {
   setPage: Dispatch<SetStateAction<number>>;
   rows: number;
   setRows: Dispatch<SetStateAction<number>>;
-  handleChangeRows: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => void;
-  handleChangePage: (
-    _event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number,
-  ) => void;
+  handleChangeRows: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  handleChangePage: (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
 }
 
 const usePaginationState = <T>(data: T[]): IResponce<T> => {
   const [showData, setShowData] = useState<T[]>([]);
-  const { page, rows, handleChangePage, handleChangeRows, setPage, setRows } =
-    usePagination({ initialPage: 0, initialRows: 10 });
+  const { page, rows, handleChangePage, handleChangeRows, setPage, setRows } = usePagination();
 
   const handlePaginate = useCallback(
     (page: number, rowsPerPage: number) => {
