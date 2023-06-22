@@ -6,16 +6,14 @@ interface IProps<WSData> {
   websocketURL: string | null;
   entity: string;
   handleWsMessage: (value: WSData) => void;
-  closeAfterUnmount?: boolean;
 }
 
-type Response = [WebSocket | null, () => void];
+type Response = [WebSocket | null];
 
 const useEntityWebsoket = <WSData>({
   websocketURL,
   entity,
   handleWsMessage,
-  closeAfterUnmount = true,
 }: IProps<WSData>): Response => {
   const isBrowser = typeof window !== 'undefined';
   const [websocket, setWebsocket] = useState<null | WebSocket>(null);
@@ -64,11 +62,11 @@ const useEntityWebsoket = <WSData>({
       setWebsocket(ws);
     }
 
-    return closeAfterUnmount ? closeWebsocket : () => null;
+    return closeWebsocket;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isBrowser, websocket, websocketURL, pingInterval, entity]);
 
-  return [websocket, closeWebsocket];
+  return [websocket];
 };
 
 export default useEntityWebsoket;
