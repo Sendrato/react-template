@@ -17,6 +17,12 @@ export const ONBOARDING_ROUTE = {
   title: 'Sellers',
 };
 
+export const LOCATIONS_KIND_ROUTE = {
+  pathname: '/locations',
+  access: ['organiser', 'administrator', 'seller'],
+  title: 'Locations Kind',
+};
+
 export const AUTH_ROUTES = ['/login', '/reset-password'];
 
 export const routes: IRoute[] = [HOME_ROUTE];

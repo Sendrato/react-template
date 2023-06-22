@@ -2,7 +2,7 @@ import { usePagination } from 'hooks';
 import useEntity from 'hooks/use-entity';
 import DashboardLayout from 'layouts/DashboardLayout';
 import { ReactElement, useState } from 'react';
-import { ListSellers } from 'store/slices/entities/onboarding/types';
+import { ListSellers } from '@interfaces/common/backoffice/onboarding';
 
 import PageHeader from '@modules/common/PageHeader';
 import SearchPanel from '@modules/common/SearchPanel';

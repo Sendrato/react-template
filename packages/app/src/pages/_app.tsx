@@ -1,9 +1,8 @@
-import {
-  StyledEngineProvider,
-  ThemeProvider as MuiThemeProvider,
-} from '@mui/material/styles';
+import { StyledEngineProvider, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import Head from 'next/head';
 import { NextSeo } from 'next-seo';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { Provider } from 'react-redux';
 import AuthGuard from 'routes/AuthGuard';
 import RoleGuard from 'routes/RoleGuard';
@@ -12,12 +11,13 @@ import { ThemeProvider } from 'styled-components';
 
 import muiTheme from '@sendrato/design-system/theme/muiTheme';
 import { GlobalStyle, theme } from '@sendrato/design-system/theme/styledTheme';
-
 type AppProps = {
   Component: any;
   pageProps: any;
   store: any;
 };
+
+const queryClient = new QueryClient();
 
 const App = ({ Component, pageProps }: AppProps) => {
   const getLayout = Component.getLayout ?? ((page: React.ReactNode) => page);
@@ -33,16 +33,19 @@ const App = ({ Component, pageProps }: AppProps) => {
         />
       </Head>
       <StyledEngineProvider injectFirst>
-        <Provider store={store}>
-          <MuiThemeProvider theme={muiTheme}>
-            <ThemeProvider theme={theme}>
-              <GlobalStyle />
-              <AuthGuard>
-                <RoleGuard>{getLayout(<Component {...pageProps} />)}</RoleGuard>
-              </AuthGuard>
-            </ThemeProvider>
-          </MuiThemeProvider>
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store}>
+            <MuiThemeProvider theme={muiTheme}>
+              <ThemeProvider theme={theme}>
+                <GlobalStyle />
+                <AuthGuard>
+                  <RoleGuard>{getLayout(<Component {...pageProps} />)}</RoleGuard>
+                </AuthGuard>
+              </ThemeProvider>
+            </MuiThemeProvider>
+          </Provider>
+          <ReactQueryDevtools initialIsOpen={true} />
+        </QueryClientProvider>
       </StyledEngineProvider>
     </>
   );

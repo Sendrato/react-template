@@ -9,7 +9,7 @@ import { entityCall, METHOD } from 'store/slices/entityCall';
 
 import { EntityViolation } from '@services/types/error/EntityViolation';
 
-import { ListSellers, SellerSearch } from './types';
+import { ListSellers, SellerSearch } from '../../../../interfaces/common/backoffice/onboarding';
 
 const baseEntity = 'onboarding';
 

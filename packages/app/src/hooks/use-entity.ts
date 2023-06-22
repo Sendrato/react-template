@@ -3,10 +3,7 @@ import { useEffect } from 'react';
 import { Selector } from 'react-redux';
 import { RootState } from 'store';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import {
-  getSellers,
-  getSellersStore,
-} from 'store/slices/entities/onboarding/sellersSlice';
+import { getSellers, getSellersStore } from 'store/slices/entities/onboarding/sellersSlice';
 
 interface IEntityConfig {
   [key: string]: {

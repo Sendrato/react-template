@@ -1,11 +1,5 @@
 import styled from '@emotion/styled';
-import {
-  Alert,
-  Box,
-  CssBaseline,
-  Paper as MuiPaper,
-  Snackbar,
-} from '@mui/material';
+import { Alert, Box, CssBaseline, Paper as MuiPaper, Snackbar } from '@mui/material';
 import { spacing } from '@mui/system';
 import useMedia from 'hooks/use-media';
 import { Navbar } from 'layouts/Navbar';
@@ -55,9 +49,7 @@ const MainContent = styled(Paper)`
   }
 `;
 
-const DashboardLayout: React.FC<{ children: React.ReactElement }> = ({
-  children,
-}) => {
+const DashboardLayout: React.FC<{ children: React.ReactElement }> = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -118,10 +110,7 @@ const DashboardLayout: React.FC<{ children: React.ReactElement }> = ({
                 items={dashboardItems}
               />
             ) : (
-              <MiniSideBar
-                handleDrawerToggle={handleDrawerToggle}
-                items={dashboardItems}
-              />
+              <MiniSideBar handleDrawerToggle={handleDrawerToggle} items={dashboardItems} />
             )}
           </Box>
         )}
