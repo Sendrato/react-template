@@ -14,8 +14,8 @@ const LoadingLayout = ({}: IProps) => {
 };
 
 const LoaderWrapper = styled.div`
-  width: webkit-fill-available;
-  height: webkit-fill-available;
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
   position: absolute;
   display: flex;
   justify-content: center;

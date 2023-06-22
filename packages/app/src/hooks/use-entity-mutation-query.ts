@@ -4,25 +4,28 @@ import { useAppSelector } from 'store/hooks';
 import { METHOD } from 'store/slices/entityCall';
 import { addAuthHeader, api } from 'utils';
 
-interface IEntityCall {
+interface IEntityMutation {
   entity: string;
   method?: METHOD;
-  params?: string;
 }
 
-const useEntityMutationQuery = ({ entity, method, params }: IEntityCall) => {
+const useEntityMutationQuery = <TBody>({ entity, method }: IEntityMutation) => {
   const { token, tenant } = useAppSelector((store) => store.auth);
 
-  const handleFetch = useCallback(async () => {
-    const response = await api(`entity/${entity}${params ? `?${params}` : ''}`, {
-      method,
-      headers: {
-        ...addAuthHeader(token?.access_token || '', tenant),
-      },
-    });
+  const handleFetch = useCallback(
+    async ({ body, params: query = '' }: { body?: TBody; params?: string }) => {
+      const response = await api(`entity/${entity}${query ? `?${query}` : ''}`, {
+        method,
+        data: body && JSON.stringify(body),
+        headers: {
+          ...addAuthHeader(token?.access_token || '', tenant),
+        },
+      });
 
-    return response.data;
-  }, [entity, method, params, tenant, token]);
+      return response.data;
+    },
+    [entity, method, tenant, token],
+  );
 
   const mutation = useMutation(handleFetch);
 

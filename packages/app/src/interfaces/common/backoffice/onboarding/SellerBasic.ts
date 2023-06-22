@@ -7,7 +7,7 @@ export interface SellerBasic {
   Email: string | null;
   Name: string | null;
   Phone: string | null;
-  SellerId: string | null;
+  SellerId?: string | null;
   _id: string | null;
 }
 
