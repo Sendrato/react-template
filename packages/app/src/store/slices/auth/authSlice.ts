@@ -1,9 +1,4 @@
-import {
-  createAsyncThunk,
-  createSelector,
-  createSlice,
-  PayloadAction,
-} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
 import { RootState } from 'store';
 import { addHeader, api } from 'utils';
@@ -26,13 +21,9 @@ const authorizationCode = async (code: string, tenant: string) => {
     tenant,
   };
 
-  return axios.post(
-    appConfig.apiUrl + 'webstore/token',
-    new URLSearchParams(data),
-    {
-      headers: { ...addHeader() },
-    },
-  );
+  return axios.post(appConfig.apiUrl + 'webstore/token', new URLSearchParams(data), {
+    headers: { ...addHeader() },
+  });
 };
 
 export const getToken = createAsyncThunk(
@@ -43,89 +34,81 @@ export const getToken = createAsyncThunk(
 
       return { ...token.data, tenant };
     } catch (err) {
-      if (err instanceof AxiosError)
-        return thunkAPI.rejectWithValue(err.response);
+      if (err instanceof AxiosError) return thunkAPI.rejectWithValue(err.response);
     }
   },
 );
 
-export const login = createAsyncThunk(
-  'auth/login',
-  async (data: ILoginData, thunkAPI) => {
-    const { username, password, tenant } = data;
-    thunkAPI.dispatch(setTenant(tenant));
-    thunkAPI.dispatch(setUserEmail(username));
+export const login = createAsyncThunk('auth/login', async (data: ILoginData, thunkAPI) => {
+  const { username, password, tenant } = data;
+  thunkAPI.dispatch(setTenant(tenant));
+  thunkAPI.dispatch(setUserEmail(username));
 
-    try {
-      const urlWithCode = await axios.post(
-        `${appConfig.apiUrl}oauth/login?redirect_url=${appConfig.baseUrl}/login&response_type=token&client_id=${appConfig.clientId}&state=ras&tenant=${tenant}`,
-        new URLSearchParams({ username, password }),
-        {
-          headers: {
-            ...addHeader(),
-          },
+  try {
+    const urlWithCode = await axios.post(
+      `${appConfig.apiUrl}oauth/login?redirect_url=${appConfig.baseUrl}/login&response_type=token&client_id=${appConfig.clientId}&state=ras&tenant=${tenant}`,
+      new URLSearchParams({ username, password }),
+      {
+        headers: {
+          ...addHeader(),
         },
-      );
+      },
+    );
 
-      const params = new URLSearchParams(
-        urlWithCode.request.responseURL.split('?')[1],
-      );
+    const params = new URLSearchParams(urlWithCode.request.responseURL.split('?')[1]);
 
-      const code = params.get('code');
-      const error = params.get('error');
+    const code = params.get('code');
+    const error = params.get('error');
 
-      if (code) return thunkAPI.dispatch(getToken({ code, tenant }));
-      else if (error) {
-        return thunkAPI.rejectWithValue({
-          message: 'Invalid username / password combination',
-        });
-      }
-
-      return null;
-    } catch (err) {
-      if (err instanceof AxiosError)
-        return thunkAPI.rejectWithValue(err.response);
+    if (code) return thunkAPI.dispatch(getToken({ code, tenant }));
+    else if (error) {
+      return thunkAPI.rejectWithValue({
+        message: 'Invalid username / password combination',
+      });
     }
-  },
-);
 
-export const refreshToken = createAsyncThunk<
-  any,
-  undefined,
-  { state: RootState }
->('auth/refresh', async (_, thunkAPI) => {
-  const {
-    auth: { token, tenant },
-  } = thunkAPI.getState();
-
-  if (token) {
-    try {
-      const data = {
-        refresh_token: token.refresh_token,
-        client_id: appConfig.clientId,
-        tenant,
-      };
-
-      const res = await axios.post(
-        appConfig.apiUrl + 'webstore/refresh',
-        new URLSearchParams(data),
-        {
-          headers: { ...addHeader() },
-        },
-      );
-
-      return { ...res.data, tenant };
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        thunkAPI.dispatch(logout());
-
-        return thunkAPI.rejectWithValue(err.response);
-      }
-    }
+    return null;
+  } catch (err) {
+    if (err instanceof AxiosError) return thunkAPI.rejectWithValue(err.response);
   }
-
-  return;
 });
+
+export const refreshToken = createAsyncThunk<any, undefined, { state: RootState }>(
+  'auth/refresh',
+  async (_, thunkAPI) => {
+    const {
+      auth: { token, tenant },
+    } = thunkAPI.getState();
+
+    if (token) {
+      try {
+        const data = {
+          refresh_token: token.refresh_token,
+          client_id: appConfig.clientId,
+          tenant,
+        };
+
+        const res = await axios.post(
+          appConfig.apiUrl + 'webstore/refresh',
+          new URLSearchParams(data),
+          {
+            headers: { ...addHeader() },
+          },
+        );
+
+        return { ...res.data, tenant };
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          thunkAPI.dispatch(logout());
+
+          return thunkAPI.rejectWithValue(err.response);
+        }
+      }
+    }
+
+    return;
+  },
+);
 
 export const resetPassword = createAsyncThunk<
   any,
@@ -133,21 +116,18 @@ export const resetPassword = createAsyncThunk<
   { state: RootState }
 >('auth/resetPassword', async ({ email, tenant }, thunkAPI) => {
   try {
-    const response = await api(
-      `entity/common/backoffice/accounts/ForgotPassword`,
-      {
-        method: 'POST',
-        data: {
-          Username: email,
-          ApplicationName: 'backoffice-app',
-        },
-        headers: {
-          ...addHeader(),
-          Authorization: 'clientid backoffice-app',
-          'x-navajo-tenant': tenant,
-        },
+    const response = await api(`entity/common/backoffice/accounts/ForgotPassword`, {
+      method: 'POST',
+      data: {
+        Username: email,
+        ApplicationName: 'backoffice-app',
       },
-    );
+      headers: {
+        ...addHeader(),
+        Authorization: 'clientid backoffice-app',
+        'x-navajo-tenant': tenant,
+      },
+    });
     thunkAPI.dispatch(setResetFinished(true));
     return response.data;
   } catch (err) {
@@ -159,19 +139,18 @@ export const resetPassword = createAsyncThunk<
   return;
 });
 
-export const getUserRole = createAsyncThunk<
-  any,
-  undefined,
-  { state: RootState }
->('onboarding/getUserRole', async (_, thunkAPI) => {
-  return thunkAPI.dispatch(
-    entityCall({
-      method: METHOD.GET,
-      baseEntity: 'accounts',
-      entity: 'UserRoles',
-    }),
-  );
-});
+export const getUserRole = createAsyncThunk<any, undefined, { state: RootState }>(
+  'onboarding/getUserRole',
+  async (_, thunkAPI) => {
+    return thunkAPI.dispatch(
+      entityCall({
+        method: METHOD.GET,
+        baseEntity: 'accounts',
+        entity: 'UserRoles',
+      }),
+    );
+  },
+);
 
 interface AuthData {
   token: IToken | null;
@@ -282,14 +261,11 @@ export const authSlice = createSlice({
         state.isActiveToken = true;
       }
     });
-    builder.addCase(
-      refreshToken.rejected,
-      (state, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.error = action?.payload?.data?.message || '';
-        authSlice.caseReducers.logout(state);
-      },
-    );
+    builder.addCase(refreshToken.rejected, (state, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.error = action?.payload?.data?.message || '';
+      authSlice.caseReducers.logout(state);
+    });
     builder.addCase(login.pending, (state) => {
       state.loading = true;
     });

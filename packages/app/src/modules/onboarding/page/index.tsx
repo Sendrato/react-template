@@ -20,6 +20,20 @@ const mockProduct = {
   Coupons: 10,
 };
 
+interface IChat {
+  FormattedTimestamp: string;
+  Id: number;
+  Message: string;
+  Recipient: string;
+  Sender: string;
+  Timestamp: string;
+}
+
+interface IChatWsMessage {
+  Chat: IChat;
+  _mete_: unknown;
+}
+
 const sellersTableConfig: ITableDataKeys[] = [
   { key: 'Id', type: 'text', label: 'Seller Id' },
   { key: 'Name', type: 'text', label: 'Name' },
@@ -30,6 +44,11 @@ const sellersTableConfig: ITableDataKeys[] = [
 const OnboardingPage = () => {
   const email = useAppSelector(getUserEmail);
   const [search, setSearch] = useState('');
+  const [messages, setMessages] = useState<IChat[]>([]);
+
+  const saveWsMessages = (value: IChatWsMessage) => {
+    setMessages((prev) => [...prev, value.Chat]);
+  };
 
   const { response, isLoading, error, refetch } = useEntityCall<any>({
     entity: 'common/backoffice/onboarding/ListSellerProducts',
@@ -62,9 +81,12 @@ const OnboardingPage = () => {
     await refetch();
   };
 
-  const WSData = useEntityWebsoket(`common/backoffice/chat/Chat?Recipient=${email}`);
+  useEntityWebsoket<IChatWsMessage>({
+    entity: `common/backoffice/chat/Chat?Recipient=${email}`,
+    handleWsMessage: saveWsMessages,
+  });
 
-  console.log(WSData);
+  console.log({ messages });
 
   const handleSearchQuery = (v: string) => setSearch(v);
 
