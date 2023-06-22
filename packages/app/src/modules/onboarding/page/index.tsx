@@ -1,7 +1,9 @@
 import { Button } from '@mui/material';
-import { useEntityCall, useEntityMutation, useSelectedRow } from 'hooks';
+import { useEntityCall, useEntityMutation, useEntityWebsoket, useSelectedRow } from 'hooks';
 import DashboardLayout from 'layouts/DashboardLayout';
 import { ReactElement, useState } from 'react';
+import { useAppSelector } from 'store/hooks';
+import { getUserEmail } from 'store/slices/auth/authSlice';
 import { METHOD } from 'store/slices/entityCall';
 
 import Base64 from '@modules/common/Base64';
@@ -26,6 +28,7 @@ const sellersTableConfig: ITableDataKeys[] = [
 ];
 
 const OnboardingPage = () => {
+  const email = useAppSelector(getUserEmail);
   const [search, setSearch] = useState('');
 
   const { response, isLoading, error, refetch } = useEntityCall<any>({
@@ -58,6 +61,10 @@ const OnboardingPage = () => {
     }
     await refetch();
   };
+
+  const WSData = useEntityWebsoket(`common/backoffice/chat/Chat?Recipient=${email}`);
+
+  console.log(WSData);
 
   const handleSearchQuery = (v: string) => setSearch(v);
 

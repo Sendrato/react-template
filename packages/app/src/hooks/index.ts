@@ -2,6 +2,7 @@ export { default as useCopyToClipboard } from './use-copy-to-clipboard';
 export { default as useEntity } from './use-entity';
 export { default as useEntityCall } from './use-entity-call';
 export { default as useEntityMutation } from './use-entity-mutation';
+export { default as useEntityWebsoket } from './use-entity-websoket';
 export { default as useEventListener } from './use-event-listener';
 export { default as useHandleRequestStatus } from './use-handle-request-status';
 export * from './use-handle-request-status';
