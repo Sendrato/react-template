@@ -3,7 +3,7 @@ import { useEntityCall, useEntityMutation, useEntityWebsoket, useSelectedRow } f
 import DashboardLayout from 'layouts/DashboardLayout';
 import { ReactElement, useState } from 'react';
 import { useAppSelector } from 'store/hooks';
-import { getUserEmail } from 'store/slices/auth/authSlice';
+import { getAuthStore, getUserEmail } from 'store/slices/auth/authSlice';
 import { METHOD } from 'store/slices/entityCall';
 
 import Base64 from '@modules/common/Base64';
@@ -43,12 +43,25 @@ const sellersTableConfig: ITableDataKeys[] = [
 
 const OnboardingPage = () => {
   const email = useAppSelector(getUserEmail);
+  const { tenant, token } = useAppSelector(getAuthStore);
   const [search, setSearch] = useState('');
   const [messages, setMessages] = useState<IChat[]>([]);
+  const websocketURL =
+    token && tenant
+      ? `${process.env.NEXT_PUBLIC_API_WEBSOCKET_URL}websocket?tenant=${tenant}&token=${token?.access_token}`
+      : null;
 
   const saveWsMessages = (value: IChatWsMessage) => {
     setMessages((prev) => [...prev, value.Chat]);
   };
+
+  useEntityWebsoket<IChatWsMessage>({
+    websocketURL,
+    entity: `common/backoffice/chat/Chat?Recipient=${email}`,
+    handleWsMessage: saveWsMessages,
+  });
+
+  console.log(messages);
 
   const { response, isLoading, error, refetch } = useEntityCall<any>({
     entity: 'common/backoffice/onboarding/ListSellerProducts',
@@ -80,13 +93,6 @@ const OnboardingPage = () => {
     }
     await refetch();
   };
-
-  useEntityWebsoket<IChatWsMessage>({
-    entity: `common/backoffice/chat/Chat?Recipient=${email}`,
-    handleWsMessage: saveWsMessages,
-  });
-
-  console.log({ messages });
 
   const handleSearchQuery = (v: string) => setSearch(v);
 

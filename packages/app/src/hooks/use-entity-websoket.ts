@@ -1,25 +1,28 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAppSelector } from 'store/hooks';
-import { getAuthStore, selectAuthToken } from 'store/slices/auth/authSlice';
 
 const PING_INTERVAL = 10 * 1000;
 
 interface IProps<WSData> {
+  websocketURL: string | null;
   entity: string;
   handleWsMessage: (value: WSData) => void;
+  closeAfterUnmount?: boolean;
 }
 
-const useEntityWebsoket = <WSData>({ entity, handleWsMessage }: IProps<WSData>) => {
-  const userToken = useAppSelector(selectAuthToken)?.access_token;
-  const { tenant } = useAppSelector(getAuthStore);
+type Response = [WebSocket | null, () => void];
+
+const useEntityWebsoket = <WSData>({
+  websocketURL,
+  entity,
+  handleWsMessage,
+  closeAfterUnmount = true,
+}: IProps<WSData>): Response => {
   const isBrowser = typeof window !== 'undefined';
-  const websocketURL = process.env.NEXT_PUBLIC_API_WEBSOCKET_URL;
   const [websocket, setWebsocket] = useState<null | WebSocket>(null);
   const [pingInterval, setPingInterval] = useState<NodeJS.Timeout | null>(null);
 
   const closeWebsocket = useCallback((): void => {
     pingInterval && clearInterval(pingInterval);
-    console.log({ status: 'try close', condition: websocket && websocket.readyState === (0 || 1) });
 
     if (websocket && websocket.readyState === (0 || 1)) {
       websocket.send(`UNSUBSCRIBE /${entity}`);
@@ -28,12 +31,11 @@ const useEntityWebsoket = <WSData>({ entity, handleWsMessage }: IProps<WSData>) 
   }, [entity, pingInterval, websocket]);
 
   useEffect(() => {
-    if (websocketURL && isBrowser && !websocket && userToken) {
-      const ws = new WebSocket(`${websocketURL}websocket?tenant=${tenant}&token=${userToken}`);
+    if (websocketURL && isBrowser && !websocket) {
+      const ws = new WebSocket(websocketURL);
 
       ws.addEventListener('open', () => {
         ws.send(`SUBSCRIBE /${entity}`);
-        console.log(`SUBSCRIBE /${entity}`);
       });
 
       ws.addEventListener('message', (event) => {
@@ -62,9 +64,11 @@ const useEntityWebsoket = <WSData>({ entity, handleWsMessage }: IProps<WSData>) 
       setWebsocket(ws);
     }
 
-    return closeWebsocket;
+    return closeAfterUnmount ? closeWebsocket : () => null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isBrowser, websocket, websocketURL, userToken, tenant, pingInterval, entity]);
+  }, [isBrowser, websocket, websocketURL, pingInterval, entity]);
+
+  return [websocket, closeWebsocket];
 };
 
 export default useEntityWebsoket;
