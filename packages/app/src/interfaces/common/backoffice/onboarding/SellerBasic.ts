@@ -11,6 +11,16 @@ export interface SellerBasic {
   _id: string | null;
 }
 
+export interface SellerDTO extends Partial<SellerBasic> {
+  BankAccountBranch: string;
+  BankAccountName: string;
+  BankAccountNumber: string;
+  Email: string;
+  FirstName: string;
+  LastName: string;
+  Zipcode: string;
+}
+
 export interface ListSellers extends IEnhancedApiResponce {
   Seller: SellerBasic[];
 }

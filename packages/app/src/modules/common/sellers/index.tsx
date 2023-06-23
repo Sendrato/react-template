@@ -1,4 +1,4 @@
-import { ListSellers } from '@interfaces/common/backoffice/onboarding';
+import { ListSellers, SellerDTO } from '@interfaces/common/backoffice/onboarding';
 import { Button } from '@mui/material';
 import { useEntityMutation, useEntityQuery, usePagination } from 'hooks';
 import DashboardLayout from 'layouts/DashboardLayout';
@@ -10,20 +10,18 @@ import { PageTitle } from '@components/styled-mui';
 import GenericTable from '@components/Table/GenericTable';
 import { ITableDataKeys } from '@components/Table/types';
 
-const mockSeller = {
+const mockSeller: SellerDTO = {
   Address: '',
   BankAccountBranch: '',
   BankAccountName: '',
   BankAccountNumber: '',
   City: '',
-  Email: 'test.test.dev.4@test.com',
-  FirstName: 'test.test.dev.4',
-  LastName: 'test.test.dev.4',
-  Name: 'test.test.dev.4',
+  Email: 'test.test.dev.5@test.com',
+  FirstName: 'test.test.dev.5',
+  LastName: 'test.test.dev.5',
+  Name: 'test.test.dev.5',
   Phone: '',
   Zipcode: '',
-  moveNext: false,
-  submit: false,
 };
 
 const sellersTableConfig: ITableDataKeys[] = [
@@ -42,12 +40,12 @@ const LocationPage = () => {
     deps: [page * rows, rows],
   });
 
-  const { mutateAsync } = useEntityMutation({
+  const { mutateAsync } = useEntityMutation<unknown, SellerDTO>({
     entity: 'common/backoffice/onboarding/Seller',
     method: METHOD.POST,
   });
 
-  const handleCreateSeller = async (body: unknown) => {
+  const handleCreateSeller = async (body: SellerDTO) => {
     await mutateAsync({ body });
     await refetch();
   };
