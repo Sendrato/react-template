@@ -9,7 +9,7 @@ import useNotifications from './use-notifications';
 interface IEntityMutation<IVariables> {
   entity: string;
   method: METHOD;
-  options: UseMutationOptions<unknown, unknown, IVariables, unknown>;
+  options?: UseMutationOptions<unknown, unknown, IVariables, unknown>;
 }
 
 type EntityMutationVariables<TBody> = { body?: TBody; params?: string };

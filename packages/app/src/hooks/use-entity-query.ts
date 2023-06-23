@@ -11,7 +11,7 @@ interface IEntityCall<IRes> {
   method?: METHOD;
   params?: string;
   deps?: DependencyList;
-  options: UseQueryOptions<IRes>;
+  options?: UseQueryOptions<IRes>;
 }
 
 const useEntityQuery = <IRes>({

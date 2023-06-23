@@ -1,3 +1,3 @@
-import DashboardPage from '@modules/common/dashboard/pages';
+import LocationPage from '@modules/common/locations';
 
-export default DashboardPage;
+export default LocationPage;

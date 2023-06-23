@@ -1,8 +1,6 @@
 import { ListSellers } from '@interfaces/common/backoffice/onboarding';
 import { Button } from '@mui/material';
-import { usePagination } from 'hooks';
-import useEntityMutationQuery from 'hooks/use-entity-mutation-query';
-import useEntityQuery from 'hooks/use-entity-query';
+import { useEntityMutation, useEntityQuery, usePagination } from 'hooks';
 import DashboardLayout from 'layouts/DashboardLayout';
 import { ReactElement } from 'react';
 import { METHOD } from 'store/slices/entityCall';
@@ -47,7 +45,7 @@ const LocationPage = () => {
     deps: [page * rows, rows],
   });
 
-  const { mutateAsync } = useEntityMutationQuery({
+  const { mutateAsync } = useEntityMutation({
     entity: 'common/backoffice/onboarding/Seller',
     method: METHOD.POST,
   });
