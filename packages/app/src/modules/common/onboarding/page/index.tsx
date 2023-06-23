@@ -2,7 +2,7 @@ import { useEntityWebsoket } from 'hooks';
 import DashboardLayout from 'layouts/DashboardLayout';
 import { ReactElement, useState } from 'react';
 import { useAppSelector } from 'store/hooks';
-import { getAuthStore, getUserEmail } from 'store/slices/auth/authSlice';
+import { getUserEmail } from 'store/slices/auth/authSlice';
 
 import PageHeader from '@components/common/PageHeader';
 import { PageTitle } from '@components/styled-mui';
@@ -23,19 +23,13 @@ interface IChatWsMessage {
 
 const OnboardingPage = () => {
   const email = useAppSelector(getUserEmail);
-  const { tenant, token } = useAppSelector(getAuthStore);
   const [messages, setMessages] = useState<IChat[]>([]);
-  const websocketURL =
-    token && tenant
-      ? `${process.env.NEXT_PUBLIC_API_WEBSOCKET_URL}websocket?tenant=${tenant}&token=${token?.access_token}`
-      : null;
 
   const saveWsMessages = (value: IChatWsMessage) => {
     setMessages((prev) => [...prev, value.Chat]);
   };
 
   useEntityWebsoket<IChatWsMessage>({
-    websocketURL,
     entity: `common/backoffice/chat/Chat?Recipient=${email}`,
     handleWsMessage: saveWsMessages,
   });
