@@ -2,7 +2,8 @@ import { AxiosError } from 'axios';
 import { useCallback } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import { refreshToken } from 'store/slices/auth/authSlice';
-import { openAutoCloseSnackBar } from 'store/slices/design/snackBar';
+
+import useNotifications, { NotificationType } from './use-notifications';
 
 export enum MESSAGE {
   get = 'Successfully loaded',
@@ -24,10 +25,9 @@ export const ERROR_MESSAGE: { [key: number]: string } = {
   603: 'Version Not Found - The requested entity version does not exist',
 };
 
-export type RecordType = 'success' | 'info' | 'error';
-
-const useErrorBoundary = () => {
+const useErrorBoundary = (type: NotificationType = 'snackbar') => {
   const dispatch = useAppDispatch();
+  const throwNotifications = useNotifications(type);
 
   const handleError = useCallback(
     (err: unknown) => {
@@ -43,15 +43,15 @@ const useErrorBoundary = () => {
             dispatch(refreshToken());
             break;
           case 420:
-            dispatch(openAutoCloseSnackBar({ message: violations }));
+            throwNotifications({ message: violations });
             break;
           default:
-            dispatch(openAutoCloseSnackBar({ message }));
+            throwNotifications({ message });
             break;
         }
       }
     },
-    [dispatch],
+    [dispatch, throwNotifications],
   );
 
   return handleError;

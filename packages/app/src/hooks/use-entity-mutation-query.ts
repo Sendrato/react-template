@@ -1,33 +1,53 @@
-import { useCallback } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation, UseMutationOptions } from 'react-query';
 import { useAppSelector } from 'store/hooks';
 import { METHOD } from 'store/slices/entityCall';
 import { addAuthHeader, api } from 'utils';
 
-interface IEntityMutation {
+import useErrorBoundary, { MESSAGE } from './use-error-boundary';
+import useNotifications from './use-notifications';
+
+interface IEntityMutation<IVariables> {
   entity: string;
-  method?: METHOD;
+  method: METHOD;
+  options: UseMutationOptions<unknown, unknown, IVariables, unknown>;
 }
 
-const useEntityMutationQuery = <TBody>({ entity, method }: IEntityMutation) => {
+type EntityMutationVariables<TBody> = { body?: TBody; params?: string };
+
+const useEntityMutationQuery = <TBody = any>({
+  entity,
+  method,
+  options,
+}: IEntityMutation<EntityMutationVariables<TBody>>) => {
   const { token, tenant } = useAppSelector((store) => store.auth);
 
-  const handleFetch = useCallback(
-    async ({ body, params: query = '' }: { body?: TBody; params?: string }) => {
-      const response = await api(`entity/${entity}${query ? `?${query}` : ''}`, {
-        method,
-        data: body && JSON.stringify(body),
-        headers: {
-          ...addAuthHeader(token?.access_token || '', tenant),
-        },
-      });
+  const onError = useErrorBoundary();
+  const throwNotifications = useNotifications('record');
 
-      return response.data;
+  const handleFetch = async ({ body, params: query = '' }: EntityMutationVariables<TBody>) => {
+    const response = await api(`entity/${entity}${query ? `?${query}` : ''}`, {
+      method,
+      data: body && JSON.stringify(body),
+      headers: {
+        ...addAuthHeader(token?.access_token || '', tenant),
+      },
+    });
+
+    return response.data;
+  };
+
+  const mutation = useMutation<unknown, unknown, EntityMutationVariables<TBody>>(
+    [entity, method],
+    handleFetch,
+    {
+      onSuccess() {
+        const message = MESSAGE[method];
+        throwNotifications({ type: 'success', message });
+      },
+      onError,
+      ...options,
     },
-    [entity, method, tenant, token],
   );
-
-  const mutation = useMutation(handleFetch);
 
   return mutation;
 };
