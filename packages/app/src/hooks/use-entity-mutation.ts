@@ -45,8 +45,12 @@ const useEntityMutation = <TData = unknown, TBody = unknown>({
     [entity, method],
     handleFetch,
     {
+      onMutate() {
+        document.body.style.cursor = 'wait';
+      },
       onSuccess() {
         dispatch(openAutoCloseRecord({ type: 'success', message: successMessage }));
+        document.body.style.cursor = 'auto';
       },
       onError,
       ...options,

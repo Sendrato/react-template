@@ -43,6 +43,8 @@ const useErrorBoundary = (type: NotificationType = 'snackbar', errorMessage?: st
             ? err.response.data.Violation
             : err.response.data.ViolationCodes || ERROR_MESSAGE[status];
 
+        document.body.style.cursor = 'auto';
+
         switch (status) {
           case 401:
             dispatch(setActiveToken(false));

@@ -41,9 +41,18 @@ const useEntityQuery = <TData = unknown>({
     keepPreviousData: true,
     retry: false,
     onError,
+    onSuccess() {
+      document.body.style.cursor = 'auto';
+    },
     enabled: isActiveToken,
     ...options,
   });
+
+  useEffect(() => {
+    if (response.isFetching) {
+      document.body.style.cursor = 'wait';
+    }
+  }, [response.isFetching]);
 
   useEffect(() => {
     response.refetch();

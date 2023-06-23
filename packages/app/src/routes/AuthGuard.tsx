@@ -33,7 +33,6 @@ const AuthGuard = ({ children }: IProps) => {
 
   const refresh = async () => {
     const token_res = await dispatch(refreshToken());
-    console.log({ token_res });
     if (token_res.payload?.access_token) {
       const role_res = await dispatch(getUserRole());
 

@@ -10,7 +10,6 @@ interface IProps {
 const Popover = ({ children, onClick }: IProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const handlePopoverOpen = (event: MouseEvent<HTMLElement>) => {
-    console.log(event);
     setAnchorEl(event.currentTarget);
 
     onClick && onClick();
