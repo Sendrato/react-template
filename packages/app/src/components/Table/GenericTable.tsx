@@ -172,8 +172,14 @@ const GenericTable = <TData extends Record<string, any>>({
       ) : (
         <NoDataMessage message={noDataMessage} />
       )}
-      {loading || !paginationConfig ? null : (
+      {!children || !paginationConfig ? null : (
         <TablePagination
+          backIconButtonProps={{
+            disabled: loading,
+          }}
+          nextIconButtonProps={{
+            disabled: loading,
+          }}
           rowsPerPageOptions={[10, 25, 50, 100]}
           component="div"
           count={paginationConfig.totalPage}
