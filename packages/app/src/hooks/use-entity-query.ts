@@ -1,21 +1,29 @@
-import { NotificationType } from 'hooks';
 import { DependencyList, useCallback, useEffect } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryOptions } from 'react-query';
 import { useAppSelector } from 'store/hooks';
 import { METHOD } from 'store/slices/entityCall';
 import { addAuthHeader, api } from 'utils';
 
-interface IEntityCall {
+import useErrorBoundary from './use-error-boundary';
+
+interface IEntityCall<IRes> {
   entity: string;
   method?: METHOD;
   params?: string;
   deps?: DependencyList;
-  errorMessage?: string;
-  errorRecordType?: NotificationType;
+  options: UseQueryOptions<IRes>;
 }
 
-const useEntityQuery = <IRes>({ entity, method = METHOD.GET, params, deps = [] }: IEntityCall) => {
+const useEntityQuery = <IRes>({
+  entity,
+  method = METHOD.GET,
+  params,
+  deps = [],
+  options,
+}: IEntityCall<IRes>) => {
   const { token, tenant } = useAppSelector((store) => store.auth);
+
+  const onError = useErrorBoundary();
 
   const handleFetch = useCallback(async () => {
     const response = await api(`entity/${entity}${params ? `?${params}` : ''}`, {
@@ -28,10 +36,12 @@ const useEntityQuery = <IRes>({ entity, method = METHOD.GET, params, deps = [] }
     return response.data;
   }, [entity, method, params, tenant, token]);
 
-  const response = useQuery<IRes>([entity, ...deps], handleFetch, {
+  const response = useQuery<IRes, unknown>([entity, ...deps], handleFetch, {
     refetchOnWindowFocus: false,
     keepPreviousData: true,
     retry: false,
+    onError,
+    ...options,
   });
 
   useEffect(() => {
