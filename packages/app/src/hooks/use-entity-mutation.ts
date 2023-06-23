@@ -1,87 +1,55 @@
-import { AxiosError } from 'axios';
-import { ERROR_MESSAGE, MESSAGE, NotificationType, useHandleRequestStatus } from 'hooks';
-import { useCallback, useState } from 'react';
+import { useMutation, UseMutationOptions } from 'react-query';
 import { useAppSelector } from 'store/hooks';
 import { METHOD } from 'store/slices/entityCall';
 import { addAuthHeader, api } from 'utils';
 
-interface IEntityMutation {
+import useErrorBoundary, { MESSAGE } from './use-error-boundary';
+import useNotifications from './use-notifications';
+
+interface IEntityMutation<IVariables> {
   entity: string;
   method: METHOD;
-  params?: string;
-  successMessage?: string;
-  errorMessage?: string;
-  errorRecordType?: NotificationType;
-  successRecordType?: NotificationType;
+  options: UseMutationOptions<unknown, unknown, IVariables, unknown>;
 }
 
-const useEntityMutation = <IRes>({
+type EntityMutationVariables<TBody> = { body?: TBody; params?: string };
+
+const useEntityMutation = <TBody = any>({
   entity,
   method,
-  params,
-  successMessage,
-  errorMessage,
-  errorRecordType = 'snackbar',
-  successRecordType = 'record',
-}: IEntityMutation) => {
+  options,
+}: IEntityMutation<EntityMutationVariables<TBody>>) => {
   const { token, tenant } = useAppSelector((store) => store.auth);
-  const [response, setResponse] = useState<IRes | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState<null | string>(null);
 
-  const handleRequestStatus = useHandleRequestStatus(errorRecordType, successRecordType);
+  const onError = useErrorBoundary();
+  const throwNotifications = useNotifications('record');
 
-  const mutate = useCallback(
-    async ({ body, params: query = '' }: { body?: any; params?: string }) => {
-      try {
-        setIsLoading(true);
+  const handleFetch = async ({ body, params: query = '' }: EntityMutationVariables<TBody>) => {
+    const response = await api(`entity/${entity}${query ? `?${query}` : ''}`, {
+      method,
+      data: body && JSON.stringify(body),
+      headers: {
+        ...addAuthHeader(token?.access_token || '', tenant),
+      },
+    });
 
-        const queryParams = params ? params : query;
+    return response.data;
+  };
 
-        const response = await api(`entity/${entity}${queryParams}`, {
-          method,
-          data: body,
-          headers: {
-            ...addAuthHeader(token?.access_token || '', tenant),
-          },
-        });
-
-        if (response.data && response.status === (200 || 201)) {
-          setResponse(response.data);
-          setIsSuccess(true);
-          handleRequestStatus(successMessage || MESSAGE[method], response.status);
-        }
-        setIsLoading(false);
-      } catch (err) {
-        if (err instanceof AxiosError && err.response) {
-          const status = err.response.status;
-          const message =
-            errorMessage || (status === 420 && err.response.data?.Violations)
-              ? err.response.data.Violations[Object.keys(err.response.data.Violations)[0]]
-              : err.response.data.Message || `Error ${status}: ${ERROR_MESSAGE[status]}`;
-          setIsLoading(false);
-          setError(message);
-          setIsError(true);
-          handleRequestStatus(message, err.response.status);
-        } else {
-          setIsLoading(false);
-          setIsError(true);
-        }
-      }
+  const mutation = useMutation<unknown, unknown, EntityMutationVariables<TBody>>(
+    [entity, method],
+    handleFetch,
+    {
+      onSuccess() {
+        const message = MESSAGE[method];
+        throwNotifications({ type: 'success', message });
+      },
+      onError,
+      ...options,
     },
-    [entity, method, params, tenant, token, errorMessage, successMessage, handleRequestStatus],
   );
 
-  return {
-    response,
-    isLoading,
-    isError,
-    isSuccess,
-    error,
-    mutate,
-  };
+  return mutation;
 };
 
 export default useEntityMutation;
