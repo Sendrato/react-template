@@ -6,37 +6,37 @@ import { addAuthHeader, api } from 'utils';
 
 import useErrorBoundary from './use-error-boundary';
 
-interface IEntityCall<IRes> {
+interface IEntityQuery<IData> {
   entity: string;
   method?: METHOD;
   params?: string;
   deps?: DependencyList;
-  options?: UseQueryOptions<IRes>;
+  options?: UseQueryOptions<IData, Error>;
 }
 
-const useEntityQuery = <IRes>({
+const useEntityQuery = <TData = unknown>({
   entity,
   method = METHOD.GET,
   params,
   deps = [],
   options,
-}: IEntityCall<IRes>) => {
+}: IEntityQuery<TData>) => {
   const { token, tenant } = useAppSelector((store) => store.auth);
 
   const onError = useErrorBoundary();
 
   const handleFetch = useCallback(async () => {
-    const response = await api(`entity/${entity}${params ? `?${params}` : ''}`, {
+    const { data } = await api(`entity/${entity}${params ? `?${params}` : ''}`, {
       method,
       headers: {
         ...addAuthHeader(token?.access_token || '', tenant),
       },
     });
 
-    return response.data;
+    return data;
   }, [entity, method, params, tenant, token]);
 
-  const response = useQuery<IRes, unknown>([entity, ...deps], handleFetch, {
+  const response = useQuery<TData, Error>([entity, ...deps], handleFetch, {
     refetchOnWindowFocus: false,
     keepPreviousData: true,
     retry: false,

@@ -1,3 +1,3 @@
-import LocationPage from '@modules/common/locations';
+import LocationPage from '@modules/common/sellers';
 
 export default LocationPage;

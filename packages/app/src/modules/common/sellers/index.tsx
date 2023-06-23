@@ -16,10 +16,10 @@ const mockSeller = {
   BankAccountName: '',
   BankAccountNumber: '',
   City: '',
-  Email: 'test.test.dev.2@test.com',
-  FirstName: 'test.test.dev.2',
-  LastName: 'test.test.dev.2',
-  Name: 'test.test.dev.2',
+  Email: 'test.test.dev.4@test.com',
+  FirstName: 'test.test.dev.4',
+  LastName: 'test.test.dev.4',
+  Name: 'test.test.dev.4',
   Phone: '',
   Zipcode: '',
   moveNext: false,
@@ -35,11 +35,8 @@ const sellersTableConfig: ITableDataKeys[] = [
 const LocationPage = () => {
   const paginationConfig = usePagination();
   const { page, rows } = paginationConfig;
-  const {
-    data,
-    isFetching,
-    refetch: fetchListSellers,
-  } = useEntityQuery<ListSellers>({
+
+  const { data, isFetching, refetch } = useEntityQuery<ListSellers>({
     entity: 'common/backoffice/onboarding/ListSellers',
     params: `Start=${page * rows}&PageSize=${rows}`,
     deps: [page * rows, rows],
@@ -52,7 +49,7 @@ const LocationPage = () => {
 
   const handleCreateSeller = async (body: unknown) => {
     await mutateAsync({ body });
-    await fetchListSellers();
+    await refetch();
   };
 
   return (

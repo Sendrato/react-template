@@ -8,13 +8,13 @@ export interface IRoute {
 export const HOME_ROUTE = {
   pathname: '/',
   access: ['organiser', 'administrator', 'seller'],
-  title: 'Overview',
+  title: 'Sellers',
 };
 
 export const ONBOARDING_ROUTE = {
   pathname: '/onboarding',
   access: ['organiser', 'administrator', 'seller'],
-  title: 'Sellers',
+  title: 'Locations',
 };
 
 export const LOCATIONS_KIND_ROUTE = {

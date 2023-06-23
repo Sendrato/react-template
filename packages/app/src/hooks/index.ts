@@ -9,7 +9,6 @@ export { default as useInterval } from './use-interval';
 export { default as useKey } from './use-key';
 export { default as useLockedBody } from './use-locked-body';
 export { default as useMedia } from './use-media';
-export { default as useNotifications } from './use-notifications';
 export { default as usePagination } from './use-pagination';
 export { default as usePaginationState } from './use-pagination-state';
 export { default as useScroll } from './use-scroll';

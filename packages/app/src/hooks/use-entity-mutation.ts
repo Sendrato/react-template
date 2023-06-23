@@ -1,31 +1,36 @@
 import { useMutation, UseMutationOptions } from 'react-query';
-import { useAppSelector } from 'store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { openAutoCloseRecord } from 'store/slices/design/modalsSlice';
 import { METHOD } from 'store/slices/entityCall';
 import { addAuthHeader, api } from 'utils';
 
-import useErrorBoundary, { MESSAGE } from './use-error-boundary';
-import useNotifications from './use-notifications';
+import useErrorBoundary, { MESSAGE, NotificationType } from './use-error-boundary';
 
-interface IEntityMutation<IVariables> {
+interface IEntityMutation<IData, IVariables> {
   entity: string;
   method: METHOD;
-  options?: UseMutationOptions<unknown, unknown, IVariables, unknown>;
+  options?: UseMutationOptions<IData, Error, IVariables>;
+  successMessage?: string;
+  errorMessage?: string;
+  errorType?: NotificationType;
 }
 
 type EntityMutationVariables<TBody> = { body?: TBody; params?: string };
 
-const useEntityMutation = <TBody = any>({
+const useEntityMutation = <TData = unknown, TBody = unknown>({
   entity,
   method,
   options,
-}: IEntityMutation<EntityMutationVariables<TBody>>) => {
+  successMessage = MESSAGE[method],
+  errorMessage,
+  errorType,
+}: IEntityMutation<TData, EntityMutationVariables<TBody>>) => {
   const { token, tenant } = useAppSelector((store) => store.auth);
-
-  const onError = useErrorBoundary();
-  const throwNotifications = useNotifications('record');
+  const dispatch = useAppDispatch();
+  const onError = useErrorBoundary(errorType, errorMessage);
 
   const handleFetch = async ({ body, params: query = '' }: EntityMutationVariables<TBody>) => {
-    const response = await api(`entity/${entity}${query ? `?${query}` : ''}`, {
+    const { data } = await api(`entity/${entity}${query ? `?${query}` : ''}`, {
       method,
       data: body && JSON.stringify(body),
       headers: {
@@ -33,16 +38,15 @@ const useEntityMutation = <TBody = any>({
       },
     });
 
-    return response.data;
+    return data;
   };
 
-  const mutation = useMutation<unknown, unknown, EntityMutationVariables<TBody>>(
+  const mutation = useMutation<TData, Error, EntityMutationVariables<TBody>>(
     [entity, method],
     handleFetch,
     {
       onSuccess() {
-        const message = MESSAGE[method];
-        throwNotifications({ type: 'success', message });
+        dispatch(openAutoCloseRecord({ type: 'success', message: successMessage }));
       },
       onError,
       ...options,
