@@ -1,12 +1,10 @@
+import { ILoginData, IToken, IUserRole } from '@interfaces/auth';
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
 import { RootState } from 'store';
-import { addHeader, api } from 'utils';
+import { addAuthHeader, addHeader, api } from 'utils';
 
 import { appConfig } from '@config';
-
-import { entityCall, METHOD } from '../entityCall';
-import { ILoginData, IToken, IUserRole } from './types';
 
 export interface ILocalStoragePayload extends IToken {
   tenant: string;
@@ -142,13 +140,15 @@ export const resetPassword = createAsyncThunk<
 export const getUserRole = createAsyncThunk<any, undefined, { state: RootState }>(
   'onboarding/getUserRole',
   async (_, thunkAPI) => {
-    return thunkAPI.dispatch(
-      entityCall({
-        method: METHOD.GET,
-        baseEntity: 'accounts',
-        entity: 'UserRoles',
-      }),
-    );
+    const {
+      auth: { token, tenant },
+    } = thunkAPI.getState();
+
+    const { data } = await api.get('entity/common/backoffice/accounts/UserRoles', {
+      headers: addAuthHeader(token?.access_token || '', tenant),
+    });
+
+    return data;
   },
 );
 
@@ -163,7 +163,6 @@ interface AuthData {
   userEmail: null | string;
   updateSession: boolean;
   isActiveToken: boolean;
-  updateComponent: boolean;
 }
 
 const initialState: AuthData = {
@@ -177,7 +176,6 @@ const initialState: AuthData = {
   userEmail: null,
   updateSession: false,
   isActiveToken: false,
-  updateComponent: false,
 };
 
 export const authSlice = createSlice({
@@ -227,8 +225,8 @@ export const authSlice = createSlice({
     setUpdateSession(state, action) {
       state.updateSession = action.payload;
     },
-    componentDidUpdate(state, action: PayloadAction<boolean>) {
-      state.updateComponent = action.payload;
+    setActiveToken(state, action: PayloadAction<boolean>) {
+      state.isActiveToken = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -276,8 +274,8 @@ export const authSlice = createSlice({
       }
     });
     builder.addCase(getUserRole.fulfilled, (state, action) => {
-      state.userRole = action.payload.payload;
-      localStorage.setItem('userRole', JSON.stringify(action.payload.payload));
+      state.userRole = action.payload;
+      localStorage.setItem('userRole', JSON.stringify(action.payload));
     });
   },
 });
@@ -311,7 +309,7 @@ export const {
   setResetFinished,
   setUpdateSession,
   setError,
-  componentDidUpdate,
+  setActiveToken,
 } = authSlice.actions;
 
 export default authSlice.reducer;

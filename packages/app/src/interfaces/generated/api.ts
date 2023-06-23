@@ -1,7 +1,3 @@
-export interface KeyValueString {
-  [k: string]: string;
-}
-
 export interface IEnhancedApiResponce {
   CurrentPage: number | null;
   FilterFields: string | null;
@@ -11,4 +7,10 @@ export interface IEnhancedApiResponce {
   Total: number | null;
   TotalPages: number | null;
   VisibleFields: string | null;
+}
+export enum METHOD {
+  GET = 'get',
+  POST = 'post',
+  DELETE = 'delete',
+  PUT = 'put',
 }

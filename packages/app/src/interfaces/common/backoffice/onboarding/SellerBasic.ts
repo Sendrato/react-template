@@ -1,4 +1,4 @@
-import { IEnhancedApiResponce } from '@services/types/generated/common';
+import { IEnhancedApiResponce } from '@interfaces/generated/api';
 
 export interface SellerBasic {
   Address: string | null;

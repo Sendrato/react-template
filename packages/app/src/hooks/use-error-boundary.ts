@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { AxiosError } from 'axios';
 import { useCallback } from 'react';
 import { useAppDispatch } from 'store/hooks';
-import { refreshToken } from 'store/slices/auth/authSlice';
+import { refreshToken, setActiveToken } from 'store/slices/auth/authSlice';
 import { openAutoCloseRecord } from 'store/slices/design/modalsSlice';
 import { openAutoCloseSnackBar } from 'store/slices/design/snackBar';
 
@@ -37,17 +38,21 @@ const useErrorBoundary = (type: NotificationType = 'snackbar', errorMessage?: st
         const status: number = err.response.status;
         const message = errorMessage || err.response.data.Message || ERROR_MESSAGE[status];
 
-        const violations = errorMessage || err.response.data.Violations || ERROR_MESSAGE[status];
+        const violations =
+          errorMessage || typeof err.response.data.Violations === 'string'
+            ? err.response.data.Violation
+            : err.response.data.ViolationCodes || ERROR_MESSAGE[status];
 
         switch (status) {
           case 401:
+            dispatch(setActiveToken(false));
+
             dispatch(refreshToken());
             break;
           case 420:
             dispatch(throwNotifications({ message: violations, type: 'error' }));
             break;
           default:
-            console.log(status);
             dispatch(throwNotifications({ message, type: 'error' }));
             break;
         }

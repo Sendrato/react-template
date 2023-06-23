@@ -1,9 +1,9 @@
 import { ListSellers, SellerDTO } from '@interfaces/common/backoffice/onboarding';
+import { METHOD } from '@interfaces/generated/api';
 import { Button } from '@mui/material';
 import { useEntityMutation, useEntityQuery, usePagination } from 'hooks';
 import DashboardLayout from 'layouts/DashboardLayout';
 import { ReactElement } from 'react';
-import { METHOD } from 'store/slices/entityCall';
 
 import PageHeader from '@components/common/PageHeader';
 import { PageTitle } from '@components/styled-mui';
@@ -30,7 +30,7 @@ const sellersTableConfig: ITableDataKeys[] = [
   { key: 'Email', type: 'text', label: 'Email' },
 ];
 
-const LocationPage = () => {
+const SellersPage = () => {
   const paginationConfig = usePagination();
   const { page, rows } = paginationConfig;
 
@@ -72,8 +72,8 @@ const LocationPage = () => {
   );
 };
 
-LocationPage.getLayout = function getLayout(page: ReactElement) {
+SellersPage.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
 };
 
-export default LocationPage;
+export default SellersPage;

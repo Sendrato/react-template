@@ -18,7 +18,7 @@ interface IProps {
 const AuthGuard = ({ children }: IProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
-  const { error, updateComponent } = useAppSelector(getAuthStore);
+  const { error } = useAppSelector(getAuthStore);
   const router = useRouter();
 
   useUpdateSession();
@@ -33,11 +33,11 @@ const AuthGuard = ({ children }: IProps) => {
 
   const refresh = async () => {
     const token_res = await dispatch(refreshToken());
-
+    console.log({ token_res });
     if (token_res.payload?.access_token) {
       const role_res = await dispatch(getUserRole());
 
-      if (role_res.payload?.payload?.AccountType) {
+      if (role_res.payload?.AccountType) {
         setLoading(false);
       } else {
         handleError();
@@ -68,7 +68,7 @@ const AuthGuard = ({ children }: IProps) => {
     }
   }, [error]);
 
-  if (loading || updateComponent) {
+  if (loading) {
     return <PageLoader />;
   }
 

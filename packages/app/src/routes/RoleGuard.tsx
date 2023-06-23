@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { UserRole } from '@interfaces/auth';
 import { useRouter } from 'next/router';
 import { ReactElement, useEffect, useState } from 'react';
 import { useAppSelector } from 'store/hooks';
 import { getAuthStore } from 'store/slices/auth/authSlice';
-import { UserRole } from 'store/slices/auth/types';
 
 import { PageLoader } from '@sendrato/design-system/components/PageLoader';
 

@@ -1,7 +1,7 @@
+import { METHOD } from '@interfaces/generated/api';
 import { DependencyList, useCallback, useEffect } from 'react';
 import { useQuery, UseQueryOptions } from 'react-query';
 import { useAppSelector } from 'store/hooks';
-import { METHOD } from 'store/slices/entityCall';
 import { addAuthHeader, api } from 'utils';
 
 import useErrorBoundary from './use-error-boundary';
@@ -21,7 +21,7 @@ const useEntityQuery = <TData = unknown>({
   deps = [],
   options,
 }: IEntityQuery<TData>) => {
-  const { token, tenant } = useAppSelector((store) => store.auth);
+  const { token, tenant, isActiveToken } = useAppSelector((store) => store.auth);
 
   const onError = useErrorBoundary();
 
@@ -41,6 +41,7 @@ const useEntityQuery = <TData = unknown>({
     keepPreviousData: true,
     retry: false,
     onError,
+    enabled: isActiveToken,
     ...options,
   });
 
@@ -48,6 +49,13 @@ const useEntityQuery = <TData = unknown>({
     response.refetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
+
+  useEffect(() => {
+    if (isActiveToken) {
+      response.refetch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isActiveToken]);
 
   return response;
 };

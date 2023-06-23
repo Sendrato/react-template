@@ -1,7 +1,6 @@
+import { TJustifyContent } from '@interfaces/css';
 import { Button, Grid } from '@mui/material';
 import styled from 'styled-components';
-
-import { TJustifyContent } from '@services/types/css';
 
 export const GreyButton = styled(Button)`
   color: #f8fafc;

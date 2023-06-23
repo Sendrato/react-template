@@ -1,7 +1,7 @@
+import { METHOD } from '@interfaces/generated/api';
 import { useMutation, UseMutationOptions } from 'react-query';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { openAutoCloseRecord } from 'store/slices/design/modalsSlice';
-import { METHOD } from 'store/slices/entityCall';
 import { addAuthHeader, api } from 'utils';
 
 import useErrorBoundary, { MESSAGE, NotificationType } from './use-error-boundary';
