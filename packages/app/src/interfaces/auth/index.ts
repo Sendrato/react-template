@@ -21,3 +21,11 @@ export interface IUserRole {
   SellerId: null | string;
   IsSuperuser: boolean;
 }
+
+export interface AuthorizationCode extends Record<string, string> {
+  code: string;
+  redirect_url: string;
+  grant_type: string;
+  client_id: string;
+  tenant: string;
+}

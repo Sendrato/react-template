@@ -35,13 +35,13 @@ const SellersPage = () => {
   const { page, rows } = paginationConfig;
 
   const { data, isFetching, refetch } = useEntityQuery<ListSellers>({
-    entity: 'common/backoffice/onboarding/ListSellers',
+    entity: 'entity/common/backoffice/onboarding/ListSellers',
     params: `Start=${page * rows}&PageSize=${rows}`,
     deps: [page * rows, rows],
   });
 
   const { mutateAsync } = useEntityMutation<unknown, SellerDTO>({
-    entity: 'common/backoffice/onboarding/Seller',
+    entity: 'entity/common/backoffice/onboarding/Seller',
     method: METHOD.POST,
   });
 
