@@ -1,10 +1,11 @@
-import { METHOD } from '@interfaces/generated/api';
+import { METHOD, SUCCESS_MESSAGE } from '@interfaces/common/backoffice/api';
+import { NotificationType } from '@interfaces/UI/alert';
 import { useMutation, UseMutationOptions } from 'react-query';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { openAutoCloseRecord } from 'store/slices/design/modalsSlice';
 import { addAuthHeader, api } from 'utils';
 
-import useErrorBoundary, { MESSAGE, NotificationType } from './use-error-boundary';
+import useErrorBoundary from './use-error-boundary';
 
 interface IEntityMutation<IData, IVariables> {
   entity: string;
@@ -21,7 +22,7 @@ const useEntityMutation = <TData = unknown, TBody = unknown>({
   entity,
   method,
   options,
-  successMessage = MESSAGE[method],
+  successMessage = SUCCESS_MESSAGE[method],
   errorMessage,
   errorType,
 }: IEntityMutation<TData, EntityMutationVariables<TBody>>) => {

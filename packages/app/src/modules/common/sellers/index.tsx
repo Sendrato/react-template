@@ -1,5 +1,5 @@
 import { ListSellers, SellerDTO } from '@interfaces/common/backoffice/onboarding';
-import { METHOD } from '@interfaces/generated/api';
+import { METHOD } from '@interfaces/common/backoffice/api';
 import { Button } from '@mui/material';
 import { useEntityMutation, useEntityQuery, usePagination } from 'hooks';
 import DashboardLayout from 'layouts/DashboardLayout';

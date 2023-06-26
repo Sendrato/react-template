@@ -1,4 +1,4 @@
-import { METHOD } from '@interfaces/generated/api';
+import { METHOD } from '@interfaces/common/backoffice/api';
 import { DependencyList, useCallback, useEffect } from 'react';
 import { useQuery, UseQueryOptions } from 'react-query';
 import { useAppSelector } from 'store/hooks';

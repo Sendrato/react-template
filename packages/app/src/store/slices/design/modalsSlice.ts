@@ -1,9 +1,8 @@
+import { recordType } from '@interfaces/UI/alert';
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState } from 'store';
 
 import { AlertType } from '@components/styled-mui';
-
-type recordType = 'success' | 'error' | 'info';
 
 export const openAutoCloseRecord = createAsyncThunk<
   void,

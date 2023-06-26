@@ -1,4 +1,4 @@
-import { IEnhancedApiResponce } from '@interfaces/generated/api';
+import { IEnhancedApiResponce } from '@interfaces/common/backoffice/api';
 
 export interface SellerBasic {
   Address: string | null;

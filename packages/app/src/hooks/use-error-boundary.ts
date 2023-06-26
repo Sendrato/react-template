@@ -1,32 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { ERROR_MESSAGE } from '@interfaces/common/backoffice/api';
+import { NotificationType } from '@interfaces/UI/alert';
 import { AxiosError } from 'axios';
 import { useCallback } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import { refreshToken, setActiveToken } from 'store/slices/auth/authSlice';
 import { openAutoCloseRecord } from 'store/slices/design/modalsSlice';
 import { openAutoCloseSnackBar } from 'store/slices/design/snackBar';
-
-export type NotificationType = 'snackbar' | 'record';
-
-export enum MESSAGE {
-  get = 'Successfully loaded',
-  post = 'Successfully created',
-  put = 'Successfully updated',
-  delete = 'Successfully deleted',
-}
-
-export const ERROR_MESSAGE: { [key: number]: string } = {
-  400: 'Bad Request - no valid input provided',
-  404: 'The requested entity is not found',
-  405: 'Operation not supported',
-  406: 'Output not acceptable - requested output format is not available',
-  409: 'Conflict - Duplicate entity found on inserts',
-  412: 'Etag error - wrong etag provided on PUT or DELETE operation - resource has changed',
-  420: 'Input validation exception(s)',
-  500: 'Unrecoverable server error',
-  602: 'Missing entity ID - the primary identifier fields of this entity are missing',
-  603: 'Version Not Found - The requested entity version does not exist',
-};
 
 const useErrorBoundary = (type: NotificationType = 'snackbar', errorMessage?: string) => {
   const dispatch = useAppDispatch();
