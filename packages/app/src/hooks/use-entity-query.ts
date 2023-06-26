@@ -22,6 +22,9 @@ const useEntityQuery = <TData = unknown>({
   const { token, tenant, isActiveToken } = useAppSelector((store) => store.auth);
 
   const onError = useErrorBoundary();
+  const onSuccess = (): void => {
+    document.body.style.cursor = 'auto';
+  };
 
   const handleFetch = useCallback(async () => {
     const { data } = await api(`entity/${entity}${params ? `?${params}` : ''}`, {
@@ -39,9 +42,7 @@ const useEntityQuery = <TData = unknown>({
     keepPreviousData: true,
     retry: false,
     onError,
-    onSuccess() {
-      document.body.style.cursor = 'auto';
-    },
+    onSuccess,
     enabled: isActiveToken,
     ...options,
   });

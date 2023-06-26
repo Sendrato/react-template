@@ -27,7 +27,17 @@ const useEntityMutation = <TData = unknown, TBody = unknown>({
 }: IEntityMutation<TData, EntityMutationVariables<TBody>>) => {
   const { token, tenant } = useAppSelector((store) => store.auth);
   const dispatch = useAppDispatch();
+
+  const onMutate = (): void => {
+    document.body.style.cursor = 'wait';
+  };
+
   const onError = useErrorBoundary(errorType, errorMessage);
+
+  const onSuccess = (): void => {
+    dispatch(openAutoCloseRecord({ type: 'success', message: successMessage }));
+    document.body.style.cursor = 'auto';
+  };
 
   const handleFetch = async ({ body, params: query = '' }: EntityMutationVariables<TBody>) => {
     const { data } = await api(`entity/${entity}${query ? `?${query}` : ''}`, {
@@ -45,13 +55,8 @@ const useEntityMutation = <TData = unknown, TBody = unknown>({
     [entity, method],
     handleFetch,
     {
-      onMutate() {
-        document.body.style.cursor = 'wait';
-      },
-      onSuccess() {
-        dispatch(openAutoCloseRecord({ type: 'success', message: successMessage }));
-        document.body.style.cursor = 'auto';
-      },
+      onMutate,
+      onSuccess,
       onError,
       ...options,
     },
