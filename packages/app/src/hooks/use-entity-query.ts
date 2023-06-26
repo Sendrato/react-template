@@ -8,7 +8,6 @@ import useErrorBoundary from './use-error-boundary';
 
 interface IEntityQuery<IData> {
   entity: string;
-  method?: METHOD;
   params?: string;
   deps?: DependencyList;
   options?: UseQueryOptions<IData, Error>;
@@ -16,7 +15,6 @@ interface IEntityQuery<IData> {
 
 const useEntityQuery = <TData = unknown>({
   entity,
-  method = METHOD.GET,
   params,
   deps = [],
   options,
@@ -27,14 +25,14 @@ const useEntityQuery = <TData = unknown>({
 
   const handleFetch = useCallback(async () => {
     const { data } = await api(`entity/${entity}${params ? `?${params}` : ''}`, {
-      method,
+      method: METHOD.GET,
       headers: {
         ...addAuthHeader(token?.access_token || '', tenant),
       },
     });
 
     return data;
-  }, [entity, method, params, tenant, token]);
+  }, [entity, params, tenant, token]);
 
   const response = useQuery<TData, Error>([entity, ...deps], handleFetch, {
     refetchOnWindowFocus: false,
