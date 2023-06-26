@@ -136,8 +136,6 @@ export const AuthProvider: FC<ReactNode> = (children) => {
         }
       }
     }
-
-    return;
   };
 
   const resetPassword = async ({ email, tenant }: { email: string; tenant: string }) => {
