@@ -7,6 +7,7 @@ import { useAppDispatch } from 'store/hooks';
 import { refreshToken, setActiveToken } from 'store/slices/auth/authSlice';
 import { openAutoCloseRecord } from 'store/slices/design/modalsSlice';
 import { openAutoCloseSnackBar } from 'store/slices/design/snackBar';
+import { handleViolations } from 'utils';
 
 const useErrorBoundary = (type: NotificationType = 'snackbar', errorMessage?: string) => {
   const dispatch = useAppDispatch();
@@ -19,9 +20,7 @@ const useErrorBoundary = (type: NotificationType = 'snackbar', errorMessage?: st
         const message = errorMessage || err.response.data.Message || ERROR_MESSAGE[status];
 
         const violations =
-          errorMessage || typeof err.response.data.Violations === 'string'
-            ? err.response.data.Violation
-            : err.response.data.ViolationCodes || ERROR_MESSAGE[status];
+          errorMessage || handleViolations(err.response.data) || ERROR_MESSAGE[status];
 
         document.body.style.cursor = 'auto';
 

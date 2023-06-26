@@ -2,7 +2,7 @@ import { Grid, Typography } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
 
-import graphics from '../assets/LoginImg.png';
+import graphics from '../assets/graphics.png';
 import loginLogo from '../assets/loginLogo.png';
 
 const Image = styled.img`
