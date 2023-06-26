@@ -40,6 +40,18 @@ const meta: Meta<typeof GenericTable> = {
     bodyRows: {
       description: 'It is array of TableBodyRows',
     },
+    paginationConfig: {
+      description:
+        'The pagination configurations. That includes page, rows, totalPage, and functions for updating.',
+    },
+    sortConfig: {
+      description:
+        'The sort configurations. That includes sortBy, sortDirection, and functions for updating.',
+    },
+    selectedConfig: {
+      description:
+        'The selected row configurations. That includes array of selected rows, selectedKey, and functions for handling one or all rows.',
+    },
     loading: {
       description: 'Data loading indicator.',
       control: {
