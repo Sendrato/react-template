@@ -1,4 +1,5 @@
 import { ILoginData, IToken, IUserRole } from '@interfaces/auth';
+import { NullFunction } from '@interfaces/generated/functions';
 import axios, { AxiosError } from 'axios';
 import {
   createContext,
@@ -12,8 +13,6 @@ import {
 import { addAuthHeader, addHeader, api } from 'utils';
 
 import { appConfig } from '@config';
-
-type NullFunction = () => null;
 
 interface ITokenPayload {
   code: string;
