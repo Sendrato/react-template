@@ -1,6 +1,5 @@
+import { useAuthContext } from 'contexts/AuthContext';
 import { useCallback, useEffect, useState } from 'react';
-import { useAppSelector } from 'store/hooks';
-import { getAuthStore } from 'store/slices/auth/authSlice';
 
 const PING_INTERVAL = 10 * 1000;
 
@@ -15,7 +14,7 @@ const useEntityWebsoket = <WSData>({ entity, handleWsMessage }: IProps<WSData>):
   const isBrowser = typeof window !== 'undefined';
   const [websocket, setWebsocket] = useState<null | WebSocket>(null);
   const [pingInterval, setPingInterval] = useState<NodeJS.Timeout | null>(null);
-  const { tenant, token } = useAppSelector(getAuthStore);
+  const { tenant, token } = useAuthContext();
   const websocketURL =
     token && tenant
       ? `${process.env.NEXT_PUBLIC_API_WEBSOCKET_URL}websocket?tenant=${tenant}&token=${token?.access_token}`

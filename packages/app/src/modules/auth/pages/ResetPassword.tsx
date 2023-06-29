@@ -3,10 +3,9 @@ import styled from '@emotion/styled';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { Box, Button as MuiButton, Paper, Typography } from '@mui/material';
 import { spacing } from '@mui/system';
+import { useAuthContext } from 'contexts/AuthContext';
 import Link from 'next/link';
 import React from 'react';
-import { useAppSelector } from 'store/hooks';
-import { getAuthStore } from 'store/slices/auth/authSlice';
 
 import DesktopImageView from '../components/DesktopImageView';
 import MobileImageView from '../components/MobileImageView';
@@ -88,7 +87,7 @@ const Message = styled(Box)`
 `;
 
 const ResetPasswordPage = () => {
-  const { resetFinished } = useAppSelector(getAuthStore);
+  const { resetFinished } = useAuthContext();
   return (
     <>
       <MobileImageView />

@@ -1,13 +1,12 @@
 import { Avatar, IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
+import { useAuthContext } from 'contexts/AuthContext';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useAppSelector } from 'store/hooks';
-import { getUserRoleSelector } from 'store/slices/auth/authSlice';
 
-export const NavbarUserDropdown: React.FC<{ logout: () => void }> = ({ logout }) => {
+export const NavbarUserDropdown: React.FC = () => {
   const [anchorMenu, setAnchorMenu] = React.useState<any>(null);
   const router = useRouter();
-  const userRole = useAppSelector(getUserRoleSelector);
+  const { userRole, logout } = useAuthContext();
 
   const toggleMenu = (event: React.SyntheticEvent) => {
     setAnchorMenu(event.currentTarget);
@@ -17,8 +16,8 @@ export const NavbarUserDropdown: React.FC<{ logout: () => void }> = ({ logout })
     setAnchorMenu(null);
   };
 
-  const handleSignOut = async () => {
-    await logout();
+  const handleSignOut = () => {
+    logout();
     router.push('/login');
   };
 

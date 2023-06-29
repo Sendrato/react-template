@@ -1,11 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { IToken } from '@interfaces/auth';
+import { useAuthContext } from 'contexts/AuthContext';
 import { useHistory, useUpdateSession } from 'hooks';
 import { useRouter } from 'next/router';
 import { ReactElement, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { getAuthStore, logout, setError } from 'store/slices/auth/authSlice';
-import { getUserRole } from 'store/slices/auth/authSlice';
-import { refreshToken, setToken, setUserEmail } from 'store/slices/auth/authSlice';
 
 import { PageLoader } from '@sendrato/design-system/components/PageLoader';
 
@@ -17,8 +15,9 @@ interface IProps {
 
 const AuthGuard = ({ children }: IProps) => {
   const [loading, setLoading] = useState<boolean>(true);
-  const dispatch = useAppDispatch();
-  const { error } = useAppSelector(getAuthStore);
+  const { error, logout, setError, getUserRole, refreshToken, setToken, setUserEmail } =
+    useAuthContext();
+
   const router = useRouter();
 
   useUpdateSession();
@@ -26,18 +25,22 @@ const AuthGuard = ({ children }: IProps) => {
 
   const handleError = () => {
     router.push('/login');
-    dispatch(logout());
-    dispatch(setError(error || 'The token has expired or been lost. Please log in again.'));
+    logout();
+    setError('The token has expired or been lost. Please log in again.');
     setLoading(false);
   };
 
-  const refresh = async () => {
-    const token_res = await dispatch(refreshToken());
-    if (token_res.payload?.access_token) {
-      const role_res = await dispatch(getUserRole());
+  const refresh = async (token: IToken) => {
+    console.log('refresh');
+    const token_res = await refreshToken(token);
+    console.log(token_res);
 
-      if (role_res.payload?.AccountType) {
+    if (token_res?.access_token) {
+      const role_res = await getUserRole(token_res.access_token, token_res.tenant);
+      console.log(token_res);
+      if (role_res?.AccountType) {
         setLoading(false);
+        console.log(role_res);
       } else {
         handleError();
       }
@@ -52,14 +55,15 @@ const AuthGuard = ({ children }: IProps) => {
 
       const userEmail = JSON.parse(localStorage.getItem('userEmail') || JSON.stringify(''));
 
-      dispatch(setToken(token));
-      dispatch(setUserEmail(userEmail));
+      console.log({ token, userEmail });
+      setToken(token);
+      setUserEmail(userEmail);
 
-      refresh();
+      refresh(token);
     } catch (error) {
       handleError();
     }
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (error) {

@@ -9,13 +9,10 @@ import {
   TextField as MuiTextField,
 } from '@mui/material';
 import { spacing } from '@mui/system';
+import { useAuthContext } from 'contexts/AuthContext';
 import { Formik } from 'formik';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { getAuthStore, getUserRole, resetPassword } from 'store/slices/auth/authSlice';
 import * as Yup from 'yup';
 
 const Alert = styled(MuiAlert)`
@@ -28,17 +25,7 @@ const TextField = styled(MuiTextField)<{ my?: number }>(spacing);
 const Button = styled(MuiButton)<{ mt?: number }>(spacing);
 
 function Reset() {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-
-  const { isAuth, loading, error } = useAppSelector(getAuthStore);
-
-  useEffect(() => {
-    if (isAuth) {
-      dispatch(getUserRole());
-      router.push('/');
-    }
-  }, [isAuth, router, dispatch]);
+  const { resetPassword, loading, error } = useAuthContext();
 
   return (
     <Formik
@@ -51,7 +38,7 @@ function Reset() {
         email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
       })}
       onSubmit={async (values) => {
-        dispatch(resetPassword({ email: values.email, tenant: values.tenant }));
+        resetPassword({ email: values.email, tenant: values.tenant });
       }}
     >
       {({ errors, handleBlur, handleChange, handleSubmit, touched, values, setFieldValue }) => (

@@ -1,11 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-import authReducer from './slices/auth/authSlice';
 import designReducer from './slices/design';
 import historyReducer from './slices/historySlice';
 
 export const appReducer = combineReducers({
-  auth: authReducer,
   design: designReducer,
   history: historyReducer,
 });

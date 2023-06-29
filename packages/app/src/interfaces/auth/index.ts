@@ -14,6 +14,7 @@ export interface IToken {
   access_token: string;
   refresh_token: string;
   expires_in: number;
+  tenant: string;
 }
 
 export interface IUserRole {

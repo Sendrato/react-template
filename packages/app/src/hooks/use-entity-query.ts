@@ -1,7 +1,7 @@
 import { METHOD } from '@interfaces/common/backoffice/api';
+import { useAuthContext } from 'contexts/AuthContext';
 import { DependencyList, useCallback, useEffect } from 'react';
 import { useQuery, UseQueryOptions } from 'react-query';
-import { useAppSelector } from 'store/hooks';
 import { addAuthHeader, api } from 'utils';
 
 import useErrorBoundary from './use-error-boundary';
@@ -19,7 +19,7 @@ const useEntityQuery = <TData = unknown>({
   deps = [],
   options,
 }: IEntityQuery<TData>) => {
-  const { token, tenant, isActiveToken } = useAppSelector((store) => store.auth);
+  const { token, tenant, isActiveToken } = useAuthContext();
 
   const onError = useErrorBoundary();
   const onSuccess = (): void => {

@@ -45,10 +45,9 @@ const NavMenu = styled(Grid)`
 
 interface INavbarProps {
   onDrawerToggle: React.MouseEventHandler<HTMLElement>;
-  logout: () => void;
 }
 
-export const Navbar = ({ onDrawerToggle, logout }: INavbarProps) => {
+export const Navbar = ({ onDrawerToggle }: INavbarProps) => {
   const [time, setTime] = useState('');
 
   const { isMobile } = useMedia();
@@ -77,7 +76,7 @@ export const Navbar = ({ onDrawerToggle, logout }: INavbarProps) => {
                 </Button>
               </Link>
               <Grid container width="auto" alignItems="center" columnGap="1rem">
-                <NavbarUserDropdown logout={logout} />
+                <NavbarUserDropdown />
                 <IconButton color="inherit" aria-label="Open drawer" onClick={onDrawerToggle}>
                   <MenuIcon />
                 </IconButton>
@@ -103,7 +102,7 @@ export const Navbar = ({ onDrawerToggle, logout }: INavbarProps) => {
                 <IconButton>
                   <NotificationsOutlinedIcon />
                 </IconButton>
-                <NavbarUserDropdown logout={logout} />
+                <NavbarUserDropdown />
               </Box>
             </Grid>
           )}

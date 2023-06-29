@@ -1,7 +1,8 @@
 import { METHOD, SUCCESS_MESSAGE } from '@interfaces/common/backoffice/api';
 import { NotificationType } from '@interfaces/UI/alert';
+import { useAuthContext } from 'contexts/AuthContext';
 import { useMutation, UseMutationOptions } from 'react-query';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { useAppDispatch } from 'store/hooks';
 import { openAutoCloseRecord } from 'store/slices/design/modalsSlice';
 import { addAuthHeader, api } from 'utils';
 
@@ -26,7 +27,7 @@ const useEntityMutation = <TData = unknown, TBody = unknown>({
   errorMessage,
   errorType,
 }: IEntityMutation<TData, EntityMutationVariables<TBody>>) => {
-  const { token, tenant } = useAppSelector((store) => store.auth);
+  const { token, tenant } = useAuthContext();
   const dispatch = useAppDispatch();
 
   const onMutate = (): void => {

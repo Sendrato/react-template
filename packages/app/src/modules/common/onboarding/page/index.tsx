@@ -1,8 +1,7 @@
+import { useAuthContext } from 'contexts/AuthContext';
 import { useEntityWebsoket } from 'hooks';
 import DashboardLayout from 'layouts/DashboardLayout';
 import { ReactElement, useState } from 'react';
-import { useAppSelector } from 'store/hooks';
-import { getUserEmail } from 'store/slices/auth/authSlice';
 
 import PageHeader from '@components/common/PageHeader';
 import { PageTitle } from '@components/styled-mui';
@@ -22,7 +21,7 @@ interface IChatWsMessage {
 }
 
 const OnboardingPage = () => {
-  const email = useAppSelector(getUserEmail);
+  const { userEmail: email } = useAuthContext();
   const [messages, setMessages] = useState<IChat[]>([]);
 
   const saveWsMessages = (value: IChatWsMessage) => {

@@ -10,13 +10,11 @@ import {
   Typography,
 } from '@mui/material';
 import { spacing } from '@mui/system';
+import { useAuthContext } from 'contexts/AuthContext';
 import { Formik } from 'formik';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { getAuthStore, getUserRole, login } from 'store/slices/auth/authSlice';
 import * as Yup from 'yup';
 
 const Alert = styled(MuiAlert)`
@@ -38,17 +36,9 @@ const SecondaryText = styled(Typography)`
 `;
 
 function SignIn() {
+  const { login, loading, error } = useAuthContext();
+
   const router = useRouter();
-  const dispatch = useAppDispatch();
-
-  const { isAuth, loading, error } = useAppSelector(getAuthStore);
-
-  useEffect(() => {
-    if (isAuth) {
-      dispatch(getUserRole());
-      router.push('/');
-    }
-  }, [isAuth, router, dispatch]);
 
   return (
     <Formik
@@ -62,14 +52,12 @@ function SignIn() {
         email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
         password: Yup.string().max(255).required('Password is required'),
       })}
-      onSubmit={async (values) => {
-        dispatch(
-          login({
-            username: values.email,
-            password: values.password,
-            tenant: values.tenant,
-          }),
-        );
+      onSubmit={(values) => {
+        login({
+          username: values.email,
+          password: values.password,
+          tenant: values.tenant,
+        })?.then(() => router.push('/'));
       }}
     >
       {({ errors, handleBlur, handleChange, handleSubmit, touched, values, setFieldValue }) => (

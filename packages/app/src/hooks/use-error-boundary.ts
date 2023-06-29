@@ -2,14 +2,15 @@
 import { ERROR_MESSAGE } from '@interfaces/common/backoffice/api';
 import { NotificationType } from '@interfaces/UI/alert';
 import { AxiosError } from 'axios';
+import { useAuthContext } from 'contexts/AuthContext';
 import { useCallback } from 'react';
 import { useAppDispatch } from 'store/hooks';
-import { refreshToken, setActiveToken } from 'store/slices/auth/authSlice';
 import { openAutoCloseRecord } from 'store/slices/design/modalsSlice';
 import { openAutoCloseSnackBar } from 'store/slices/design/snackBar';
 import { handleViolations } from 'utils';
 
 const useErrorBoundary = (type: NotificationType = 'snackbar', errorMessage?: string) => {
+  const { refreshToken, setActiveToken, token } = useAuthContext();
   const dispatch = useAppDispatch();
   const throwNotifications = type === 'snackbar' ? openAutoCloseSnackBar : openAutoCloseRecord;
 
@@ -26,9 +27,9 @@ const useErrorBoundary = (type: NotificationType = 'snackbar', errorMessage?: st
 
         switch (status) {
           case 401:
-            dispatch(setActiveToken(false));
+            setActiveToken(false);
 
-            dispatch(refreshToken());
+            refreshToken(token);
             break;
           case 420:
             dispatch(throwNotifications({ message: violations, type: 'error' }));

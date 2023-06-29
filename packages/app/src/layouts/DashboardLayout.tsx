@@ -6,7 +6,6 @@ import { Navbar } from 'layouts/Navbar';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { logout } from 'store/slices/auth/authSlice';
 import { closeSnackbar, getSnackBarStore } from 'store/slices/design/snackBar';
 
 import dashboardItems from './Sidebar/dashboardItems';
@@ -65,10 +64,6 @@ const DashboardLayout: React.FC<{ children: React.ReactElement }> = ({ children 
 
   const { isLgUp, isMd, isMobile } = useMedia();
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
-
   const calcDrawerWidth = (): number => {
     if (isLgUp) {
       return drawerWidth;
@@ -123,7 +118,7 @@ const DashboardLayout: React.FC<{ children: React.ReactElement }> = ({ children 
         </Box>
       </Drawer>
       <AppContent>
-        <Navbar onDrawerToggle={handleDrawerToggle} logout={handleLogout} />
+        <Navbar onDrawerToggle={handleDrawerToggle} />
         <MainContent p={isLgUp ? 4 : 2}>{children}</MainContent>
         <Snackbar
           open={open}
