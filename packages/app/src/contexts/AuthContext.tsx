@@ -91,8 +91,6 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
   const [updateSession, setUpdateSession] = useState<boolean>(false);
   const [isActiveToken, setActiveToken] = useState<boolean>(false);
 
-  console.log({ token });
-
   const authorizationCode = async (code: string, tenant: string) => {
     const data = {
       code: code,
@@ -111,7 +109,6 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
     try {
       setLoading(true);
       const token = await authorizationCode(code, tenant);
-
       setLoading(false);
       setToken(token.data);
       setIsAuth(true);
@@ -127,7 +124,7 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
     }
   };
 
-  const login = async (data: ILoginData) => {
+  const login = async (data: ILoginData): Promise<void> => {
     const { username, password, tenant } = data;
     setTenant(tenant);
     setUserEmail(username);
@@ -144,7 +141,6 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
         },
       );
 
-      console.log({ urlWithCode });
       const params = new URLSearchParams(urlWithCode.request.responseURL.split('?')[1]);
 
       const code = params.get('code');
@@ -169,8 +165,7 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    console.log('logout');
+  const logout = (): void => {
     setIsAuth(false);
     setToken(null);
     setUserRole(null);
@@ -198,14 +193,13 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
         setLoading(false);
         setToken(res.data);
         setIsAuth(true);
-        localStorage.setItem('token', JSON.stringify(res.data));
         setUpdateSession(true);
         setActiveToken(true);
+        localStorage.setItem('token', JSON.stringify(res.data));
+
         return { ...res.data, tenant };
       } catch (err) {
         if (err instanceof AxiosError) {
-          console.log(err);
-
           logout();
           setError(err.message);
           setLoading(false);
@@ -245,9 +239,10 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
       headers: addAuthHeader(access_token, tenant),
     });
 
-    localStorage.setItem('userRole', JSON.stringify(data));
     setLoading(false);
     setUserRole(data);
+    localStorage.setItem('userRole', JSON.stringify(data));
+
     return data;
   };
 

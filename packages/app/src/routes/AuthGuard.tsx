@@ -31,16 +31,12 @@ const AuthGuard = ({ children }: IProps) => {
   };
 
   const refresh = async (token: IToken) => {
-    console.log('refresh');
     const token_res = await refreshToken(token);
-    console.log(token_res);
 
     if (token_res?.access_token) {
       const role_res = await getUserRole(token_res.access_token, token_res.tenant);
-      console.log(token_res);
       if (role_res?.AccountType) {
         setLoading(false);
-        console.log(role_res);
       } else {
         handleError();
       }
@@ -55,7 +51,6 @@ const AuthGuard = ({ children }: IProps) => {
 
       const userEmail = JSON.parse(localStorage.getItem('userEmail') || JSON.stringify(''));
 
-      console.log({ token, userEmail });
       setToken(token);
       setUserEmail(userEmail);
 
