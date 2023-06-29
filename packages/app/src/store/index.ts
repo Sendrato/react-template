@@ -1,11 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import designReducer from './slices/design';
-import historyReducer from './slices/historySlice';
 
 export const appReducer = combineReducers({
   design: designReducer,
-  history: historyReducer,
 });
 
 const rootReducer = (state: any, action: any) => {

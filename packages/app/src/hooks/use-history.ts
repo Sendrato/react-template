@@ -1,11 +1,10 @@
+import { useHistoryContext } from 'contexts/HistoryContext';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { routes } from 'routes/routes';
-import { useAppDispatch } from 'store/hooks';
-import { setHistory, updateHistory } from 'store/slices/historySlice';
 
 const useHistory = ({ exclude }: { exclude: string[] }) => {
-  const dispatch = useAppDispatch();
+  const { setHistory, updateHistory } = useHistoryContext();
   const router = useRouter();
 
   const route = routes.find((item) => item.pathname === router.pathname);
@@ -14,15 +13,17 @@ const useHistory = ({ exclude }: { exclude: string[] }) => {
     const history = JSON.parse(localStorage.getItem('historyRoutes') || JSON.stringify(''));
 
     if (Array.isArray(history)) {
-      dispatch(setHistory(history));
+      setHistory(history);
     }
-  }, [dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (route && !exclude.includes(route.pathname)) {
-      dispatch(updateHistory({ ...route, pathname: router.asPath }));
+      updateHistory({ ...route, pathname: router.asPath });
     }
-  }, [exclude, dispatch, route, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exclude, route, router]);
 };
 
 export default useHistory;
