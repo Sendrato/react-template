@@ -1,9 +1,29 @@
 import { ILoginData, IToken, IUserRole } from '@interfaces/auth';
 import axios, { AxiosError } from 'axios';
-import { createContext, FC, ReactNode, useContext, useState } from 'react';
+import {
+  createContext,
+  Dispatch,
+  FC,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useState,
+} from 'react';
 import { addAuthHeader, addHeader, api } from 'utils';
 
 import { appConfig } from '@config';
+
+type NullFunction = () => null;
+
+interface ITokenPayload {
+  code: string;
+  tenant: string;
+}
+
+interface IResetPayload {
+  email: string;
+  tenant: string;
+}
 
 interface AuthContext {
   token: IToken | null;
@@ -16,9 +36,44 @@ interface AuthContext {
   userEmail: null | string;
   updateSession: boolean;
   isActiveToken: boolean;
+  setToken: Dispatch<SetStateAction<IToken | null>> | NullFunction;
+  setUserEmail: Dispatch<SetStateAction<string | null>> | NullFunction;
+  setError: Dispatch<SetStateAction<string | null>> | NullFunction;
+  setUpdateSession: Dispatch<SetStateAction<boolean>> | NullFunction;
+  setActiveToken: Dispatch<SetStateAction<boolean>> | NullFunction;
+  getToken: ((payload: ITokenPayload) => Promise<IToken | void>) | NullFunction;
+  login: ((payload: ILoginData) => Promise<void>) | NullFunction;
+  logout: VoidFunction | NullFunction;
+  refreshToken: ((payload: IToken | null) => Promise<IToken | void>) | NullFunction;
+  resetPassword: ((payload: IResetPayload) => Promise<any>) | NullFunction;
+  getUserRole: ((access_token: string, tenant: string) => Promise<IUserRole>) | NullFunction;
 }
 
-const AuthContext = createContext<unknown | null>(null);
+const initialValues: AuthContext = {
+  token: null,
+  isAuth: false,
+  loading: false,
+  error: null,
+  tenant: 'senduku',
+  userRole: null,
+  resetFinished: false,
+  userEmail: null,
+  updateSession: false,
+  isActiveToken: false,
+  setToken: () => null,
+  setUserEmail: () => null,
+  setError: () => null,
+  setUpdateSession: () => null,
+  setActiveToken: () => null,
+  getToken: () => null,
+  login: () => null,
+  logout: () => null,
+  refreshToken: () => null,
+  resetPassword: () => null,
+  getUserRole: () => null,
+};
+
+const AuthContext = createContext(initialValues);
 
 interface IProps {
   children: ReactNode;
@@ -29,12 +84,14 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [tenant, setTenant] = useState<string>('senduku');
+  const [tenant, setTenant] = useState<string>('ras2023');
   const [userRole, setUserRole] = useState<IUserRole | null>(null);
   const [resetFinished, setResetFinished] = useState<boolean>(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [updateSession, setUpdateSession] = useState<boolean>(false);
-  const [isActiveToken, setIsActiveToken] = useState<boolean>(false);
+  const [isActiveToken, setActiveToken] = useState<boolean>(false);
+
+  console.log({ token });
 
   const authorizationCode = async (code: string, tenant: string) => {
     const data = {
@@ -50,7 +107,7 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
     });
   };
 
-  const getToken = async ({ code, tenant }: { code: string; tenant: string }) => {
+  const getToken = async ({ code, tenant }: ITokenPayload): Promise<IToken | void> => {
     try {
       setLoading(true);
       const token = await authorizationCode(code, tenant);
@@ -60,7 +117,7 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
       setIsAuth(true);
       localStorage.setItem('token', JSON.stringify(token.data));
       setUpdateSession(true);
-      setIsActiveToken(true);
+      setActiveToken(true);
       return { ...token.data, tenant };
     } catch (err) {
       if (err instanceof AxiosError) {
@@ -87,13 +144,19 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
         },
       );
 
+      console.log({ urlWithCode });
       const params = new URLSearchParams(urlWithCode.request.responseURL.split('?')[1]);
 
       const code = params.get('code');
       const error = params.get('error');
 
       if (code) {
-        getToken({ code, tenant });
+        const res = await getToken({ code, tenant });
+        localStorage.setItem('userEmail', JSON.stringify(username));
+
+        if (res) {
+          await getUserRole(res.access_token, res.tenant);
+        }
       } else if (error) {
         setError('Invalid username / password combination');
         setLoading(false);
@@ -107,6 +170,7 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
   };
 
   const logout = () => {
+    console.log('logout');
     setIsAuth(false);
     setToken(null);
     setUserRole(null);
@@ -114,7 +178,7 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
     localStorage.clear();
   };
 
-  const refreshToken = async () => {
+  const refreshToken = async (token: IToken | null): Promise<IToken | void> => {
     if (token) {
       try {
         const data = {
@@ -131,9 +195,17 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
           },
         );
 
+        setLoading(false);
+        setToken(res.data);
+        setIsAuth(true);
+        localStorage.setItem('token', JSON.stringify(res.data));
+        setUpdateSession(true);
+        setActiveToken(true);
         return { ...res.data, tenant };
       } catch (err) {
         if (err instanceof AxiosError) {
+          console.log(err);
+
           logout();
           setError(err.message);
           setLoading(false);
@@ -142,7 +214,7 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
     }
   };
 
-  const resetPassword = async ({ email, tenant }: { email: string; tenant: string }) => {
+  const resetPassword = async ({ email, tenant }: IResetPayload): Promise<any> => {
     try {
       setLoading(true);
       const response = await api(`entity/common/backoffice/accounts/ForgotPassword`, {
@@ -167,17 +239,19 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
     }
   };
 
-  const getUserRole = async () => {
+  const getUserRole = async (access_token: string, tenant: string): Promise<IUserRole> => {
     setLoading(true);
     const { data } = await api.get('entity/common/backoffice/accounts/UserRoles', {
-      headers: addAuthHeader(token?.access_token || '', tenant),
+      headers: addAuthHeader(access_token, tenant),
     });
 
+    localStorage.setItem('userRole', JSON.stringify(data));
     setLoading(false);
     setUserRole(data);
+    return data;
   };
 
-  const initialState = {
+  const value = {
     token,
     isAuth,
     error,
@@ -188,6 +262,11 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
     userEmail,
     updateSession,
     isActiveToken,
+    setUpdateSession,
+    setToken,
+    setUserEmail,
+    setError,
+    setActiveToken,
     getToken,
     login,
     logout,
@@ -196,7 +275,7 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
     getUserRole,
   };
 
-  return <AuthContext.Provider value={initialState}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuthContext = () => useContext(AuthContext);
