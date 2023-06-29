@@ -1,6 +1,6 @@
 import { ILoginData, IToken, IUserRole } from '@interfaces/auth';
 import axios, { AxiosError } from 'axios';
-import { createContext, FC, ReactNode, useState } from 'react';
+import { createContext, FC, ReactNode, useContext, useState } from 'react';
 import { addAuthHeader, addHeader, api } from 'utils';
 
 import { appConfig } from '@config';
@@ -18,9 +18,13 @@ interface AuthContext {
   isActiveToken: boolean;
 }
 
-const AuthContext = createContext<AuthContext | null>(null);
+const AuthContext = createContext<unknown | null>(null);
 
-export const AuthProvider: FC<ReactNode> = (children) => {
+interface IProps {
+  children: ReactNode;
+}
+
+export const AuthProvider: FC<IProps> = ({ children }) => {
   const [token, setToken] = useState<IToken | null>(null);
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -190,7 +194,9 @@ export const AuthProvider: FC<ReactNode> = (children) => {
     refreshToken,
     resetPassword,
     getUserRole,
-  } as AuthContext;
+  };
 
   return <AuthContext.Provider value={initialState}>{children}</AuthContext.Provider>;
 };
+
+export const useAuthContext = () => useContext(AuthContext);

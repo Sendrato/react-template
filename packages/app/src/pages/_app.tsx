@@ -1,4 +1,5 @@
 import { StyledEngineProvider, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import { AuthProvider } from 'contexts/AuthContext';
 import Head from 'next/head';
 import { NextSeo } from 'next-seo';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -38,9 +39,11 @@ const App = ({ Component, pageProps }: AppProps) => {
             <MuiThemeProvider theme={muiTheme}>
               <ThemeProvider theme={theme}>
                 <GlobalStyle />
-                <AuthGuard>
-                  <RoleGuard>{getLayout(<Component {...pageProps} />)}</RoleGuard>
-                </AuthGuard>
+                <AuthProvider>
+                  <AuthGuard>
+                    <RoleGuard>{getLayout(<Component {...pageProps} />)}</RoleGuard>
+                  </AuthGuard>
+                </AuthProvider>
               </ThemeProvider>
             </MuiThemeProvider>
           </Provider>
