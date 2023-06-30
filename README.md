@@ -69,7 +69,7 @@ export const HOME_ROUTE = {
 };
 
 export const routes: IRoute[] = [HOME_ROUTE];
-``
+```
 
 To add a link to a page in a Sidebar you should update sidebardItems.ts in the layouts/Sidebar directory:
 
