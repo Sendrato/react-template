@@ -1,23 +1,22 @@
-import {
-  StyledEngineProvider,
-  ThemeProvider as MuiThemeProvider,
-} from '@mui/material/styles';
+import { StyledEngineProvider, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import ContextProvider from 'contexts';
 import Head from 'next/head';
 import { NextSeo } from 'next-seo';
-import { Provider } from 'react-redux';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import AuthGuard from 'routes/AuthGuard';
 import RoleGuard from 'routes/RoleGuard';
-import { store } from 'store';
 import { ThemeProvider } from 'styled-components';
 
 import muiTheme from '@sendrato/design-system/theme/muiTheme';
 import { GlobalStyle, theme } from '@sendrato/design-system/theme/styledTheme';
-
 type AppProps = {
   Component: any;
   pageProps: any;
   store: any;
 };
+
+const queryClient = new QueryClient();
 
 const App = ({ Component, pageProps }: AppProps) => {
   const getLayout = Component.getLayout ?? ((page: React.ReactNode) => page);
@@ -33,16 +32,19 @@ const App = ({ Component, pageProps }: AppProps) => {
         />
       </Head>
       <StyledEngineProvider injectFirst>
-        <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
           <MuiThemeProvider theme={muiTheme}>
             <ThemeProvider theme={theme}>
               <GlobalStyle />
-              <AuthGuard>
-                <RoleGuard>{getLayout(<Component {...pageProps} />)}</RoleGuard>
-              </AuthGuard>
+              <ContextProvider>
+                <AuthGuard>
+                  <RoleGuard>{getLayout(<Component {...pageProps} />)}</RoleGuard>
+                </AuthGuard>
+              </ContextProvider>
             </ThemeProvider>
           </MuiThemeProvider>
-        </Provider>
+          <ReactQueryDevtools initialIsOpen={true} />
+        </QueryClientProvider>
       </StyledEngineProvider>
     </>
   );

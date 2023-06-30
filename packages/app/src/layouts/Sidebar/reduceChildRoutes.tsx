@@ -1,5 +1,5 @@
+import { UserRole } from '@interfaces/auth';
 import React from 'react';
-import { UserRole } from 'store/slices/auth/types';
 
 import SidebarNavList from './SidebarNavList';
 import SidebarNavListItem from './SidebarNavListItem';

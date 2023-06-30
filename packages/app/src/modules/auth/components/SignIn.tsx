@@ -10,13 +10,11 @@ import {
   Typography,
 } from '@mui/material';
 import { spacing } from '@mui/system';
+import { useAuthContext } from 'contexts/AuthContext';
 import { Formik } from 'formik';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { getAuthStore, getUserRole, login } from 'store/slices/auth/authSlice';
 import * as Yup from 'yup';
 
 const Alert = styled(MuiAlert)`
@@ -38,17 +36,9 @@ const SecondaryText = styled(Typography)`
 `;
 
 function SignIn() {
+  const { login, loading, error } = useAuthContext();
+
   const router = useRouter();
-  const dispatch = useAppDispatch();
-
-  const { isAuth, loading, error } = useAppSelector(getAuthStore);
-
-  useEffect(() => {
-    if (isAuth) {
-      dispatch(getUserRole());
-      router.push('/');
-    }
-  }, [isAuth, router, dispatch]);
 
   return (
     <Formik
@@ -59,31 +49,18 @@ function SignIn() {
         submit: false,
       }}
       validationSchema={Yup.object().shape({
-        email: Yup.string()
-          .email('Must be a valid email')
-          .max(255)
-          .required('Email is required'),
+        email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
         password: Yup.string().max(255).required('Password is required'),
       })}
-      onSubmit={async (values) => {
-        dispatch(
-          login({
-            username: values.email,
-            password: values.password,
-            tenant: values.tenant,
-          }),
-        );
+      onSubmit={(values) => {
+        login({
+          username: values.email,
+          password: values.password,
+          tenant: values.tenant,
+        })?.then(() => router.push('/'));
       }}
     >
-      {({
-        errors,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        touched,
-        values,
-        setFieldValue,
-      }) => (
+      {({ errors, handleBlur, handleChange, handleSubmit, touched, values, setFieldValue }) => (
         <form noValidate onSubmit={handleSubmit}>
           {error && <Alert severity="error">{error}</Alert>}
           <TextField
@@ -118,9 +95,7 @@ function SignIn() {
               label="Tenant"
               id="tenant"
               labelId="tenant"
-              onChange={(event) =>
-                setFieldValue('tenant', event.target.value as string)
-              }
+              onChange={(event) => setFieldValue('tenant', event.target.value as string)}
             >
               <MenuItem value={'senduku'}>senduku</MenuItem>
               <MenuItem value={'ras2023'}>ras2023</MenuItem>
@@ -143,8 +118,7 @@ function SignIn() {
           </Button>
 
           <SecondaryText variant="body2" color="grey">
-            By continuing, you agree and accept our{' '}
-            <Link href={'#'}>Terms and Conditions</Link> and{' '}
+            By continuing, you agree and accept our <Link href={'#'}>Terms and Conditions</Link> and{' '}
             <Link href={'#'}>Privacy Policy</Link>.
           </SecondaryText>
         </form>

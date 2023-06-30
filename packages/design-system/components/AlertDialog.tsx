@@ -40,21 +40,11 @@ export const AlertDialog: React.FC<IAlertDialog> = ({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {title ? title : 'Are you sure?'}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{title ? title : 'Are you sure?'}</DialogTitle>
         <DialogContent
-          sx={
-            isMobile
-              ? { width: 'auto' }
-              : width
-              ? { minWidth: width, maxWidth: width }
-              : {}
-          }
+          sx={isMobile ? { width: 'auto' } : width ? { minWidth: width, maxWidth: width } : {}}
         >
-          <DialogContentText id="alert-dialog-description">
-            {alertText}
-          </DialogContentText>
+          <DialogContentText id="alert-dialog-description">{alertText}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

@@ -13,9 +13,7 @@ export default class Document extends BaseDocument {
       ctx.renderPage = () =>
         originalRenderPage({
           enhanceApp: (App: any) => (props: any) => {
-            const StyledApp = styledComponentsSheet.collectStyles(
-              <App {...props} />,
-            );
+            const StyledApp = styledComponentsSheet.collectStyles(<App {...props} />);
             return muiSheet.collect(StyledApp);
           },
         });

@@ -1,9 +1,6 @@
 import { useState } from 'react';
 
-const useSelectedRow = <T extends { [key: string]: any }>(
-  data: T[],
-  selectedKey: string,
-) => {
+const useSelectedRow = <T extends { [key: string]: any }>(data: T[], selectedKey: string) => {
   const [selected, setSelected] = useState<T[]>([]);
 
   const onSelect = (row: T) => {

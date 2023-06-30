@@ -7,6 +7,7 @@ export * from './formatNumber';
 export * from './getCenterOfLocations';
 export * from './getHeaderCells';
 export * from './getLineChartCustomTooltip';
+export * from './handleViolations';
 export * from './imageToBase64';
 export * from './isEmail';
 export * from './smothScroll';

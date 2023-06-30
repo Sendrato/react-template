@@ -90,8 +90,8 @@ const LineChart = ({
           Line Chart
         </Typography>
         <Typography variant="body2" gutterBottom>
-          Line charts are a typical pictorial representation that depicts trends
-          and behaviors over time.
+          Line charts are a typical pictorial representation that depicts trends and behaviors over
+          time.
         </Typography>
 
         <Spacer mb={6} />

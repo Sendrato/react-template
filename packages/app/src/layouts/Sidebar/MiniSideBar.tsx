@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 import { Box } from '@mui/material';
+import { useAuthContext } from 'contexts/AuthContext';
 import React, { Dispatch, SetStateAction } from 'react';
-import { useAppSelector } from 'store/hooks';
-import { getUserRoleSelector } from 'store/slices/auth/authSlice';
 
 import MiniLogo from '@sendrato/design-system/vendor/MiniLogo';
 
@@ -44,7 +43,7 @@ const List = styled.div`
 `;
 
 const MiniSideBar = ({ handleDrawerToggle, items }: IProps) => {
-  const userRole = useAppSelector(getUserRoleSelector);
+  const { userRole } = useAuthContext();
 
   return (
     <Drawer onClick={() => handleDrawerToggle(true)}>
@@ -58,8 +57,7 @@ const MiniSideBar = ({ handleDrawerToggle, items }: IProps) => {
             )}
             {section.pages.map(({ icon: Icon, access }, index) => {
               if (
-                (userRole?.AccountType &&
-                  access.includes(userRole.AccountType)) ||
+                (userRole?.AccountType && access.includes(userRole.AccountType)) ||
                 userRole?.IsSuperuser
               ) {
                 return Icon ? <Icon key={index} /> : null;

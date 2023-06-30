@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { List } from '@mui/material';
-import useMedia from 'hooks/use-media';
+import { useMedia } from 'hooks';
 import React from 'react';
 import ReactPerfectScrollbar from 'react-perfect-scrollbar';
 
@@ -44,11 +44,7 @@ const SidebarNav = ({ items }: SidebarNavProps) => {
         <Items>
           {items &&
             items.map((item) => (
-              <SidebarNavSection
-                component="div"
-                key={item.title}
-                pages={item.pages}
-              />
+              <SidebarNavSection component="div" key={item.title} pages={item.pages} />
             ))}
         </Items>
       </List>

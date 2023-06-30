@@ -12,17 +12,11 @@ export const getFormattedTableTimestamp = (date?: any): string => {
   }
 
   return date.includes('T')
-    ? `${getFormattedDate(date).replace(/-/g, '/')} - ${getFormattedTime(
-        date,
-        false,
-      )}`
+    ? `${getFormattedDate(date).replace(/-/g, '/')} - ${getFormattedTime(date, false)}`
     : getFormattedDate(date).replace(/-/g, '/');
 };
 
-export const getFormattedTime = (
-  date?: string | null,
-  hour12 = true,
-): string => {
+export const getFormattedTime = (date?: string | null, hour12 = true): string => {
   if (!date) {
     return '-';
   }

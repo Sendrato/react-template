@@ -1,13 +1,8 @@
 import { useState } from 'react';
 
-interface IProps {
-  initialPage: number;
-  initialRows: number;
-}
-
-const usePagination = ({ initialPage, initialRows }: IProps) => {
-  const [page, setPage] = useState(initialPage);
-  const [rows, setRows] = useState(initialRows);
+const usePagination = (initialPage?: number, initialRows?: number) => {
+  const [page, setPage] = useState(initialPage || 0);
+  const [rows, setRows] = useState(initialRows || 10);
 
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
@@ -16,9 +11,7 @@ const usePagination = ({ initialPage, initialRows }: IProps) => {
     setPage(newPage);
   };
 
-  const handleChangeRows = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleChangeRows = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const newRowsAmount = Number(event.target.value);
     setRows(newRowsAmount);
     setPage(0);

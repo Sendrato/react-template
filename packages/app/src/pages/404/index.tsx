@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import React from 'react';
 
-import ErrorNotification from '@modules/common/404/404';
+import ErrorNotification from '@components/404/404';
 
 const Custom404Page: NextPage = () => (
   <>

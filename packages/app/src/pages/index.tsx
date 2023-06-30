@@ -1,3 +1,3 @@
-import DashboardPage from '@modules/dashboard/pages';
+import SellersPage from '@modules/common/sellers';
 
-export default DashboardPage;
+export default SellersPage;

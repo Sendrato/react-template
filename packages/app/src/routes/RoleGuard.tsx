@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { UserRole } from '@interfaces/auth';
+import { useAuthContext } from 'contexts/AuthContext';
 import { useRouter } from 'next/router';
 import { ReactElement, useEffect, useState } from 'react';
-import { useAppSelector } from 'store/hooks';
-import { getAuthStore } from 'store/slices/auth/authSlice';
-import { UserRole } from 'store/slices/auth/types';
 
 import { PageLoader } from '@sendrato/design-system/components/PageLoader';
 
@@ -22,20 +21,17 @@ enum Access {
 const RoleGuard = ({ children }: IProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [access, setAccess] = useState<Access>(Access.UNKNOWN);
-  const { userRole } = useAppSelector(getAuthStore);
+  const { userRole } = useAuthContext();
   const router = useRouter();
 
-  const currentRoute = routes.find(
-    (route) => route.pathname === router.pathname,
-  );
+  const currentRoute = routes.find((route) => route.pathname === router.pathname);
 
   const isAuthPath: boolean = AUTH_ROUTES.includes(router.asPath);
 
   useEffect(() => {
     if (userRole) {
       const hasAccess =
-        userRole?.IsSuperuser ||
-        currentRoute?.access.includes(userRole?.AccountType || '');
+        userRole?.IsSuperuser || currentRoute?.access.includes(userRole?.AccountType || '');
 
       setAccess(hasAccess ? Access.ALLOW : Access.FORBIDDEN);
     }

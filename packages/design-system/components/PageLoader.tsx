@@ -9,10 +9,7 @@ const CenteredProgress = styled(Box)<{ $layout: any }>`
   align-items: center;
 `;
 
-export const PageLoader = ({
-  layout,
-  ...rest
-}: { layout?: boolean } & CircularProgressProps) => (
+export const PageLoader = ({ layout, ...rest }: { layout?: boolean } & CircularProgressProps) => (
   <CenteredProgress $layout={layout}>
     <CircularProgress size={60} {...rest} />
   </CenteredProgress>

@@ -3,10 +3,9 @@ import styled from '@emotion/styled';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { Box, Button as MuiButton, Paper, Typography } from '@mui/material';
 import { spacing } from '@mui/system';
+import { useAuthContext } from 'contexts/AuthContext';
 import Link from 'next/link';
 import React from 'react';
-import { useAppSelector } from 'store/hooks';
-import { getAuthStore } from 'store/slices/auth/authSlice';
 
 import DesktopImageView from '../components/DesktopImageView';
 import MobileImageView from '../components/MobileImageView';
@@ -77,12 +76,7 @@ const Message = styled(Box)`
   align-items: center;
   padding: 14px 16px;
   margin-bottom: 1rem;
-  background: linear-gradient(
-      0deg,
-      rgba(255, 255, 255, 0.9),
-      rgba(255, 255, 255, 0.9)
-    ),
-    #2e7d32;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #2e7d32;
   border-radius: 6px;
   h5 {
     font-weight: 500;
@@ -93,7 +87,7 @@ const Message = styled(Box)`
 `;
 
 const ResetPasswordPage = () => {
-  const { resetFinished } = useAppSelector(getAuthStore);
+  const { resetFinished } = useAuthContext();
   return (
     <>
       <MobileImageView />
@@ -105,21 +99,13 @@ const ResetPasswordPage = () => {
             {resetFinished ? (
               <>
                 <Message>
-                  <CheckCircleOutlineIcon
-                    sx={{ marginRight: '14px', fill: '#059669' }}
-                  />
+                  <CheckCircleOutlineIcon sx={{ marginRight: '14px', fill: '#059669' }} />
                   <Typography variant="h5">
                     You will receive an email with reset instructions
                   </Typography>
                 </Message>
                 <Link href="/login">
-                  <Button
-                    type="button"
-                    variant="text"
-                    fullWidth
-                    color="primary"
-                    mt={2}
-                  >
+                  <Button type="button" variant="text" fullWidth color="primary" mt={2}>
                     Back to Login
                   </Button>
                 </Link>

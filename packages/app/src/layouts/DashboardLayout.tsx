@@ -1,23 +1,15 @@
 import styled from '@emotion/styled';
-import {
-  Alert,
-  Box,
-  CssBaseline,
-  Paper as MuiPaper,
-  Snackbar,
-} from '@mui/material';
+import { Alert, Box, CssBaseline, Paper as MuiPaper, Snackbar } from '@mui/material';
 import { spacing } from '@mui/system';
+import { useNotificationsContext } from 'contexts/NotificationsContext';
 import useMedia from 'hooks/use-media';
 import { Navbar } from 'layouts/Navbar';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { logout } from 'store/slices/auth/authSlice';
-import { closeSnackbar, getSnackBarStore } from 'store/slices/design/snackBar';
 
-import dashboardItems from './Sidebar/dashboardItems';
 import Sidebar from './Sidebar/index';
 import MiniSideBar from './Sidebar/MiniSideBar';
+import dashboardItems from './Sidebar/sidebarItems';
 
 const drawerWidth = 258;
 
@@ -55,13 +47,10 @@ const MainContent = styled(Paper)`
   }
 `;
 
-const DashboardLayout: React.FC<{ children: React.ReactElement }> = ({
-  children,
-}) => {
+const DashboardLayout: React.FC<{ children: React.ReactElement }> = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const dispatch = useAppDispatch();
-  const { open, message } = useAppSelector(getSnackBarStore);
+  const { snackBar, closeSnackbar } = useNotificationsContext();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -69,13 +58,7 @@ const DashboardLayout: React.FC<{ children: React.ReactElement }> = ({
 
   const { pathname } = useRouter();
 
-  const handleSnackbarClose = () => dispatch(closeSnackbar());
-
   const { isLgUp, isMd, isMobile } = useMedia();
-
-  const handleLogout = () => {
-    dispatch(logout());
-  };
 
   const calcDrawerWidth = (): number => {
     if (isLgUp) {
@@ -118,10 +101,7 @@ const DashboardLayout: React.FC<{ children: React.ReactElement }> = ({
                 items={dashboardItems}
               />
             ) : (
-              <MiniSideBar
-                handleDrawerToggle={handleDrawerToggle}
-                items={dashboardItems}
-              />
+              <MiniSideBar handleDrawerToggle={handleDrawerToggle} items={dashboardItems} />
             )}
           </Box>
         )}
@@ -134,14 +114,14 @@ const DashboardLayout: React.FC<{ children: React.ReactElement }> = ({
         </Box>
       </Drawer>
       <AppContent>
-        <Navbar onDrawerToggle={handleDrawerToggle} logout={handleLogout} />
+        <Navbar onDrawerToggle={handleDrawerToggle} />
         <MainContent p={isLgUp ? 4 : 2}>{children}</MainContent>
         <Snackbar
-          open={open}
+          open={snackBar.open}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          onClose={handleSnackbarClose}
+          onClose={closeSnackbar}
         >
-          <Alert severity="error">{message}</Alert>
+          <Alert severity={snackBar.type}>{snackBar.message}</Alert>
         </Snackbar>
       </AppContent>
     </Root>

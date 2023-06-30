@@ -1,7 +1,6 @@
+import { useAuthContext } from 'contexts/AuthContext';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useMemo } from 'react';
-import { useAppSelector } from 'store/hooks';
-import { getUserRoleSelector } from 'store/slices/auth/authSlice';
 
 import reduceChildRoutes from './reduceChildRoutes';
 import { SidebarItemsType } from './types';
@@ -13,7 +12,7 @@ interface SidebarNavListProps {
 
 const SidebarNavList = ({ pages, depth }: SidebarNavListProps) => {
   const { pathname } = useRouter();
-  const userRole = useAppSelector(getUserRoleSelector);
+  const { userRole } = useAuthContext();
 
   const childRoutes: ReactElement[] = useMemo(
     () =>

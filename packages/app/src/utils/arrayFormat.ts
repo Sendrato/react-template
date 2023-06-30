@@ -1,8 +1,6 @@
 export const getArrayOfUniqueObj = (arr: any[], uniqueKey: string): any[] => {
   return arr.reduce((acc, item) => {
-    return acc.find((obj: any) => obj[uniqueKey] === item[uniqueKey])
-      ? [...acc]
-      : [...acc, item];
+    return acc.find((obj: any) => obj[uniqueKey] === item[uniqueKey]) ? [...acc] : [...acc, item];
   }, []);
 };
 

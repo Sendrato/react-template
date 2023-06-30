@@ -1,15 +1,9 @@
+import { useAuthContext } from 'contexts/AuthContext';
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import {
-  getAuthStore,
-  refreshToken,
-  setUpdateSession,
-} from 'store/slices/auth/authSlice';
 
 const useUpdateSession = () => {
-  const { updateSession, token } = useAppSelector(getAuthStore);
+  const { updateSession, token, setUpdateSession, refreshToken } = useAuthContext();
   const [timeInterval, setTimeInterval] = useState<NodeJS.Timeout | null>(null);
-  const dispatch = useAppDispatch();
 
   const refreshInterval = token?.expires_in
     ? token.expires_in * 1000 - 5 * 60 * 1000
@@ -18,9 +12,9 @@ const useUpdateSession = () => {
   useEffect(() => {
     if (updateSession) {
       const interval = setTimeout(() => {
-        dispatch(refreshToken());
+        refreshToken(token);
 
-        dispatch(setUpdateSession(false));
+        setUpdateSession(false);
       }, refreshInterval);
 
       setTimeInterval(interval);

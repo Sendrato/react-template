@@ -2,7 +2,7 @@ import { Grid, Typography } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
 
-import loginImage from '../assets/LoginImg.png';
+import graphics from '../assets/graphics.png';
 import loginLogo from '../assets/loginLogo.png';
 
 const Image = styled.img`
@@ -33,31 +33,33 @@ const ImagesContainer = styled.div`
   }
 `;
 
+const Title = styled(Typography)`
+  color: white;
+  font-weight: 600;
+  margin-bottom: 1rem;
+`;
+
+const Description = styled(Typography)`
+  color: white;
+  font-weight: 400;
+`;
+
 const DesktopImageView = () => {
   return (
     <ImagesContainer>
       <Image src={loginLogo.src} alt="EventOS" />
 
       <Grid container item lg={9} md={9} justifyContent={'center'}>
-        <Grid
-          item
-          container
-          lg={9}
-          md={11}
-          flexDirection={'column'}
-          height={'fit-content'}
-        >
-          <Typography variant="h5" color="white" fontWeight={600} mb={'1rem'}>
-            Next Generation EventOS
-          </Typography>
-          <Typography variant="h6" color="white" fontWeight={400}>
-            Digital experiences, expertly crafted for any event that unify
-            commerce, analytics and visitor experience.
-          </Typography>
+        <Grid item container lg={9} md={11} flexDirection={'column'} height={'fit-content'}>
+          <Title variant="h5">Next Generation EventOS</Title>
+          <Description variant="h6">
+            Digital experiences, expertly crafted for any event that unify commerce, analytics and
+            visitor experience.
+          </Description>
         </Grid>
       </Grid>
       <Grid container justifyContent={'end'}>
-        <Graphics src={loginImage.src} alt="Next Generation EventOS" />
+        <Graphics src={graphics.src} alt="Next Generation EventOS" />
       </Grid>
     </ImagesContainer>
   );
