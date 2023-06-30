@@ -7,9 +7,9 @@ import { Navbar } from 'layouts/Navbar';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import dashboardItems from './Sidebar/dashboardItems';
 import Sidebar from './Sidebar/index';
 import MiniSideBar from './Sidebar/MiniSideBar';
+import dashboardItems from './Sidebar/sidebarItems';
 
 const drawerWidth = 258;
 

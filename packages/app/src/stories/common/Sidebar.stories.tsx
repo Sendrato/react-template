@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import Sidebar from 'layouts/Sidebar';
-import navItems from 'layouts/Sidebar/dashboardItems';
+import navItems from 'layouts/Sidebar/sidebarItems';
 
 const meta: Meta<typeof Sidebar> = {
   title: 'Common/Sidebar',
