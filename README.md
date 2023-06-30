@@ -128,3 +128,25 @@ const mutation = useEntityMutation<unknown, SellerDTO>({
     method: METHOD.POST,
   });
 ```
+
+### The usage useEntityQuery and useEntityMutation together
+If you need to perform a certain mutation and then update the data, you can use a combination of both hooks.
+
+Example:
+```ts
+const { refetch } = useEntityQuery<ListSellers>({
+    entity: '/common/backoffice/onboarding/ListSellers',
+    params: `Start=${page * rows}&PageSize=${rows}`,
+    deps: [page * rows, rows],
+  });
+
+  const { mutateAsync } = useEntityMutation<unknown, SellerDTO>({
+    entity: '/common/backoffice/onboarding/Seller',
+    method: METHOD.POST,
+  });
+
+  const handleCreateSeller = async (body: SellerDTO) => {
+    await mutateAsync({ body });
+    await refetch();
+  };
+```
