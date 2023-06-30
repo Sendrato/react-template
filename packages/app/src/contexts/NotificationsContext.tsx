@@ -1,12 +1,17 @@
 import { NullFunction } from '@interfaces/generated/functions';
-import { IRecord } from '@interfaces/UI/record';
+import { RecordType, TRecord, TSnackbar } from '@interfaces/UI/notification';
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
-type RecordPayload = Omit<IRecord, 'open'> & { timeout?: number };
+type RecordPayload = { message: string; timeout?: number; type?: RecordType };
+type SnackBarPayload = { message: string; timeout?: number; type?: RecordType };
 
 type NotificationsContext = {
-  record: IRecord;
+  record: TRecord;
+  snackBar: TSnackbar;
   openAutoCloseRecord: ((payload: RecordPayload) => void) | NullFunction;
+  closeRecord: VoidFunction | NullFunction;
+  openAutoCloseSnackBar: ((payload: SnackBarPayload) => void) | NullFunction;
+  closeSnackbar: VoidFunction | NullFunction;
 };
 
 const initialState: NotificationsContext = {
@@ -15,7 +20,15 @@ const initialState: NotificationsContext = {
     open: false,
     type: 'success',
   },
+  snackBar: {
+    message: null,
+    open: false,
+    type: 'success',
+  },
   openAutoCloseRecord: () => null,
+  closeRecord: () => null,
+  openAutoCloseSnackBar: () => null,
+  closeSnackbar: () => null,
 };
 
 const NotificationsContext = createContext(initialState);
@@ -25,7 +38,11 @@ interface IProps {
 }
 
 const NotificationsProvider: FC<IProps> = ({ children }) => {
-  const [record, setRecord] = useState<IRecord>(initialState.record);
+  const [record, setRecord] = useState<TRecord>(initialState.record);
+  const [snackBar, setSnackBar] = useState<TSnackbar>(initialState.record);
+
+  const closeSnackbar = () => setSnackBar({ message: null, open: false, type: 'error' });
+  const closeRecord = () => setRecord({ message: null, open: false, type: 'success' });
 
   const openAutoCloseRecord = ({
     message,
@@ -34,14 +51,26 @@ const NotificationsProvider: FC<IProps> = ({ children }) => {
   }: RecordPayload): void => {
     setRecord({ message, open: true, type });
 
-    setTimeout(() => {
-      setRecord({ message: null, open: false, type: 'success' });
-    }, timeout);
+    setTimeout(closeRecord, timeout);
+  };
+
+  const openAutoCloseSnackBar = ({
+    message,
+    timeout = 2000,
+    type = 'error',
+  }: RecordPayload): void => {
+    setSnackBar({ message, open: true, type });
+
+    setTimeout(closeSnackbar, timeout);
   };
 
   const value = {
     record,
+    snackBar,
     openAutoCloseRecord,
+    closeRecord,
+    openAutoCloseSnackBar,
+    closeSnackbar,
   };
 
   return <NotificationsContext.Provider value={value}>{children}</NotificationsContext.Provider>;
