@@ -38,7 +38,7 @@ const useErrorBoundary = (type: NotificationType = 'snackbar', errorMessage?: st
         }
       }
     },
-    [throwNotifications, errorMessage],
+    [throwNotifications, errorMessage, openAutoCloseSnackBar],
   );
 
   return handleError;

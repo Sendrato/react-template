@@ -28,7 +28,7 @@ interface IProps {
   children: ReactNode;
 }
 
-export const AuthProvider: FC<IProps> = ({ children }) => {
+const HistoryProvider: FC<IProps> = ({ children }) => {
   const [history, setHistory] = useState<IRoute[]>([]);
 
   const updateHistory = (payload: IRoute) => {
@@ -47,5 +47,7 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
 
   return <HistoryContext.Provider value={value}>{children}</HistoryContext.Provider>;
 };
+
+export default HistoryProvider;
 
 export const useHistoryContext = () => useContext(HistoryContext);

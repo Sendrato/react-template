@@ -41,7 +41,7 @@ const useEntityMutation = <TData = unknown, TBody = unknown>({
   };
 
   const handleFetch = async ({ body, params: query = '' }: EntityMutationVariables<TBody>) => {
-    const { data } = await api(`${entity}${query ? `?${query}` : ''}`, {
+    const { data } = await api(`entity/${entity}${query ? `?${query}` : ''}`, {
       method,
       data: body && JSON.stringify(body),
       headers: {
