@@ -61,6 +61,16 @@ const authContext = useAuthContext();
 ### Routing
 The React template uses a Next.js router. To create a new page add a file with a name that will match the route on your website to the pages directory. And add the according to module to the module directory for creating a page template. Also, add info about a page to routes.ts to provide information about the page.
 
+```ts
+export const HOME_ROUTE = {
+  pathname: '/',
+  access: ['organiser', 'administrator', 'seller'],
+  title: 'Overview',
+};
+
+export const routes: IRoute[] = [HOME_ROUTE];
+``
+
 To add a link to a page in a Sidebar you should update sidebardItems.ts in the layouts/Sidebar directory:
 
 ```ts
