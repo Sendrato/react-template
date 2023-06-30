@@ -1,9 +1,8 @@
 import { METHOD, SUCCESS_MESSAGE } from '@interfaces/common/backoffice/api';
-import { NotificationType } from '@interfaces/UI/alert';
+import { NotificationType } from '@interfaces/UI/notification';
 import { useAuthContext } from 'contexts/AuthContext';
+import { useNotificationsContext } from 'contexts/NotificationsContext';
 import { useMutation, UseMutationOptions } from 'react-query';
-import { useAppDispatch } from 'store/hooks';
-import { openAutoCloseRecord } from 'store/slices/design/modalsSlice';
 import { addAuthHeader, api } from 'utils';
 
 import useErrorBoundary from './use-error-boundary';
@@ -28,7 +27,7 @@ const useEntityMutation = <TData = unknown, TBody = unknown>({
   errorType,
 }: IEntityMutation<TData, EntityMutationVariables<TBody>>) => {
   const { token, tenant } = useAuthContext();
-  const dispatch = useAppDispatch();
+  const { openAutoCloseRecord } = useNotificationsContext();
 
   const onMutate = (): void => {
     document.body.style.cursor = 'wait';
@@ -37,7 +36,7 @@ const useEntityMutation = <TData = unknown, TBody = unknown>({
   const onError = useErrorBoundary(errorType, errorMessage);
 
   const onSuccess = (): void => {
-    dispatch(openAutoCloseRecord({ type: 'success', message: successMessage }));
+    openAutoCloseRecord({ message: successMessage });
     document.body.style.cursor = 'auto';
   };
 

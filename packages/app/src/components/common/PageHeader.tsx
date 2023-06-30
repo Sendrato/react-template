@@ -1,10 +1,9 @@
 import { Grid } from '@mui/material';
+import { useNotificationsContext } from 'contexts/NotificationsContext';
 import { ReactNode } from 'react';
-import { useAppSelector } from 'store/hooks';
-import { getModalsStore } from 'store/slices/design/modalsSlice';
 import styled from 'styled-components';
 
-import RecordMessage from './MessageModals';
+import RecordMessage from './RecordMessage';
 
 interface IProps {
   withRecord?: boolean;
@@ -12,11 +11,11 @@ interface IProps {
 }
 
 const PageHeader = ({ withRecord = false, children }: IProps) => {
-  const { addedRecord } = useAppSelector(getModalsStore);
+  const { record } = useNotificationsContext();
 
   return (
     <Container>
-      {withRecord && <RecordMessage open={addedRecord.open} message={addedRecord.message} />}
+      {withRecord && <RecordMessage open={record.open} message={record.message} />}
       {children}
     </Container>
   );

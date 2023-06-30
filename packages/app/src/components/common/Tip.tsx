@@ -1,15 +1,16 @@
+import { RecordType } from '@interfaces/UI/notification';
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
 import { Button, Grid, Typography } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
 
-import { AlertContainer, AlertType } from '../styled-mui';
+import { AlertContainer } from '../styled-mui';
 
 interface IProps {
   onClick: () => void;
   message: string;
   actionMessage: string;
-  type?: AlertType;
+  type?: RecordType;
 }
 
 const Tip = ({ onClick, message, actionMessage, type = 'info' }: IProps) => {

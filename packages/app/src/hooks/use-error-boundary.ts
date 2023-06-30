@@ -1,17 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ERROR_MESSAGE } from '@interfaces/common/backoffice/api';
-import { NotificationType } from '@interfaces/UI/alert';
+import { NotificationType } from '@interfaces/UI/notification';
 import { AxiosError } from 'axios';
 import { useAuthContext } from 'contexts/AuthContext';
+import { useNotificationsContext } from 'contexts/NotificationsContext';
 import { useCallback } from 'react';
-import { useAppDispatch } from 'store/hooks';
-import { openAutoCloseRecord } from 'store/slices/design/modalsSlice';
-import { openAutoCloseSnackBar } from 'store/slices/design/snackBar';
 import { handleViolations } from 'utils';
 
 const useErrorBoundary = (type: NotificationType = 'snackbar', errorMessage?: string) => {
   const { refreshToken, setActiveToken, token } = useAuthContext();
-  const dispatch = useAppDispatch();
+  const { openAutoCloseSnackBar, openAutoCloseRecord } = useNotificationsContext();
   const throwNotifications = type === 'snackbar' ? openAutoCloseSnackBar : openAutoCloseRecord;
 
   const handleError = useCallback(
@@ -32,15 +30,15 @@ const useErrorBoundary = (type: NotificationType = 'snackbar', errorMessage?: st
             refreshToken(token);
             break;
           case 420:
-            dispatch(throwNotifications({ message: violations, type: 'error' }));
+            throwNotifications({ message: violations, type: 'error' });
             break;
           default:
-            dispatch(throwNotifications({ message, type: 'error' }));
+            throwNotifications({ message, type: 'error' });
             break;
         }
       }
     },
-    [dispatch, throwNotifications, errorMessage],
+    [throwNotifications, errorMessage],
   );
 
   return handleError;

@@ -1,12 +1,11 @@
 import styled from '@emotion/styled';
 import { Alert, Box, CssBaseline, Paper as MuiPaper, Snackbar } from '@mui/material';
 import { spacing } from '@mui/system';
+import { useNotificationsContext } from 'contexts/NotificationsContext';
 import useMedia from 'hooks/use-media';
 import { Navbar } from 'layouts/Navbar';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { closeSnackbar, getSnackBarStore } from 'store/slices/design/snackBar';
 
 import dashboardItems from './Sidebar/dashboardItems';
 import Sidebar from './Sidebar/index';
@@ -51,16 +50,13 @@ const MainContent = styled(Paper)`
 const DashboardLayout: React.FC<{ children: React.ReactElement }> = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const dispatch = useAppDispatch();
-  const { open, message } = useAppSelector(getSnackBarStore);
+  const { snackBar, closeSnackbar } = useNotificationsContext();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const { pathname } = useRouter();
-
-  const handleSnackbarClose = () => dispatch(closeSnackbar());
 
   const { isLgUp, isMd, isMobile } = useMedia();
 
@@ -121,11 +117,11 @@ const DashboardLayout: React.FC<{ children: React.ReactElement }> = ({ children 
         <Navbar onDrawerToggle={handleDrawerToggle} />
         <MainContent p={isLgUp ? 4 : 2}>{children}</MainContent>
         <Snackbar
-          open={open}
+          open={snackBar.open}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          onClose={handleSnackbarClose}
+          onClose={closeSnackbar}
         >
-          <Alert severity="error">{message}</Alert>
+          <Alert severity={snackBar.type}>{snackBar.message}</Alert>
         </Snackbar>
       </AppContent>
     </Root>

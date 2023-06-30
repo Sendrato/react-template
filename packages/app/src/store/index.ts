@@ -1,10 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-import designReducer from './slices/design';
-
-export const appReducer = combineReducers({
-  design: designReducer,
-});
+export const appReducer = combineReducers({});
 
 const rootReducer = (state: any, action: any) => {
   if (action.type === 'auth/logout') {

@@ -1,8 +1,7 @@
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { Fade, Typography } from '@mui/material';
-import { useAppSelector } from 'store/hooks';
-import { getAddedRecord } from 'store/slices/design/modalsSlice';
+import { useNotificationsContext } from 'contexts/NotificationsContext';
 
 import { AlertContainer } from '../styled-mui';
 
@@ -14,7 +13,9 @@ interface IProps {
 }
 
 const RecordMessage = ({ open, message, top, left }: IProps) => {
-  const { type } = useAppSelector(getAddedRecord);
+  const {
+    record: { type },
+  } = useNotificationsContext();
 
   return (
     <Fade in={open}>

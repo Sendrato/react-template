@@ -1,3 +1,4 @@
+import { RecordType } from '@interfaces/UI/notification';
 import { Box, Grid } from '@mui/material';
 import styled from 'styled-components';
 
@@ -22,12 +23,10 @@ export const Details = styled(Box)`
   font-weight: 500;
 `;
 
-export type AlertType = 'success' | 'info' | 'error';
-
 type AlertContainerProps = {
   $top?: string;
   $left?: string;
-  $type: AlertType;
+  $type: RecordType;
 };
 
 export const AlertContainer = styled(Grid)<AlertContainerProps>`
