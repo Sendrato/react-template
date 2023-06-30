@@ -1,5 +1,5 @@
 {
-  "name": "@sendrato/app",
+  "name": "@react-template/app",
   "version": "0.1.0",
   "main": "src/index.ts",
   "private": true,
@@ -24,7 +24,6 @@
     "@mui/styled-engine": "^5.10.2",
     "@mui/styles": "^5.10.2",
     "@next/bundle-analyzer": "^12.2.5",
-    "@reduxjs/toolkit": "^1.8.5",
     "@sendrato/design-system": "*",
     "@turf/area": "^6.5.0",
     "@types/google-map-react": "^2.1.7",
@@ -46,7 +45,6 @@
     "react-dropzone": "^14.2.3",
     "react-perfect-scrollbar": "^1.5.8",
     "react-query": "^3.39.3",
-    "react-redux": "^8.0.2",
     "sharp": "^0.30.7",
     "sitemap": "^7.1.1",
     "styled-breakpoints": "^11.1.1",

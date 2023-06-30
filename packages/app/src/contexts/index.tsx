@@ -12,7 +12,7 @@ const ContextProvider: FC<IProps> = ({ children }) => {
   return (
     <NotificationsProvider>
       <HistoryProvider>
-        <AuthProvider>{children}</AuthProvider>;
+        <AuthProvider>{children}</AuthProvider>
       </HistoryProvider>
     </NotificationsProvider>
   );

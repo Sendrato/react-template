@@ -1,48 +1,9 @@
+/* eslint-disable react/display-name */
 import { Button } from '@mui/material';
-import { combineReducers, configureStore, createSlice } from '@reduxjs/toolkit';
-import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore';
-import { Meta, StoryObj } from '@storybook/react';
-import { createReduxProvider } from 'stories/utils';
+import { Meta, StoryFn } from '@storybook/react';
 
 import PageHeader from '@components/common/PageHeader';
 import { PageTitle } from '@components/styled-mui';
-
-const createModalsStore = (mockState: Record<string, any>): ToolkitStore =>
-  configureStore({
-    reducer: {
-      design: combineReducers({
-        modals: createSlice({
-          name: 'modal',
-          initialState: mockState,
-          reducers: {},
-        }).reducer,
-      }),
-    },
-  });
-
-const MockedStateSuccessRecord = createModalsStore({
-  addedRecord: {
-    message: 'Successfuly created.',
-    open: true,
-    type: 'success',
-  },
-});
-
-const MockedStateErrorRecord = createModalsStore({
-  addedRecord: {
-    message: 'Something went wrong.',
-    open: true,
-    type: 'error',
-  },
-});
-
-const MockedStateInfoRecord = createModalsStore({
-  addedRecord: {
-    message: 'User already exist.',
-    open: true,
-    type: 'info',
-  },
-});
 
 const meta: Meta<typeof PageHeader> = {
   title: 'Common/PageHeader',
@@ -66,66 +27,19 @@ const meta: Meta<typeof PageHeader> = {
   },
 };
 
-type Story = StoryObj<typeof PageHeader>;
-
-export const OnlyTitle: Story = {
-  args: {
-    children: (
-      <>
-        <PageTitle>PageTitle</PageTitle>
-      </>
-    ),
-  },
+const Template: StoryFn<typeof PageHeader> = (args) => {
+  return (
+    <PageHeader {...args}>
+      <PageTitle>PageTitle</PageTitle>
+      <Button variant="contained">Click</Button>
+    </PageHeader>
+  );
 };
 
-export const WithButton: Story = {
-  args: {
-    children: (
-      <>
-        <PageTitle>PageTitle</PageTitle>
-        <Button variant="contained">Add new</Button>
-      </>
-    ),
-  },
-};
+export const Default = Template.bind({});
 
-export const withSuccessRecord: Story = {
-  decorators: [createReduxProvider(MockedStateSuccessRecord)],
-  args: {
-    withRecord: true,
-    children: (
-      <>
-        <PageTitle>PageTitle</PageTitle>
-        <Button variant="contained">Add new</Button>
-      </>
-    ),
-  },
-};
-
-export const withErrorRecord: Story = {
-  decorators: [createReduxProvider(MockedStateErrorRecord)],
-  args: {
-    withRecord: true,
-    children: (
-      <>
-        <PageTitle>PageTitle</PageTitle>
-        <Button variant="contained">Add new</Button>
-      </>
-    ),
-  },
-};
-
-export const withInfoRecord: Story = {
-  decorators: [createReduxProvider(MockedStateInfoRecord)],
-  args: {
-    withRecord: true,
-    children: (
-      <>
-        <PageTitle>PageTitle</PageTitle>
-        <Button variant="contained">Add new</Button>
-      </>
-    ),
-  },
-};
+Default.bind({
+  withRecord: true,
+});
 
 export default meta;

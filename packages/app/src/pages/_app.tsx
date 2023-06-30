@@ -4,10 +4,8 @@ import Head from 'next/head';
 import { NextSeo } from 'next-seo';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { Provider } from 'react-redux';
 import AuthGuard from 'routes/AuthGuard';
 import RoleGuard from 'routes/RoleGuard';
-import { store } from 'store';
 import { ThemeProvider } from 'styled-components';
 
 import muiTheme from '@sendrato/design-system/theme/muiTheme';
@@ -35,18 +33,16 @@ const App = ({ Component, pageProps }: AppProps) => {
       </Head>
       <StyledEngineProvider injectFirst>
         <QueryClientProvider client={queryClient}>
-          <Provider store={store}>
-            <MuiThemeProvider theme={muiTheme}>
-              <ThemeProvider theme={theme}>
-                <GlobalStyle />
-                <ContextProvider>
-                  <AuthGuard>
-                    <RoleGuard>{getLayout(<Component {...pageProps} />)}</RoleGuard>
-                  </AuthGuard>
-                </ContextProvider>
-              </ThemeProvider>
-            </MuiThemeProvider>
-          </Provider>
+          <MuiThemeProvider theme={muiTheme}>
+            <ThemeProvider theme={theme}>
+              <GlobalStyle />
+              <ContextProvider>
+                <AuthGuard>
+                  <RoleGuard>{getLayout(<Component {...pageProps} />)}</RoleGuard>
+                </AuthGuard>
+              </ContextProvider>
+            </ThemeProvider>
+          </MuiThemeProvider>
           <ReactQueryDevtools initialIsOpen={true} />
         </QueryClientProvider>
       </StyledEngineProvider>

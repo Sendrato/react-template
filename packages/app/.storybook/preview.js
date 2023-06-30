@@ -1,9 +1,8 @@
 /** @type { import('@storybook/react').Preview } */
-
-import { createThemeProvider, createReduxProvider } from 'stories/utils';
+import { ThemeDecorator, ContextDecorator } from 'stories/decorators';
 
 const preview = {
-  decorators: [createThemeProvider(), createReduxProvider()],
+  decorators: [ThemeDecorator, ContextDecorator],
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {

@@ -2,19 +2,19 @@ import { NullFunction } from '@interfaces/generated/functions';
 import { RecordType, TRecord, TSnackbar } from '@interfaces/UI/notification';
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
-type RecordPayload = { message: string; timeout?: number; type?: RecordType };
-type SnackBarPayload = { message: string; timeout?: number; type?: RecordType };
+export type RecordPayload = { message: string; timeout?: number; type?: RecordType };
+export type SnackBarPayload = { message: string; timeout?: number; type?: RecordType };
 
-type NotificationsContext = {
+export interface INotificationsContext {
   record: TRecord;
   snackBar: TSnackbar;
   openAutoCloseRecord: ((payload: RecordPayload) => void) | NullFunction;
   closeRecord: VoidFunction | NullFunction;
   openAutoCloseSnackBar: ((payload: SnackBarPayload) => void) | NullFunction;
   closeSnackbar: VoidFunction | NullFunction;
-};
+}
 
-const initialState: NotificationsContext = {
+export const initialState: INotificationsContext = {
   record: {
     message: null,
     open: false,
@@ -31,7 +31,7 @@ const initialState: NotificationsContext = {
   closeSnackbar: () => null,
 };
 
-const NotificationsContext = createContext(initialState);
+export const NotificationsContext = createContext(initialState);
 
 interface IProps {
   children: ReactNode;
