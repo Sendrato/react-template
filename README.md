@@ -150,3 +150,63 @@ const { refetch } = useEntityQuery<ListSellers>({
     await refetch();
   };
 ```
+
+### List of custom hooks
+The react-template has list of custom hooks that help faster develop new feature.
+Common custom hooks:
+1. usePagination.
+2. useSort.
+4. useKey.
+5. useMedia.
+8. useEventListener.
+
+And also hooks for work with a table:
+1. useSelectedRow.
+2. usePaginationState.
+3. useSortState.   
+
+#### usePagination
+
+The usePagination hook returns config for pagination that include such properties:
+1. page - the current page.
+2.  rows - the current rows count per page.
+3.  handleChangePage - a function for changing the current page,
+4. handleChangeRows - a function for changing the current rows count,
+5. setPage - the setState action for setting new page value.
+6. setRows - the setState action for setting new rows value.
+#### useSort
+
+The useSort hook return config for sorting data that include such properties:
+1. sortBy - the property by which to sort
+2. sortDirection - ASC | DESC,
+3. setSortBy  - the setState action for setting new sortBy value,
+4. setSortDirection - the setState action for setting new sortDirection value,
+
+#### useKey
+
+The useKey hook serves to add listeners to keyboard events and gets properties:
+1. callback - the function that will perform by clicking on a specific key.
+2. key - the code of some keyboard item.
+
+```ts
+useKey(() => console.log('enter'), 'ENTER');
+```
+
+#### useMedia
+
+The hook useMedia returns three boolean values: isMobile, isTablet, and isDesktop. One of these values is true depending on the current window width.
+
+```ts
+const { isMobile, isTablet, isDesktop } = useMedia();
+```
+#### useEventListener
+The hook useEventListener adds a listener to some event and removes it after unmounting the component where the listener was added. For using it with some UI elements, you can pass a ref on this element as a third argument.  
+
+```ts
+const buttonRef = useRef<HTMLButtonElement | null>(null)
+const  onScroll = () => console.log('window scrolled!');
+const  onClick = (event: Event) => console.log('button clicked!');
+
+useEventListener('scroll', onScroll);
+useEventListener('click', onClick, buttonRef)
+```
