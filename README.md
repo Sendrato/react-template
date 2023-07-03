@@ -216,3 +216,77 @@ const  onClick = (event: Event) => console.log('button clicked!');
 useEventListener('scroll', onScroll);
 useEventListener('click', onClick, buttonRef)
 ```
+
+#### useSelectedRow
+
+The hook useSelectedRow returns sortConfig for a Table that includes:
+1. selected - an array of selected items.
+2. setSelected - a setState action for updating the array of selected items.
+3. onSelect - a function that will select one element.
+4. selectAll - a function that will select all elements.
+5. selectedKey - the key by which the elements are compared.
+
+Hook useSelectedRow get such arguments:
+1. data - array with initial data.
+2. selectedKey - the key by which the elements are compared.
+
+Also for declaring the type of item from returned array better-set item type using Generics.
+
+```ts
+type TProduct = {
+id: string;
+price: number;
+description: string;
+};
+
+const { data } = useEntityQuery(
+	entity: "common/backoffice/products/ProductsList"
+);
+
+const selectedConfig = useSelectedRow<TProduct>(data, 'id');
+```
+
+#### useSortState 
+
+The useSortState is hook for a data sorting on a client side. He gets an array of initial data and return object with next properties:
+1. sortItems - an sorted array.
+2.  sortBy - the property by which to sort.
+3. sortDirection - ASC | DESC,
+4. setSortBy  - the setState action for set new sortBy value.
+5. setSortDirection - the setState action for set new sortDirection value.
+6. handleSort - function for sorting data.
+
+```ts
+const { data } = useEntityQuery(
+	entity: "common/backoffice/products/ProductsList"
+);
+
+const {sortItems, handleSort, sortBy, sortDirection} = useSortState(data);
+
+useEffect(() => {
+	handleSort(sortBy, sortDirection)
+}, [sortBy, sortDirection]);
+```
+
+#### usePaginationState
+The usePaginationState is a hook for pagination on the client side. He gets an array of initial data and returns an object with the next properties:
+1. showData - an array of items on a current page.
+2. page - the current page.
+3. rows - the current rows count per page.
+4. handleChangePage - the function for changing pages,
+5. handleChangeRows - the function for changing rows,
+6. setPage - the setState action for setting new page value.
+7. setRows - the setState action for setting new rows value.
+8. handlePaginate - the function for pagination data;
+
+```ts
+const { data } = useEntityQuery(
+	entity: "common/backoffice/products/ProductsList"
+);
+
+const {showData, handlePaginate page, rows} = usePaginationState(data);
+
+useEffect(() => {
+	handlePaginate(page, rows)
+}, [page, rows]);
+```
