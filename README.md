@@ -152,7 +152,7 @@ const { refetch } = useEntityQuery<ListSellers>({
 ```
 
 ### List of custom hooks
-The react-template has list of custom hooks that help faster develop new feature.
+The react-template has a list of custom hooks that help faster develop new features.
 Common custom hooks:
 1. usePagination.
 2. useSort.
@@ -174,6 +174,9 @@ The usePagination hook returns config for pagination that include such propertie
 4. handleChangeRows - a function for changing the current rows count,
 5. setPage - the setState action for setting new page value.
 6. setRows - the setState action for setting new rows value.
+```ts
+const { page, rows, handleChangePage, handleChangeRows } = usePagination();
+```
 #### useSort
 
 The useSort hook return config for sorting data that include such properties:
@@ -182,8 +185,11 @@ The useSort hook return config for sorting data that include such properties:
 3. setSortBy  - the setState action for setting new sortBy value,
 4. setSortDirection - the setState action for setting new sortDirection value,
 
-#### useKey
+```ts
+const { sortBy, sortDirection, setSortBy, setSortDirection } = useSort();
+```
 
+#### useKey
 The useKey hook serves to add listeners to keyboard events and gets properties:
 1. callback - the function that will perform by clicking on a specific key.
 2. key - the code of some keyboard item.
