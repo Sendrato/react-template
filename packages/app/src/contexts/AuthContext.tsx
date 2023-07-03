@@ -24,7 +24,7 @@ interface IResetPayload {
   tenant: string;
 }
 
-interface AuthContext {
+export interface IAuthContext {
   token: IToken | null;
   isAuth: boolean;
   loading: boolean;
@@ -48,7 +48,7 @@ interface AuthContext {
   getUserRole: ((access_token: string, tenant: string) => Promise<IUserRole>) | NullFunction;
 }
 
-const initialValues: AuthContext = {
+export const initialValues: IAuthContext = {
   token: null,
   isAuth: false,
   loading: false,
@@ -72,7 +72,7 @@ const initialValues: AuthContext = {
   getUserRole: () => null,
 };
 
-const AuthContext = createContext(initialValues);
+export const AuthContext = createContext(initialValues);
 
 interface IProps {
   children: ReactNode;
