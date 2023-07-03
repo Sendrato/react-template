@@ -151,6 +151,24 @@ const { refetch } = useEntityQuery<ListSellers>({
   };
 ```
 
+### Websocket and useEntityWebsocket hook
+
+The useEntityWebsocket serves for convenient work with WebSockets. The hook gets the object with such arguments as:
+1. entity - string for SUBSCRIBE and UNSUBSCRIBE on WS.
+2.  handleWsMessage - function for  handling messages from WS.
+
+```ts
+const [messages, setMessages] =  useState([]);
+const  saveWsMessages  = (value) => {
+	setMessages((prev) => [...prev, value]);
+};
+
+useEntityWebsoket({
+	entity: `common/backoffice/chat/Chat?Recipient=${email}`,
+	handleWsMessage: saveWsMessages,
+});
+```
+
 ### List of custom hooks
 The react-template has a list of custom hooks that help faster develop new features.
 Common custom hooks:
