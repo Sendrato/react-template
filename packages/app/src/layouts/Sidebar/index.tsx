@@ -55,9 +55,9 @@ export interface SidebarProps {
   }[];
 }
 
-const Sidebar = ({ items, ...rest }: SidebarProps) => {
+const Sidebar = ({ items, onClose, ...rest }: SidebarProps) => {
   return (
-    <Drawer {...rest}>
+    <Drawer {...rest} onClose={onClose}>
       <Link href="/">
         <Brand>
           <Logo />

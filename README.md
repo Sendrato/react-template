@@ -150,3 +150,161 @@ const { refetch } = useEntityQuery<ListSellers>({
     await refetch();
   };
 ```
+
+### Websocket and useEntityWebsocket hook
+
+The useEntityWebsocket serves for convenient work with WebSockets. The hook gets the object with such arguments as:
+1. entity - string for SUBSCRIBE and UNSUBSCRIBE on WS.
+2.  handleWsMessage - function for  handling messages from WS.
+
+```ts
+const [messages, setMessages] =  useState([]);
+const  saveWsMessages  = (value) => {
+	setMessages((prev) => [...prev, value]);
+};
+
+useEntityWebsoket({
+	entity: `common/backoffice/chat/Chat?Recipient=${email}`,
+	handleWsMessage: saveWsMessages,
+});
+```
+
+### List of custom hooks
+The react-template has a list of custom hooks that help faster develop new features.
+Common custom hooks:
+1. usePagination.
+2. useSort.
+4. useKey.
+5. useMedia.
+8. useEventListener.
+
+And also hooks for work with a table:
+1. useSelectedRow.
+2. usePaginationState.
+3. useSortState.   
+
+#### usePagination
+
+The usePagination hook returns config for pagination that include such properties:
+1. page - the current page.
+2.  rows - the current rows count per page.
+3.  handleChangePage - a function for changing the current page,
+4. handleChangeRows - a function for changing the current rows count,
+5. setPage - the setState action for setting new page value.
+6. setRows - the setState action for setting new rows value.
+```ts
+const { page, rows, handleChangePage, handleChangeRows } = usePagination();
+```
+#### useSort
+
+The useSort hook return config for sorting data that include such properties:
+1. sortBy - the property by which to sort
+2. sortDirection - ASC | DESC,
+3. setSortBy  - the setState action for setting new sortBy value,
+4. setSortDirection - the setState action for setting new sortDirection value,
+
+```ts
+const { sortBy, sortDirection, setSortBy, setSortDirection } = useSort();
+```
+
+#### useKey
+The useKey hook serves to add listeners to keyboard events and gets properties:
+1. callback - the function that will perform by clicking on a specific key.
+2. key - the code of some keyboard item.
+
+```ts
+useKey(() => console.log('enter'), 'ENTER');
+```
+
+#### useMedia
+
+The hook useMedia returns three boolean values: isMobile, isTablet, and isDesktop. One of these values is true depending on the current window width.
+
+```ts
+const { isMobile, isTablet, isDesktop } = useMedia();
+```
+#### useEventListener
+The hook useEventListener adds a listener to some event and removes it after unmounting the component where the listener was added. For using it with some UI elements, you can pass a ref on this element as a third argument.  
+
+```ts
+const buttonRef = useRef<HTMLButtonElement | null>(null)
+const  onScroll = () => console.log('window scrolled!');
+const  onClick = (event: Event) => console.log('button clicked!');
+
+useEventListener('scroll', onScroll);
+useEventListener('click', onClick, buttonRef)
+```
+
+#### useSelectedRow
+
+The hook useSelectedRow returns sortConfig for a Table that includes:
+1. selected - an array of selected items.
+2. setSelected - a setState action for updating the array of selected items.
+3. onSelect - a function that will select one element.
+4. selectAll - a function that will select all elements.
+5. selectedKey - the key by which the elements are compared.
+
+Hook useSelectedRow get such arguments:
+1. data - array with initial data.
+2. selectedKey - the key by which the elements are compared.
+
+Also for declaring the type of item from returned array better-set item type using Generics.
+
+```ts
+type TProduct = {
+id: string;
+price: number;
+description: string;
+};
+
+const { data } = useEntityQuery(
+	entity: "common/backoffice/products/ProductsList"
+);
+
+const selectedConfig = useSelectedRow<TProduct>(data, 'id');
+```
+
+#### useSortState 
+
+The useSortState is hook for a data sorting on a client side. He gets an array of initial data and return object with next properties:
+1. sortItems - an sorted array.
+2.  sortBy - the property by which to sort.
+3. sortDirection - ASC | DESC,
+4. setSortBy  - the setState action for set new sortBy value.
+5. setSortDirection - the setState action for set new sortDirection value.
+6. handleSort - function for sorting data.
+
+```ts
+const { data } = useEntityQuery(
+	entity: "common/backoffice/products/ProductsList"
+);
+
+const {sortItems, handleSort, sortBy, sortDirection} = useSortState(data);
+
+useEffect(() => {
+	handleSort(sortBy, sortDirection)
+}, [sortBy, sortDirection]);
+```
+
+#### usePaginationState
+The usePaginationState is a hook for pagination on the client side. He gets an array of initial data and returns an object with the next properties:
+1. showData - an array of items on a current page.
+2. page - the current page.
+3. rows - the current rows count per page.
+4. handleChangePage - the function for changing pages,
+5. handleChangeRows - the function for changing rows,
+6. setPage - the setState action for setting new page value.
+7. setRows - the setState action for setting new rows value.
+8. handlePaginate - the function for pagination data;
+
+```ts
+const { data } = useEntityQuery(
+	entity: "common/backoffice/products/ProductsList"
+);
+
+const {showData, handlePaginate page, rows} = usePaginationState(data);
+
+useEffect(() => {
+	handlePaginate(page, rows)
+}, [page, rows]);
+```

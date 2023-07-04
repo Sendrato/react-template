@@ -98,7 +98,7 @@ const SidebarNavListItem = ({
   if (href) {
     return (
       <Link href={href} passHref>
-        <Item depth={depth} className={pathname == href ? 'active' : ''} activeclassname="active">
+        <Item depth={depth} className={pathname === href ? 'active' : ''} activeclassname="active">
           {Icon && <Icon />}
           <Title depth={depth}>{title}</Title>
         </Item>
