@@ -14,7 +14,7 @@ interface IProps {
 }
 
 const AuthGuard = ({ children }: IProps) => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const { error, logout, setError, getUserRole, refreshToken, setToken, setUserEmail } =
     useAuthContext();
 

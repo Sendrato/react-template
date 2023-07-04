@@ -1,7 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import styled from '@emotion/styled';
 import { Box, Paper, Typography } from '@mui/material';
-import React from 'react';
+import { useAuthContext } from 'contexts/AuthContext';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+
+import { PageLoader } from '@sendrato/design-system/components/PageLoader';
 
 import DesktopImageView from '../components/DesktopImageView';
 import MobileImageView from '../components/MobileImageView';
@@ -53,21 +57,41 @@ const Container = styled(Box)`
   }
 `;
 
-const LoginPage = () => (
-  <>
-    <MobileImageView />
-    <Container>
-      <DesktopImageView />
-      <Wrapper>
-        <div>
-          <Typography component="h1" variant="h5" marginBottom={'1rem'}>
-            Login into eventOS
-          </Typography>
-          <SignIn />
-        </div>
-      </Wrapper>
-    </Container>
-  </>
-);
+const LoginPage = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const { isAuth, loading } = useAuthContext();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isAuth) {
+      router.push('/');
+    }
+    if (!isAuth && !loading) {
+      setIsLoading(false);
+    }
+  }, [isAuth, router, loading]);
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
+  return (
+    <>
+      <MobileImageView />
+      <Container>
+        <DesktopImageView />
+        <Wrapper>
+          <div>
+            <Typography component="h1" variant="h5" marginBottom={'1rem'}>
+              Login into eventOS
+            </Typography>
+            <SignIn />
+          </div>
+        </Wrapper>
+      </Container>
+    </>
+  );
+};
 
 export default LoginPage;
