@@ -13,7 +13,7 @@ export interface ITableBlockProps {
 export const TableBlock = ({ children, withContainer, gap, sx }: ITableBlockProps) => {
   if (withContainer) {
     return (
-      <StyledPaper sx={sx} $padding={gap}>
+      <StyledPaper sx={sx} padding={gap}>
         {children}
       </StyledPaper>
     );

@@ -2,9 +2,11 @@ import { METHOD } from '@interfaces/common/backoffice/api';
 import { ListSellers, SellerDTO } from '@interfaces/common/backoffice/onboarding';
 import { Button } from '@mui/material';
 import { useEntityMutation, useEntityQuery, usePagination } from 'hooks';
+import useToggle from 'hooks/use-toggle';
 import DashboardLayout from 'layouts/DashboardLayout';
 import { ReactElement } from 'react';
 
+import Modal from '@components/common/Modal';
 import PageHeader from '@components/common/PageHeader';
 import { PageTitle } from '@components/styled-mui';
 import GenericTable from '@components/Table/GenericTable';
@@ -31,6 +33,7 @@ const sellersTableConfig: ITableDataKeys[] = [
 ];
 
 const SellersPage = () => {
+  const [open, toggle] = useToggle(false);
   const paginationConfig = usePagination();
   const { page, rows } = paginationConfig;
 
@@ -54,6 +57,9 @@ const SellersPage = () => {
     <>
       <PageHeader withRecord>
         <PageTitle variant="h4">Onboarding</PageTitle>
+        <Button variant="contained" onClick={toggle}>
+          Report
+        </Button>
       </PageHeader>
 
       <GenericTable
@@ -68,6 +74,9 @@ const SellersPage = () => {
           </Button>
         }
       />
+      <Modal title="test" open={open} close={toggle}>
+        test
+      </Modal>
     </>
   );
 };

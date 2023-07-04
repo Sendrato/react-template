@@ -1,5 +1,6 @@
 import { TableCell as MuiTableCell } from '@mui/material';
 import styled from 'styled-components';
+import { withForwardProps } from 'utils/withForwardProps';
 
 export const MediumCell = styled(MuiTableCell)`
   padding: 1rem 0;
@@ -13,15 +14,17 @@ export const MediumCell = styled(MuiTableCell)`
   color: #1e293b;
 `;
 
-export const LabelCell = styled(MuiTableCell)<{
-  $width?: string;
-}>`
+type LabelCellProps = { width?: string };
+
+export const LabelCell = styled(MuiTableCell).withConfig(
+  withForwardProps(['width']),
+)<LabelCellProps>`
   padding: 1rem 0;
   color: #475569;
   font-weight: 500;
   font-size: 14px;
   line-height: 22px;
-  width: ${(props) => props.$width || '30%'};
+  width: ${({ width }) => width || '30%'};
 `;
 
 export const LinkCell = styled(MediumCell)`

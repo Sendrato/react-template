@@ -19,7 +19,7 @@ const RecordMessage = ({ open, message, top, left }: IProps) => {
 
   return (
     <Fade in={open}>
-      <AlertContainer $type={type} container $top={top} $left={left}>
+      <AlertContainer type={type} container top={top} left={left}>
         {type === 'success' ? (
           <CheckCircleOutlineIcon color={type} />
         ) : (

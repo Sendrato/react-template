@@ -17,7 +17,7 @@ const ErrorComponent = ({ title = 'Not Found', message = 'Something went wrong' 
 
   return (
     <BoxStyled>
-      <StyledPaper $padding="1rem">
+      <StyledPaper padding="1rem">
         <InnerContainer>
           <Image src={logoImage.src} alt="EventOS" />
 

@@ -15,7 +15,7 @@ interface IProps {
 
 const Tip = ({ onClick, message, actionMessage, type = 'info' }: IProps) => {
   return (
-    <Message $type={type} container>
+    <Message type={type} container>
       <Grid
         item
         container

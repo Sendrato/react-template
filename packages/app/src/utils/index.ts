@@ -14,3 +14,4 @@ export * from './smothScroll';
 export * from './sortHelper';
 export * from './toTitleCase';
 export * from './weatherFormat';
+export * from './withForwardProps';

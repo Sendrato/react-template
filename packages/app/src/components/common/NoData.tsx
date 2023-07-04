@@ -16,7 +16,7 @@ export const NoDataMessage = ({ message }: { message: string }) => (
 
 const NoData = ({ message }: { message: string }) => {
   return (
-    <StyledPaper $padding="1rem">
+    <StyledPaper padding="1rem">
       <NoDataMessage message={message} />
     </StyledPaper>
   );

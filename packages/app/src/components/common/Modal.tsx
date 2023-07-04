@@ -26,7 +26,7 @@ const Modal = ({ title, open, close, mobileScreen = true, children, actions, wid
         {title}
         <CloseIconModal onClick={close} />
       </DialogTitle>
-      <DialogContent $width={width}>{children}</DialogContent>
+      <DialogContent width={width}>{children}</DialogContent>
       {actions ? <DialogActions>{actions}</DialogActions> : null}
     </Dialog>
   );

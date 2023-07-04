@@ -1,6 +1,7 @@
 import { TableRow } from '@mui/material';
 import { ReactNode } from 'react';
 import styled from 'styled-components';
+import { withForwardProps } from 'utils';
 
 export const TableHeadRow = ({
   children,
@@ -9,7 +10,7 @@ export const TableHeadRow = ({
   children: ReactNode;
   noWrapCell?: boolean;
 }) => {
-  return <TableRowStyled $noWrap={noWrapCell}>{children}</TableRowStyled>;
+  return <HeadRow noWrap={noWrapCell}>{children}</HeadRow>;
 };
 
 export const TableBodyRow = ({
@@ -31,9 +32,10 @@ export const TableBorderRow = styled(TableRow)`
   }
 `;
 
-const TableRowStyled = styled(TableRow)<{ $noWrap?: boolean }>`
-  background-color: #f8fafc;
+type HeadRow = { noWrap?: boolean };
 
+const HeadRow = styled(TableRow).withConfig(withForwardProps(['noWrap']))<HeadRow>`
+  background-color: #f8fafc;
   > th,
   span {
     border: none;
@@ -42,7 +44,7 @@ const TableRowStyled = styled(TableRow)<{ $noWrap?: boolean }>`
     line-height: 24px;
     text-transform: uppercase;
     color: #64748b;
-    white-space: ${({ $noWrap }) => ($noWrap ? 'nowrap' : 'normal')};
+    white-space: ${({ noWrap }) => (noWrap ? 'nowrap' : 'normal')};
   }
 `;
 
