@@ -1,6 +1,7 @@
 import { TJustifyContent } from '@interfaces/css';
 import { Button, Grid } from '@mui/material';
 import styled from 'styled-components';
+import { withForwardProps } from 'utils';
 
 export const GreyButton = styled(Button)`
   color: #f8fafc;
@@ -33,21 +34,25 @@ export const OutlinedGrayButton = styled(Button)`
   }
 `;
 
-interface IButtonGroup {
-  $justify?: {
+type ButtonGroupProps = {
+  justify?: {
     sm?: TJustifyContent;
     md?: TJustifyContent;
   };
-  $columnGap?: string;
-}
+  columnGap?: string;
+};
 
-export const ButtonGroup = styled(Grid)<IButtonGroup>`
+const buttonGroupProps = ['justify', 'columnGap'];
+
+export const ButtonGroup = styled(Grid).withConfig(
+  withForwardProps(buttonGroupProps),
+)<ButtonGroupProps>`
   align-items: center;
   display: flex;
   column-gap: 1rem;
-  justify-content: ${({ $justify }) => $justify?.md || 'flex-start'};
+  justify-content: ${({ justify }) => justify?.md || 'flex-start'};
 
   @media (max-width: 900px) {
-    justify-content: ${({ $justify }) => $justify?.sm || 'flex-start'};
+    justify-content: ${({ justify }) => justify?.sm || 'flex-start'};
   }
 `;

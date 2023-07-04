@@ -29,6 +29,7 @@ export interface IAuthContext {
   isAuth: boolean;
   loading: boolean;
   error: null | string;
+  resetError: null | string;
   tenant: string;
   userRole: null | IUserRole;
   resetFinished: boolean;
@@ -38,6 +39,7 @@ export interface IAuthContext {
   setToken: Dispatch<SetStateAction<IToken | null>> | NullFunction;
   setUserEmail: Dispatch<SetStateAction<string | null>> | NullFunction;
   setError: Dispatch<SetStateAction<string | null>> | NullFunction;
+  setResetError: Dispatch<SetStateAction<string | null>> | NullFunction;
   setUpdateSession: Dispatch<SetStateAction<boolean>> | NullFunction;
   setActiveToken: Dispatch<SetStateAction<boolean>> | NullFunction;
   getToken: ((payload: ITokenPayload) => Promise<IToken | void>) | NullFunction;
@@ -53,6 +55,7 @@ export const initialValues: IAuthContext = {
   isAuth: false,
   loading: false,
   error: null,
+  resetError: null,
   tenant: 'senduku',
   userRole: null,
   resetFinished: false,
@@ -62,6 +65,7 @@ export const initialValues: IAuthContext = {
   setToken: () => null,
   setUserEmail: () => null,
   setError: () => null,
+  setResetError: () => null,
   setUpdateSession: () => null,
   setActiveToken: () => null,
   getToken: () => null,
@@ -83,6 +87,7 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [resetError, setResetError] = useState<string | null>(null);
   const [tenant, setTenant] = useState<string>('ras2023');
   const [userRole, setUserRole] = useState<IUserRole | null>(null);
   const [resetFinished, setResetFinished] = useState<boolean>(false);
@@ -106,9 +111,7 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
 
   const getToken = async ({ code, tenant }: ITokenPayload): Promise<IToken | void> => {
     try {
-      setLoading(true);
       const token = await authorizationCode(code, tenant);
-      setLoading(false);
       setToken(token.data);
       setIsAuth(true);
       localStorage.setItem('token', JSON.stringify(token.data));
@@ -118,7 +121,6 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
     } catch (err) {
       if (err instanceof AxiosError) {
         setError(err.message);
-        setLoading(false);
       }
     }
   };
@@ -152,7 +154,13 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
         if (res) {
           await getUserRole(res.access_token, res.tenant);
         }
-      } else if (error) {
+
+        setError(null);
+        setLoading(false);
+      }
+
+      if (error) {
+        console.log(error);
         setError('Invalid username / password combination');
         setLoading(false);
       }
@@ -222,11 +230,12 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
           'x-navajo-tenant': tenant,
         },
       });
+      setLoading(false);
       setResetFinished(true);
       return response.data;
     } catch (err) {
       if (err instanceof AxiosError) {
-        setError(err.message);
+        setResetError(err.message);
         setLoading(false);
       }
     }
@@ -249,6 +258,7 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
     token,
     isAuth,
     error,
+    resetError,
     tenant,
     loading,
     userRole,
@@ -260,6 +270,7 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
     setToken,
     setUserEmail,
     setError,
+    setResetError,
     setActiveToken,
     getToken,
     login,

@@ -175,10 +175,13 @@ const GenericTable = <TData extends Record<string, any>>({
       {!children || !paginationConfig ? null : (
         <TablePagination
           backIconButtonProps={{
-            disabled: loading,
+            disabled: loading || paginationConfig.page === 0,
           }}
           nextIconButtonProps={{
-            disabled: loading,
+            disabled:
+              loading ||
+              paginationConfig.page >=
+                Math.floor(paginationConfig.totalPage / paginationConfig.rows),
           }}
           rowsPerPageOptions={[10, 25, 50, 100]}
           component="div"

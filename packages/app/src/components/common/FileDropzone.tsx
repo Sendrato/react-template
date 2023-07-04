@@ -19,7 +19,6 @@ interface IProps {
   setBase64: Dispatch<SetStateAction<null | string>>;
   setSizes?: Dispatch<SetStateAction<null | ISize>>;
   accept?: Accept;
-  maxFiles?: number;
   maxSize?: number;
   displayFile?: boolean;
 }
@@ -33,7 +32,6 @@ const FileDropzone = ({
     'image/*': ['.png', '.gif', '.jpeg', '.jpg', '.svg'],
   },
   setSizes,
-  maxFiles = 1,
   maxSize = 100000000,
   displayFile = true,
 }: IProps) => {
@@ -57,7 +55,7 @@ const FileDropzone = ({
 
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     accept,
-    maxFiles,
+    maxFiles: 1,
     maxSize,
     onDrop: setSizes && onDrop,
   });

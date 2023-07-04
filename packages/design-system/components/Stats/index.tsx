@@ -8,7 +8,7 @@ import {
 import React from 'react';
 import styled from 'styled-components';
 
-const Card = styled(MuiCard)<{ $illustration?: string }>`
+const Card = styled(MuiCard)<{ illustration?: string }>`
   position: relative;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   border-radius: 10px;
@@ -40,11 +40,11 @@ const Chip = styled(MuiChip)`
 `;
 
 const Percentage = styled(Typography)<{
-  $percentagecolor: string;
-  $illustration?: string;
+  percentagecolor: string;
+  illustration?: string;
 }>`
   span {
-    color: ${(props) => props.$percentagecolor};
+    color: ${({ percentagecolor }) => percentagecolor};
     font-weight: ${(props) => (props as any).theme.typography.fontWeightBold};
     padding: 2px;
     border-radius: 3px;
@@ -70,7 +70,7 @@ const Stats = ({
   illustration,
 }: StatsProps) => {
   return (
-    <Card $illustration={illustration}>
+    <Card illustration={illustration}>
       <CardContent>
         <Typography variant="h6" mb={1}>
           {title}
@@ -82,8 +82,8 @@ const Stats = ({
           <Percentage
             variant="subtitle2"
             color="textSecondary"
-            $percentagecolor={percentageColor}
-            $illustration={illustration}
+            percentagecolor={percentageColor}
+            illustration={illustration}
           >
             <span>{percentageText}</span> Since last week
           </Percentage>

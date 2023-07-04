@@ -12,12 +12,12 @@ interface IProps {
   message?: string;
 }
 
-const ErrorNotification = ({ title = 'Not Found', message = 'Something went wrong' }: IProps) => {
+const ErrorComponent = ({ title = 'Not Found', message = 'Something went wrong' }: IProps) => {
   const router = useRouter();
 
   return (
     <BoxStyled>
-      <StyledPaper $padding="1rem">
+      <StyledPaper padding="1rem">
         <InnerContainer>
           <Image src={logoImage.src} alt="EventOS" />
 
@@ -69,4 +69,4 @@ const BoxStyled = styled(Box)`
     width: 35vw;
   }
 `;
-export default ErrorNotification;
+export default ErrorComponent;

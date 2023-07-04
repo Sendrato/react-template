@@ -25,22 +25,20 @@ const EnhancedTableTooltip = ({
   return (
     <>
       {!!title || !!tooltipComponent ? (
-        <TableTitleContainer $direction={isMobile ? 'column' : 'row'}>
+        <TableTitleContainer direction={isMobile ? 'column' : 'row'}>
           <TableTitle>{title}</TableTitle>
           {tooltipComponent || null}
         </TableTitleContainer>
       ) : null}
       {hasSelect && selected && (
-        <SelectedContainer $gap={gap}>
-          {selected?.length > 0 && selectedComponent}
-        </SelectedContainer>
+        <SelectedContainer gap={gap}>{selected?.length > 0 && selectedComponent}</SelectedContainer>
       )}
     </>
   );
 };
 
-const SelectedContainer = styled.div<{ $gap: string }>`
-  margin-top: ${({ $gap }) => $gap};
+const SelectedContainer = styled.div<{ gap: string }>`
+  margin-top: ${({ gap }) => gap};
 `;
 
 export default EnhancedTableTooltip;

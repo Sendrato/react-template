@@ -5,6 +5,7 @@ import {
   DialogTitle as MuiDialogTitle,
 } from '@mui/material';
 import styled from 'styled-components';
+import { withForwardProps } from 'utils';
 
 export const Dialog = styled(MuiDialog);
 
@@ -16,8 +17,12 @@ export const DialogTitle = styled(MuiDialogTitle)`
   padding: 2rem 2rem 1rem 2rem;
 `;
 
-export const DialogContent = styled(MuiDialogContent)<{ $width?: string }>`
-  width: ${({ $width }) => $width || '580px'};
+type DialogContentProps = { width?: string };
+
+export const DialogContent = styled(MuiDialogContent).withConfig(
+  withForwardProps(['width']),
+)<DialogContentProps>`
+  width: ${({ width }) => width || '580px'};
   box-sizing: border-box;
 
   @media (max-width: 900px) {

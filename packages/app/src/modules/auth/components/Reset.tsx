@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import {
   Alert as MuiAlert,
   Button as MuiButton,
+  CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
@@ -25,7 +26,9 @@ const TextField = styled(MuiTextField)<{ my?: number }>(spacing);
 const Button = styled(MuiButton)<{ mt?: number }>(spacing);
 
 function Reset() {
-  const { resetPassword, loading, error } = useAuthContext();
+  const { resetPassword, loading, resetError, setResetError } = useAuthContext();
+
+  const closeAlert = () => setResetError(null);
 
   return (
     <Formik
@@ -43,7 +46,11 @@ function Reset() {
     >
       {({ errors, handleBlur, handleChange, handleSubmit, touched, values, setFieldValue }) => (
         <form noValidate onSubmit={handleSubmit}>
-          {error && <Alert severity="error">{error}</Alert>}
+          {resetError && (
+            <Alert severity="error" onClose={closeAlert}>
+              {resetError}
+            </Alert>
+          )}
           <TextField
             type="email"
             name="email"
@@ -80,6 +87,7 @@ function Reset() {
             mt={2}
           >
             Reset
+            {loading && <CircularProgress size={20} color="inherit" sx={{ marginLeft: '1rem' }} />}
           </Button>
           <Link href="/login">
             <Button type="button" variant="text" fullWidth color="primary" mt={2}>

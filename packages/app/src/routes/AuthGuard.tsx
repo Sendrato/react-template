@@ -14,7 +14,7 @@ interface IProps {
 }
 
 const AuthGuard = ({ children }: IProps) => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const { error, logout, setError, getUserRole, refreshToken, setToken, setUserEmail } =
     useAuthContext();
 
@@ -26,7 +26,7 @@ const AuthGuard = ({ children }: IProps) => {
   const handleError = () => {
     router.push('/login');
     logout();
-    setError('The token has expired or been lost. Please log in again.');
+    setError(error || 'The token has expired or been lost. Please log in again.');
     setLoading(false);
   };
 
@@ -51,10 +51,13 @@ const AuthGuard = ({ children }: IProps) => {
 
       const userEmail = JSON.parse(localStorage.getItem('userEmail') || JSON.stringify(''));
 
-      setToken(token);
-      setUserEmail(userEmail);
-
-      refresh(token);
+      if (token && userEmail) {
+        setToken(token);
+        setUserEmail(userEmail);
+        refresh(token);
+      } else {
+        setLoading(false);
+      }
     } catch (error) {
       handleError();
     }

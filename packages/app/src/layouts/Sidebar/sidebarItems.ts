@@ -1,13 +1,10 @@
-import { HOME_ROUTE, ONBOARDING_ROUTE } from 'routes/routes';
+import { SELLERS_ROUTE } from 'routes/routes';
 
 import { SidebarItemsType } from './types';
 
 const pagesSection: SidebarItemsType[] = [
   {
-    ...HOME_ROUTE,
-  },
-  {
-    ...ONBOARDING_ROUTE,
+    ...SELLERS_ROUTE,
   },
 ];
 

@@ -13,7 +13,6 @@ import { spacing } from '@mui/system';
 import { useAuthContext } from 'contexts/AuthContext';
 import { Formik } from 'formik';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
 import * as Yup from 'yup';
 
@@ -36,9 +35,9 @@ const SecondaryText = styled(Typography)`
 `;
 
 function SignIn() {
-  const { login, loading, error } = useAuthContext();
+  const { login, loading, error, setError } = useAuthContext();
 
-  const router = useRouter();
+  const closeAlert = () => setError(null);
 
   return (
     <Formik
@@ -57,12 +56,16 @@ function SignIn() {
           username: values.email,
           password: values.password,
           tenant: values.tenant,
-        })?.then(() => router.push('/'));
+        });
       }}
     >
       {({ errors, handleBlur, handleChange, handleSubmit, touched, values, setFieldValue }) => (
         <form noValidate onSubmit={handleSubmit}>
-          {error && <Alert severity="error">{error}</Alert>}
+          {error && (
+            <Alert severity="error" onClose={closeAlert}>
+              {error}
+            </Alert>
+          )}
           <TextField
             type="email"
             name="email"

@@ -1,11 +1,13 @@
 import styled from 'styled-components';
+import { withForwardProps } from 'utils';
 
-export const TableTitleContainer = styled.div<{
-  $direction?: 'row' | 'column';
-}>`
+type ContainerProps = { direction?: string };
+const props = ['direction'];
+
+export const TableTitleContainer = styled.div.withConfig(withForwardProps(props))<ContainerProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-bottom: 1rem;
-  flex-direction: ${({ $direction }) => $direction || 'row'};
+  flex-direction: ${({ direction }) => direction || 'row'};
 `;

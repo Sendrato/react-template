@@ -1,18 +1,11 @@
 import { CircularProgress } from '@mui/material';
 import styled from 'styled-components';
 
-interface IProps {
-  left?: string;
-}
-
-const LoadingLayout = ({}: IProps) => {
-  return (
-    <LoaderWrapper>
-      <CircularProgress />
-    </LoaderWrapper>
-  );
-};
-
+const LoadingLayout = () => (
+  <LoaderWrapper>
+    <CircularProgress />
+  </LoaderWrapper>
+);
 const LoaderWrapper = styled.div`
   width: fill-available;
   height: fill-available;
