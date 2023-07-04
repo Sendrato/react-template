@@ -1,5 +1,5 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { base64 } from 'stories/table/assets/data';
+import { Meta, StoryFn } from '@storybook/react';
+import { useState } from 'react';
 
 import FileDropzone from '@components/common/FileDropzone';
 
@@ -26,9 +26,6 @@ const meta: Meta<typeof FileDropzone> = {
     displayFile: {
       description: 'Use property if needed display file.',
     },
-    maxFiles: {
-      description: 'Max count of files.',
-    },
     maxSize: {
       description: 'Max size of file.',
     },
@@ -46,24 +43,32 @@ const meta: Meta<typeof FileDropzone> = {
   },
 };
 
-type Story = StoryObj<typeof FileDropzone>;
+const Template: StoryFn<typeof FileDropzone> = (args) => {
+  const [file, setFile] = useState<File | null>(null);
+  const [base64, setBase64] = useState<string | null>(null);
 
-export const Default: Story = {
-  args: {
-    setFile: () => null,
-    file: null,
-    base64: null,
-    setBase64: () => null,
-  },
+  return (
+    <FileDropzone {...args} setFile={setFile} file={file} base64={base64} setBase64={setBase64} />
+  );
 };
 
-export const UploadedFile: Story = {
-  args: {
-    setFile: () => null,
-    file: null,
-    base64,
-    setBase64: () => null,
-  },
+export const ImageDropzone = Template.bind({});
+
+ImageDropzone.args = {
+  accept: { 'image/*': ['.png', '.gif', '.jpeg', '.jpg', '.svg'] },
+};
+
+export const TextFileDropzone = Template.bind({});
+
+TextFileDropzone.args = {
+  accept: { 'text/*': ['.csv'] },
+};
+
+export const DisplayOnlyName = Template.bind({});
+
+DisplayOnlyName.args = {
+  accept: { 'text/*': ['.csv'] },
+  displayFile: false,
 };
 
 export default meta;
