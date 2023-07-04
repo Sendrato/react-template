@@ -106,9 +106,7 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
 
   const getToken = async ({ code, tenant }: ITokenPayload): Promise<IToken | void> => {
     try {
-      setLoading(true);
       const token = await authorizationCode(code, tenant);
-      setLoading(false);
       setToken(token.data);
       setIsAuth(true);
       localStorage.setItem('token', JSON.stringify(token.data));
@@ -118,7 +116,6 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
     } catch (err) {
       if (err instanceof AxiosError) {
         setError(err.message);
-        setLoading(false);
       }
     }
   };
