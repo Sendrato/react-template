@@ -35,7 +35,9 @@ const SecondaryText = styled(Typography)`
 `;
 
 function SignIn() {
-  const { login, loading, error } = useAuthContext();
+  const { login, loading, error, setError } = useAuthContext();
+
+  const closeAlert = () => setError(null);
 
   return (
     <Formik
@@ -59,7 +61,11 @@ function SignIn() {
     >
       {({ errors, handleBlur, handleChange, handleSubmit, touched, values, setFieldValue }) => (
         <form noValidate onSubmit={handleSubmit}>
-          {error && <Alert severity="error">{error}</Alert>}
+          {error && (
+            <Alert severity="error" onClose={closeAlert}>
+              {error}
+            </Alert>
+          )}
           <TextField
             type="email"
             name="email"

@@ -154,7 +154,13 @@ export const AuthProvider: FC<IProps> = ({ children }) => {
         if (res) {
           await getUserRole(res.access_token, res.tenant);
         }
-      } else if (error) {
+
+        setError(null);
+        setLoading(false);
+      }
+
+      if (error) {
+        console.log(error);
         setError('Invalid username / password combination');
         setLoading(false);
       }

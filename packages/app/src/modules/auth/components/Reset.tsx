@@ -26,7 +26,9 @@ const TextField = styled(MuiTextField)<{ my?: number }>(spacing);
 const Button = styled(MuiButton)<{ mt?: number }>(spacing);
 
 function Reset() {
-  const { resetPassword, loading, resetError } = useAuthContext();
+  const { resetPassword, loading, resetError, setResetError } = useAuthContext();
+
+  const closeAlert = () => setResetError(null);
 
   return (
     <Formik
@@ -44,7 +46,11 @@ function Reset() {
     >
       {({ errors, handleBlur, handleChange, handleSubmit, touched, values, setFieldValue }) => (
         <form noValidate onSubmit={handleSubmit}>
-          {resetError && <Alert severity="error">{resetError}</Alert>}
+          {resetError && (
+            <Alert severity="error" onClose={closeAlert}>
+              {resetError}
+            </Alert>
+          )}
           <TextField
             type="email"
             name="email"

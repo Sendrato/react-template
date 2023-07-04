@@ -70,7 +70,8 @@ const LoginPage = () => {
     if (!isAuth && !loading) {
       setIsLoading(false);
     }
-  }, [isAuth, router, loading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuth]);
 
   if (isLoading) {
     return <PageLoader />;
