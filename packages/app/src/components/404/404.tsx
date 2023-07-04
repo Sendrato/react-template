@@ -12,7 +12,7 @@ interface IProps {
   message?: string;
 }
 
-const ErrorNotification = ({ title = 'Not Found', message = 'Something went wrong' }: IProps) => {
+const ErrorComponent = ({ title = 'Not Found', message = 'Something went wrong' }: IProps) => {
   const router = useRouter();
 
   return (
@@ -69,4 +69,4 @@ const BoxStyled = styled(Box)`
     width: 35vw;
   }
 `;
-export default ErrorNotification;
+export default ErrorComponent;
