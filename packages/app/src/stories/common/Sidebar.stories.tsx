@@ -17,6 +17,14 @@ const admin = {
   userRole: { AccountType: 'administrator', SellerId: null, IsSuperuser: true } as IUserRole,
 };
 
+const seller = {
+  userRole: { AccountType: 'seller', SellerId: null, IsSuperuser: true } as IUserRole,
+};
+
+const helpdesk = {
+  userRole: { AccountType: 'helpdesk', SellerId: null, IsSuperuser: true } as IUserRole,
+};
+
 const pagesSection: SidebarItemsType[] = [
   {
     title: 'Overview',
@@ -72,7 +80,6 @@ const meta: Meta<typeof Sidebar> = {
   decorators: [authDecorator(admin)],
   title: 'Common/Sidebar',
   component: Sidebar,
-  tags: ['autodocs'],
   argTypes: {
     items: {
       description: 'The object with title and pages.',
@@ -110,7 +117,7 @@ const Template: StoryFn<typeof Sidebar> = (args) => {
         </IconButton>
       </Grid>
       <Sidebar
-        variant="persistent"
+        variant="permanent"
         open={open}
         onClose={toggle}
         {...args}
@@ -141,6 +148,22 @@ export const Temporary = Template.bind({});
 Temporary.args = {
   items: navItems,
   variant: 'temporary',
+};
+
+export const PermanentForSeller = Template.bind({});
+
+PermanentForSeller.decorators = [authDecorator(seller)];
+PermanentForSeller.args = {
+  items: navItems,
+  variant: 'permanent',
+};
+
+export const PermanentForHelpdesk = Template.bind({});
+
+PermanentForHelpdesk.decorators = [authDecorator(helpdesk)];
+PermanentForHelpdesk.args = {
+  items: navItems,
+  variant: 'permanent',
 };
 
 export default meta;
