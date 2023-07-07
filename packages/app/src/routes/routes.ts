@@ -5,7 +5,7 @@ export interface IRoute {
   title: string;
 }
 
-export const SELLERS_ROUTE = {
+export const HOME_ROUTE = {
   pathname: '/',
   access: ['organiser', 'administrator', 'seller'],
   title: 'Sellers',
@@ -13,4 +13,4 @@ export const SELLERS_ROUTE = {
 
 export const AUTH_ROUTES = ['/login', '/reset-password'];
 
-export const routes: IRoute[] = [SELLERS_ROUTE];
+export const routes: IRoute[] = [HOME_ROUTE];

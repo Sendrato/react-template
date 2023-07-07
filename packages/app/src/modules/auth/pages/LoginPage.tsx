@@ -59,19 +59,25 @@ const Container = styled(Box)`
 
 const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const { isAuth, loading } = useAuthContext();
+  const { isAuth } = useAuthContext();
 
   const router = useRouter();
 
   useEffect(() => {
-    if (isAuth) {
+    const token = JSON.parse(localStorage.getItem('token') || JSON.stringify(''));
+
+    if (token) {
       router.push('/');
     }
-    if (!isAuth && !loading) {
+    if (!token) {
       setIsLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuth]);
+  }, []);
+
+  useEffect(() => {
+    isAuth && router.push('/');
+  }, [isAuth, router]);
 
   if (isLoading) {
     return <PageLoader />;
