@@ -5,7 +5,10 @@ import { Box, Button as MuiButton, Paper, Typography } from '@mui/material';
 import { spacing } from '@mui/system';
 import { useAuthContext } from 'contexts/AuthContext';
 import Link from 'next/link';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+
+import { PageLoader } from '@sendrato/design-system/components/PageLoader';
 
 import DesktopImageView from '../components/DesktopImageView';
 import MobileImageView from '../components/MobileImageView';
@@ -87,7 +90,27 @@ const Message = styled(Box)`
 `;
 
 const ResetPasswordPage = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const { resetFinished } = useAuthContext();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem('token') || JSON.stringify(''));
+
+    if (token) {
+      router.push('/');
+    }
+    if (!token) {
+      setIsLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
   return (
     <>
       <MobileImageView />

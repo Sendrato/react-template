@@ -6,6 +6,8 @@ import useMedia from 'hooks/use-media';
 import { Navbar } from 'layouts/Navbar';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import AuthGuard from 'routes/AuthGuard';
+import RoleGuard from 'routes/RoleGuard';
 
 import Sidebar from './Sidebar/index';
 import MiniSideBar from './Sidebar/MiniSideBar';
@@ -115,7 +117,11 @@ const DashboardLayout: React.FC<{ children: React.ReactElement }> = ({ children 
       </Drawer>
       <AppContent>
         <Navbar onDrawerToggle={handleDrawerToggle} />
-        <MainContent p={isLgUp ? 4 : 2}>{children}</MainContent>
+        <AuthGuard>
+          <RoleGuard>
+            <MainContent p={isLgUp ? 4 : 2}>{children}</MainContent>
+          </RoleGuard>
+        </AuthGuard>
         <Snackbar
           open={snackBar.open}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}

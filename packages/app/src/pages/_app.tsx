@@ -4,8 +4,6 @@ import Head from 'next/head';
 import { NextSeo } from 'next-seo';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import AuthGuard from 'routes/AuthGuard';
-import RoleGuard from 'routes/RoleGuard';
 import { ThemeProvider } from 'styled-components';
 
 import muiTheme from '@sendrato/design-system/theme/muiTheme';
@@ -36,11 +34,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           <MuiThemeProvider theme={muiTheme}>
             <ThemeProvider theme={theme}>
               <GlobalStyle />
-              <ContextProvider>
-                <AuthGuard>
-                  <RoleGuard>{getLayout(<Component {...pageProps} />)}</RoleGuard>
-                </AuthGuard>
-              </ContextProvider>
+              <ContextProvider>{getLayout(<Component {...pageProps} />)}</ContextProvider>
             </ThemeProvider>
           </MuiThemeProvider>
           <ReactQueryDevtools initialIsOpen={true} />
